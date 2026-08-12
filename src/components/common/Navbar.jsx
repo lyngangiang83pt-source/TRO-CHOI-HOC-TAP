@@ -49,25 +49,21 @@ export const Navbar = () => {
           onClick={() => soundFx.play('click')}
           className="flex items-center gap-3 group focus:outline-none"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-lg group-hover:scale-105 transition-transform duration-200 overflow-hidden">
-            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center p-1 overflow-hidden">
-              <picture className="w-full h-full flex items-center justify-center">
-                <source srcSet="/logo2.webp" type="image/webp" />
-                <img 
-                  src="/logo2.png" 
-                  alt="Logo 2" 
-                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    if (e.currentTarget.nextElementSibling) {
-                      e.currentTarget.nextElementSibling.style.display = 'block';
-                    }
-                  }}
-                />
-              </picture>
-              <Gamepad2 className="w-6 h-6 text-indigo-400 hidden group-hover:rotate-12 transition-transform duration-300" />
-            </div>
-          </div>
+          <picture className="flex items-center justify-center shrink-0">
+            <source srcSet="/logo2.webp" type="image/webp" />
+            <img 
+              src="/logo2.png" 
+              alt="Logo 2" 
+              className="h-12 sm:h-14 w-auto max-w-none object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-300"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                if (e.currentTarget.nextElementSibling) {
+                  e.currentTarget.nextElementSibling.style.display = 'block';
+                }
+              }}
+            />
+            <Gamepad2 className="w-8 h-8 text-indigo-400 hidden group-hover:rotate-12 transition-transform duration-300" />
+          </picture>
           <div>
             <span className="font-heading font-bold text-lg bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
               HỌC VUI CẤP 2

@@ -61,19 +61,15 @@ export const StudentDashboard = () => {
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-start sm:items-center gap-4 sm:gap-6">
-            {/* Brand Logo Badge in Banner */}
-            <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-xl shadow-indigo-500/20 flex items-center justify-center overflow-hidden group">
-              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-2 overflow-hidden">
-                <picture className="w-full h-full flex items-center justify-center">
-                  <source srcSet="/logo2.webp" type="image/webp" />
-                  <img 
-                    src="/logo2.png" 
-                    alt="Logo 2" 
-                    className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300" 
-                  />
-                </picture>
-              </div>
-            </div>
+            {/* Unboxed Standalone Big Brand Logo in Banner */}
+            <picture className="shrink-0 flex items-center justify-center group">
+              <source srcSet="/logo2.webp" type="image/webp" />
+              <img 
+                src="/logo2.png" 
+                alt="Logo 2" 
+                className="h-20 sm:h-28 w-auto max-w-none object-contain filter drop-shadow-[0_10px_20px_rgba(99,102,241,0.3)] group-hover:scale-110 transition-transform duration-300" 
+              />
+            </picture>
 
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">

@@ -52,25 +52,21 @@ export const AuthPage = () => {
         
         {/* Top Header */}
         <div className="text-center mb-6">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/30 mb-3 overflow-hidden">
-            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-1.5 overflow-hidden">
-              <picture className="w-full h-full flex items-center justify-center">
-                <source srcSet="/logo2.webp" type="image/webp" />
-                <img 
-                  src="/logo2.png" 
-                  alt="Logo 2" 
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    if (e.currentTarget.nextElementSibling) {
-                      e.currentTarget.nextElementSibling.style.display = 'block';
-                    }
-                  }}
-                />
-              </picture>
-              <Gamepad2 className="w-8 h-8 text-indigo-400 hidden" />
-            </div>
-          </div>
+          <picture className="flex items-center justify-center mb-3">
+            <source srcSet="/logo2.webp" type="image/webp" />
+            <img 
+              src="/logo2.png" 
+              alt="Logo 2" 
+              className="h-16 sm:h-20 w-auto object-contain drop-shadow-xl hover:scale-105 transition-transform duration-300"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                if (e.currentTarget.nextElementSibling) {
+                  e.currentTarget.nextElementSibling.style.display = 'block';
+                }
+              }}
+            />
+            <Gamepad2 className="w-10 h-10 text-indigo-400 hidden" />
+          </picture>
           <h2 className="text-xl font-heading font-bold text-white">
             KHO TRÒ CHƠI HỌC VUI CẤP 2
           </h2>
