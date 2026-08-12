@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import JSZip from 'jszip';
-import { Upload, FileArchive, CheckCircle2, AlertCircle, Play, FileCode, Presentation, Sparkles, Download } from 'lucide-react';
+import { Upload, FileArchive, CheckCircle2, AlertCircle, Play, FileCode, Presentation, Sparkles, Globe } from 'lucide-react';
 import { soundFx } from '../../lib/soundFx';
 
 export const Html5ZipUploader = ({ onZipParsed }) => {
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState('');
-  const [detectedType, setDetectedType] = useState(''); // 'html' | 'ppt'
+  const [detectedType, setDetectedType] = useState(''); // 'single_html' | 'zip_html' | 'ppt'
   const [detectedHtml, setDetectedHtml] = useState('');
   const [pptList, setPptList] = useState([]);
   const [selectedPpt, setSelectedPpt] = useState('');
@@ -14,7 +14,7 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
 
-  // Thuật toán quét sâu tìm HTML hoặc PowerPoint (.ppt/.pptx) hoặc Zip lồng nhau
+  // Thuật toán quét đệ quy tìm HTML hoặc PowerPoint (.ppt/.pptx) trong file ZIP
   const findMediaRecursively = async (unzipped, depth = 0) => {
     const allKeys = Object.keys(unzipped.files);
 
@@ -32,7 +32,7 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
         htmlFiles[0];
 
       const content = await unzipped.files[entryKey].async('text');
-      return { type: 'html', entryKey, content };
+      return { type: 'zip_html', entryKey, content };
     }
 
     // 2. Quét tìm các file Trò Chơi PowerPoint (.ppt / .pptx)
@@ -84,6 +84,39 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
     setPptList([]);
     setZipContents([]);
 
+    const lowerName = file.name.toLowerCase();
+
+    // 🌟 TRƯỜNG HỢP 1: THẦY UPLOAD TRỰC TIẾP FILE SƠ CẤP SINGLE .HTML / .HTM
+    if (lowerName.endsWith('.html') || lowerName.endsWith('.htm')) {
+      try {
+        const textContent = await file.text();
+        const blob = new Blob([textContent], { type: 'text/html' });
+        const blobUrl = URL.createObjectURL(blob);
+
+        setDetectedType('single_html');
+        setDetectedHtml(file.name);
+        setSuccess(true);
+        soundFx.play('correct');
+
+        if (typeof onZipParsed === 'function') {
+          onZipParsed({
+            gameType: 'html5',
+            fileName: file.name,
+            entryFile: file.name,
+            blobUrl,
+            rawFile: file
+          });
+        }
+      } catch (err) {
+        console.error('Lỗi đọc file HTML:', err);
+        setError('Không thể đọc nội dung file HTML.');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    // 🌟 TRƯỜNG HỢP 2: THẦY UPLOAD FILE NÉN .ZIP (GIẢI NÉN ĐỆ QUY JSZIP)
     try {
       const zip = new JSZip();
       const unzipped = await zip.loadAsync(file);
@@ -98,13 +131,13 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
 
       if (!result) {
         throw new Error(
-          `Gói nén "${file.name}" không chứa file HTML5 hoặc Slide PowerPoint. Danh sách file: ${topFiles.join(', ')}`
+          `Gói nén "${file.name}" không chứa file HTML5 hoặc Slide PowerPoint. Các file phát hiện: ${topFiles.join(', ')}`
         );
       }
 
       setDetectedType(result.type);
 
-      if (result.type === 'html') {
+      if (result.type === 'zip_html') {
         setDetectedHtml(result.entryKey);
         const blob = new Blob([result.content], { type: 'text/html' });
         const blobUrl = URL.createObjectURL(blob);
@@ -138,8 +171,8 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
       }
 
     } catch (err) {
-      console.error('Lỗi giải nén ZIP:', err);
-      setError(err.message || 'Giải nén file nén thất bại.');
+      console.error('Lỗi đọc file:', err);
+      setError(err.message || 'Xử lý file thất bại. Vui lòng kiểm tra lại định dạng.');
     } finally {
       setLoading(false);
     }
@@ -148,22 +181,22 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
   return (
     <div className="w-full glass-panel rounded-2xl p-6 border border-slate-800 text-center">
       <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 mb-3">
-        <FileArchive className="w-7 h-7" />
+        <Globe className="w-7 h-7" />
       </div>
 
       <h4 className="text-base font-heading font-bold text-white mb-1">
-        Upload Trò Chơi HTML5 & PowerPoint ZIP (GAME-02)
+        Upload Trò Chơi HTML5 (.html) & PowerPoint ZIP (GAME-02)
       </h4>
       <p className="text-xs text-slate-400 max-w-md mx-auto mb-4 leading-relaxed">
-        Tự động nhận diện Trò chơi HTML5 (Wordwall, Canva, iSpring) và Bộ Trò chơi PowerPoint tương tác (.ppt, .pptx) trong gói ZIP Google Drive.
+        Hệ thống tự động hỗ trợ cả <span className="text-indigo-300 font-bold">File HTML Đơn Lẻ (.html)</span> và <span className="text-purple-300 font-bold">Gói Nén ZIP</span> (Đường Lên Đỉnh Olympia, Wordwall, Canva, iSpring, PowerPoint).
       </p>
 
       <label className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white text-xs font-bold shadow-lg shadow-indigo-600/20 cursor-pointer transition-all">
         <Upload className="w-4 h-4" />
-        <span>{loading ? 'Đang Quét & Phân Loại Game...' : 'Chọn File HTML5 / PowerPoint .ZIP'}</span>
+        <span>{loading ? 'Đang Xử Lý & Đọc File...' : 'Chọn File HTML / .ZIP / PowerPoint'}</span>
         <input
           type="file"
-          accept=".zip,.ZIP,.ppt,.pptx,application/zip,application/x-zip-compressed,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+          accept=".html,.htm,.zip,.ZIP,.ppt,.pptx,text/html,application/zip,application/x-zip-compressed,application/octet-stream"
           onChange={handleFileUpload}
           disabled={loading}
           className="hidden"
@@ -176,12 +209,25 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
         </p>
       )}
 
-      {/* Kết quả nhận diện thành công HTML5 */}
-      {success && detectedType === 'html' && (
+      {/* Kết quả nhận diện thành công File HTML Đơn Lẻ */}
+      {success && detectedType === 'single_html' && (
         <div className="mt-3 inline-flex flex-col items-center gap-1 px-4 py-2 rounded-2xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold">
           <div className="flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Đã tự động nhận diện Trò chơi HTML5 thành công!</span>
+            <span>Đã tự động đọc và tạo bài chơi HTML Đơn Lẻ (.html) thành công!</span>
+          </div>
+          <span className="text-[11px] font-mono text-emerald-400/80">
+            Tên file game: <FileCode className="w-3.5 h-3.5 inline ml-1" /> {detectedHtml}
+          </span>
+        </div>
+      )}
+
+      {/* Kết quả nhận diện thành công HTML5 ZIP */}
+      {success && detectedType === 'zip_html' && (
+        <div className="mt-3 inline-flex flex-col items-center gap-1 px-4 py-2 rounded-2xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold">
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span>Đã giải nén và nhận diện Trò chơi HTML5 ZIP thành công!</span>
           </div>
           {detectedHtml && (
             <span className="text-[11px] font-mono text-emerald-400/80">
@@ -223,10 +269,6 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
               ))}
             </div>
           </div>
-
-          <p className="text-[11px] text-slate-400 leading-relaxed mt-1">
-            ✨ Bài chơi PowerPoint đã được nhận diện. Thầy/Cô có thể tạo bài học tương tác trực tiếp hoặc trình chiếu trên lớp cho học sinh!
-          </p>
         </div>
       )}
 
