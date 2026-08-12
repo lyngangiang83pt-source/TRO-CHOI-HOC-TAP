@@ -13,21 +13,28 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (!file.name.endsWith('.zip')) {
-      setError('Vui lòng chọn file nén định dạng .ZIP!');
+    // Kiểm tra định dạng không phân biệt hoa thường hoặc MIME type
+    const isZip = file.name.toLowerCase().endsWith('.zip') || 
+                  file.type === 'application/zip' || 
+                  file.type === 'application/x-zip-compressed' ||
+                  file.type === 'application/x-zip';
+
+    if (!isZip) {
+      setError('Vui lòng chọn đúng file nén định dạng .ZIP (ví dụ: game.zip)!');
       return;
     }
 
     soundFx.play('click');
     setLoading(true);
     setError(null);
+    setSuccess(false);
     setFileName(file.name);
 
     try {
       const zip = new JSZip();
       const unzipped = await zip.loadAsync(file);
 
-      // Tìm file index.html trong file ZIP
+      // Tìm file index.html trong file ZIP (hỗ trợ cả thư mục con)
       let indexFileKey = Object.keys(unzipped.files).find(
         path => path.toLowerCase().endsWith('index.html')
       );
@@ -54,7 +61,7 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
       }
     } catch (err) {
       console.error('Lỗi giải nén ZIP HTML5:', err);
-      setError(err.message || 'Giải nén file HTML5 ZIP thất bại.');
+      setError(err.message || 'Giải nén file HTML5 ZIP thất bại. Vui lòng kiểm tra lại cấu trúc file nén.');
     } finally {
       setLoading(false);
     }
@@ -75,10 +82,10 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
 
       <label className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 text-white text-xs font-bold shadow-lg shadow-indigo-600/20 cursor-pointer transition-all">
         <Upload className="w-4 h-4" />
-        <span>{loading ? 'Đang Giải Nén...' : 'Chọn File HTML5 .ZIP'}</span>
+        <span>{loading ? 'Đang Giải Nén File ZIP...' : 'Chọn File HTML5 .ZIP'}</span>
         <input
           type="file"
-          accept=".zip"
+          accept=".zip,.ZIP,application/zip,application/x-zip-compressed,application/x-zip,application/octet-stream"
           onChange={handleFileUpload}
           disabled={loading}
           className="hidden"
@@ -99,8 +106,8 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
       )}
 
       {error && (
-        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold">
-          <AlertCircle className="w-4 h-4" />
+        <div className="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold">
+          <AlertCircle className="w-4 h-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
