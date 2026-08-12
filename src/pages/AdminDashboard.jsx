@@ -5,9 +5,9 @@ import { useAuth } from '../context/AuthContext';
 import { soundFx } from '../lib/soundFx';
 
 const SAMPLE_USERS = [
-  { id: 'u-1', name: 'Nguyễn Văn Nam', email: 'nam.hs@school.edu.vn', role: 'student', grade: '7', exp: 1250 },
-  { id: 'u-2', name: 'Cô Trần Thị Thu Hà', email: 'ha.gv@school.edu.vn', role: 'teacher', grade: '8', exp: 4800 },
-  { id: 'u-3', name: 'Lý Ngân Giang', email: 'lyngangiang83pt@gmail.com', role: 'admin', grade: '9', exp: 9999 }
+  { id: 'u-1', name: 'Thầy Huỳnh Ngân Giang', email: 'lyngangiang83pt@gmail.com', role: 'admin', grade: '9', exp: 9999 },
+  { id: 'u-2', name: 'Nguyễn Văn Nam', email: 'nam.hs@school.edu.vn', role: 'student', grade: '7', exp: 1250 },
+  { id: 'u-3', name: 'Trần Thị Thu Hà', email: 'ha.gv@school.edu.vn', role: 'teacher', grade: '8', exp: 4800 }
 ];
 
 export const AdminDashboard = () => {

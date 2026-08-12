@@ -9,7 +9,7 @@ const MOCK_PROFILES = {
   student: {
     id: 'mock-student-id-123',
     email: 'hocsinh6a@school.edu.vn',
-    full_name: 'Nguyễn Văn Nam',
+    full_name: 'Thầy Huỳnh Ngân Giang',
     role: 'student',
     student_code: 'HS602941',
     grade_level: '7',
@@ -21,7 +21,7 @@ const MOCK_PROFILES = {
   teacher: {
     id: 'mock-teacher-id-456',
     email: 'giaovien.toan@school.edu.vn',
-    full_name: 'Cô Trần Thị Thu Hà',
+    full_name: 'Thầy Huỳnh Ngân Giang',
     role: 'teacher',
     student_code: 'GV889102',
     grade_level: '7',
@@ -33,7 +33,7 @@ const MOCK_PROFILES = {
   admin: {
     id: 'mock-admin-id-789',
     email: 'lyngangiang83pt@gmail.com',
-    full_name: 'Lý Ngân Giang (Quản Trị Viên)',
+    full_name: 'Thầy Huỳnh Ngân Giang',
     role: 'admin',
     student_code: 'AD000001',
     grade_level: '9',

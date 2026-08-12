@@ -66,7 +66,7 @@ export const StudentDashboard = () => {
               Chương Trình GDPT 2018 THCS
             </div>
             <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-white">
-              Xin chào, <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">{profile?.full_name || 'Học Sinh'}</span>! 👋
+              Xin chào: <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">{profile?.full_name || 'Thầy Huỳnh Ngân Giang'}</span>! 👋
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl leading-relaxed">
               Khám phá hàng trăm trò chơi trắc nghiệm đối kháng, giải mã phòng kín và mini-game hấp dẫn để tích lũy EXP và chinh phục Bảng Xếp Hạng.
