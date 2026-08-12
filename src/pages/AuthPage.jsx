@@ -52,9 +52,20 @@ export const AuthPage = () => {
         
         {/* Top Header */}
         <div className="text-center mb-6">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/30 mb-3">
-            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-              <Gamepad2 className="w-8 h-8 text-indigo-400" />
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/30 mb-3 overflow-hidden">
+            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-1.5 overflow-hidden">
+              <img 
+                src="/logo2.png" 
+                alt="Logo 2" 
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  if (e.currentTarget.nextElementSibling) {
+                    e.currentTarget.nextElementSibling.style.display = 'block';
+                  }
+                }}
+              />
+              <Gamepad2 className="w-8 h-8 text-indigo-400 hidden" />
             </div>
           </div>
           <h2 className="text-xl font-heading font-bold text-white">
