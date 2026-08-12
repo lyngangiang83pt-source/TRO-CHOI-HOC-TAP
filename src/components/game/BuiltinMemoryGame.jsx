@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Trophy, RotateCcw, CheckCircle, Brain } from 'lucide-react';
+import { Sparkles, Trophy, RotateCcw, CheckCircle, Brain, Maximize2, Minimize2, Tv } from 'lucide-react';
 import { soundFx } from '../../lib/soundFx';
 
 const DEFAULT_PAIRS = [
@@ -19,6 +19,18 @@ export const BuiltinMemoryGame = ({ config, onComplete, isPractice = false }) =>
   const [matched, setMatched] = useState([]);
   const [moves, setMoves] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isZoomed169, setIsZoomed169] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isZoomed169) {
+        setIsZoomed169(false);
+        soundFx.play('click');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isZoomed169]);
 
   useEffect(() => {
     initDeck();
@@ -80,14 +92,43 @@ export const BuiltinMemoryGame = ({ config, onComplete, isPractice = false }) =>
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto glass-panel rounded-3xl p-6 border border-slate-800 text-center">
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+    <div className={`w-full mx-auto glass-panel rounded-3xl p-6 border border-slate-800 text-center transition-all duration-300 ${
+      isZoomed169 ? 'fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl p-6 flex flex-col items-center justify-center' : 'max-w-4xl'
+    }`}>
+      <div className="w-full max-w-4xl flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
         <div className="flex items-center gap-2 text-indigo-400 font-heading font-bold text-lg">
           <Brain className="w-6 h-6" />
           <span>Game Lật Thẻ Ghép Cặp Kiến Thức</span>
+          <span className="hidden sm:inline-flex items-center gap-1 text-xs text-indigo-300 font-mono font-semibold bg-indigo-500/10 px-2 py-0.5 rounded-lg border border-indigo-500/20">
+            <Tv className="w-3.5 h-3.5" /> 16:9
+          </span>
         </div>
 
-        <div className="flex items-center gap-4 text-xs font-semibold text-slate-300">
+        <div className="flex items-center gap-3 text-xs font-semibold text-slate-300">
+          <button
+            onClick={() => {
+              soundFx.play('click');
+              setIsZoomed169(!isZoomed169);
+            }}
+            className={`px-3 py-1.5 rounded-xl font-bold transition-all flex items-center gap-1.5 shadow-md ${
+              isZoomed169
+                ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+            }`}
+          >
+            {isZoomed169 ? (
+              <>
+                <Minimize2 className="w-4 h-4" />
+                <span>Thu Nhỏ 16:9 (ESC)</span>
+              </>
+            ) : (
+              <>
+                <Maximize2 className="w-4 h-4" />
+                <span>Phóng To 16:9</span>
+              </>
+            )}
+          </button>
+
           <span className="bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-800">
             Số lần lật: <span className="text-amber-400 font-bold">{moves}</span>
           </span>
