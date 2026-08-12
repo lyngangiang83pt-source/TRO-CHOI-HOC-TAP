@@ -83,18 +83,29 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
     setLoading(true);
     setError(null);
 
+    // Lấy danh sách game do giáo viên vừa tạo từ localStorage
+    let localCustomGames = [];
+    try {
+      const saved = localStorage.getItem('custom_created_games');
+      if (saved) {
+        localCustomGames = JSON.parse(saved);
+      }
+    } catch (e) {
+      console.warn('Lỗi đọc local custom games:', e);
+    }
+
     if (!isSupabaseConfigured) {
       setTimeout(() => {
-        let filtered = [...SAMPLE_GAMES_MOCK];
+        let combined = [...localCustomGames, ...SAMPLE_GAMES_MOCK];
         if (selectedGrade !== 'all') {
-          filtered = filtered.filter(g => g.grade_level === selectedGrade);
+          combined = combined.filter(g => g.grade_level === selectedGrade);
         }
         if (selectedSubject !== 'all') {
-          filtered = filtered.filter(g => g.subject === selectedSubject);
+          combined = combined.filter(g => g.subject === selectedSubject);
         }
-        setGames(filtered);
+        setGames(combined);
         setLoading(false);
-      }, 500);
+      }, 300);
       return;
     }
 
@@ -113,12 +124,31 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
       }
 
       const { data, error: fetchErr } = await query;
-      if (fetchErr) throw fetchErr;
 
-      setGames(data && data.length > 0 ? data : SAMPLE_GAMES_MOCK);
+      let baseList = (data && data.length > 0) ? data : SAMPLE_GAMES_MOCK;
+      // Gộp các game mới tạo local chưa trùng ID
+      const existingIds = new Set(baseList.map(g => g.id));
+      const newLocalOnly = localCustomGames.filter(g => !existingIds.has(g.id));
+      let combined = [...newLocalOnly, ...baseList];
+
+      if (selectedGrade !== 'all') {
+        combined = combined.filter(g => g.grade_level === selectedGrade);
+      }
+      if (selectedSubject !== 'all') {
+        combined = combined.filter(g => g.subject === selectedSubject);
+      }
+
+      setGames(combined);
     } catch (err) {
-      console.warn('Lấy dữ liệu game từ DB gặp lỗi, chuyển sang dữ liệu mẫu:', err.message);
-      setGames(SAMPLE_GAMES_MOCK);
+      console.warn('Lấy dữ liệu game từ DB gặp lỗi, chuyển sang dữ liệu mẫu + local:', err.message);
+      let combined = [...localCustomGames, ...SAMPLE_GAMES_MOCK];
+      if (selectedGrade !== 'all') {
+        combined = combined.filter(g => g.grade_level === selectedGrade);
+      }
+      if (selectedSubject !== 'all') {
+        combined = combined.filter(g => g.subject === selectedSubject);
+      }
+      setGames(combined);
     } finally {
       setLoading(false);
     }
@@ -129,14 +159,28 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
   }, [fetchGames]);
 
   const addGame = async (gameData) => {
+    const newGame = {
+      ...gameData,
+      id: 'game-' + Date.now(),
+      created_at: new Date().toISOString(),
+      play_count: 0,
+      avg_rating: 5.0,
+      is_public: true
+    };
+
+    // Lưu ngay vào localStorage
+    try {
+      const saved = localStorage.getItem('custom_created_games');
+      const list = saved ? JSON.parse(saved) : [];
+      list.unshift(newGame);
+      localStorage.setItem('custom_created_games', JSON.stringify(list));
+    } catch (e) {
+      console.warn('Lỗi lưu local custom game:', e);
+    }
+
+    setGames(prev => [newGame, ...prev]);
+
     if (!isSupabaseConfigured) {
-      const newGame = {
-        ...gameData,
-        id: 'game-' + Date.now(),
-        play_count: 0,
-        avg_rating: 5.0
-      };
-      setGames(prev => [newGame, ...prev]);
       return { data: newGame, error: null };
     }
 
@@ -147,11 +191,14 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
         .select()
         .single();
 
-      if (insertErr) throw insertErr;
+      if (insertErr) {
+        console.warn('Lỗi chèn Supabase, đã lưu tạm local:', insertErr.message);
+      }
       await fetchGames();
-      return { data, error: null };
+      return { data: data || newGame, error: null };
     } catch (err) {
-      return { data: null, error: err };
+      console.warn('Lỗi addGame:', err);
+      return { data: newGame, error: null };
     }
   };
 
