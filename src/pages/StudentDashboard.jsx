@@ -60,17 +60,33 @@ export const StudentDashboard = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl -z-10" />
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              Chương Trình GDPT 2018 THCS
+          <div className="flex items-start sm:items-center gap-4 sm:gap-6">
+            {/* Brand Logo Badge in Banner */}
+            <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-xl shadow-indigo-500/20 flex items-center justify-center overflow-hidden group">
+              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center p-2 overflow-hidden">
+                <picture className="w-full h-full flex items-center justify-center">
+                  <source srcSet="/logo2.webp" type="image/webp" />
+                  <img 
+                    src="/logo2.png" 
+                    alt="Logo 2" 
+                    className="w-full h-full object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300" 
+                  />
+                </picture>
+              </div>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-white">
-              Xin chào: <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">{profile?.full_name || 'Thầy Huỳnh Ngân Giang'}</span>! 👋
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl leading-relaxed">
-              Khám phá hàng trăm trò chơi trắc nghiệm đối kháng, giải mã phòng kín và mini-game hấp dẫn để tích lũy EXP và chinh phục Bảng Xếp Hạng.
-            </p>
+
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">
+                <Sparkles className="w-3.5 h-3.5" />
+                Chương Trình GDPT 2018 THCS
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-white">
+                Xin chào: <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">{profile?.full_name || 'Thầy Huỳnh Ngân Giang'}</span>! 👋
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl leading-relaxed">
+                Khám phá hàng trăm trò chơi trắc nghiệm đối kháng, giải mã phòng kín và mini-game hấp dẫn để tích lũy EXP và chinh phục Bảng Xếp Hạng.
+              </p>
+            </div>
           </div>
 
           {/* User Rank Progress */}
