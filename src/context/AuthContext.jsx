@@ -146,18 +146,20 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async (email, password, fullName, role = 'student', gradeLevel = '6') => {
     soundFx.play('click');
+    const actualRole = email.toLowerCase() === 'lyngangiang83pt@gmail.com' ? 'admin' : (role === 'admin' ? 'student' : role);
+
     if (!isSupabaseConfigured) {
       const newProf = {
         id: 'mock-' + Date.now(),
         email,
         full_name: fullName,
-        role,
+        role: actualRole,
         student_code: 'HS' + Math.floor(100000 + Math.random() * 900000),
         grade_level: gradeLevel,
         total_exp: 0,
         rank_tier: 'Đồng',
         coins: 100,
-        avatar_url: MOCK_PROFILES[role]?.avatar_url
+        avatar_url: MOCK_PROFILES[actualRole]?.avatar_url || MOCK_PROFILES.student.avatar_url
       };
       setProfile(newProf);
       return { data: { user: newProf }, error: null };
@@ -169,7 +171,7 @@ export const AuthProvider = ({ children }) => {
       options: {
         data: {
           full_name: fullName,
-          role,
+          role: actualRole,
           grade_level: gradeLevel
         }
       }
