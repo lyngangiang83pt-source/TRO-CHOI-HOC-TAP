@@ -224,16 +224,29 @@ CREATE POLICY "Student Badges viewable by everyone" ON public.student_badges FOR
 -- TRIGGERS & FUNCTIONS TỰ ĐỘNG
 -- ====================================================================
 
--- Trigger: Tự động chèn bản ghi khi có user mới từ Supabase Auth
+-- Trigger: Tự động chèn bản ghi khi có user mới từ Supabase Auth (Chỉ lyngangiang83pt@gmail.com mới là admin)
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+    v_role user_role;
 BEGIN
+    -- Kiểm tra nghiêm ngặt: Chỉ email lyngangiang83pt@gmail.com mới được cấp quyền Admin
+    IF LOWER(NEW.email) = 'lyngangiang83pt@gmail.com' THEN
+        v_role := 'admin';
+    ELSE
+        v_role := COALESCE((NEW.raw_user_meta_data->>'role')::user_role, 'student');
+        -- Từ chối cấp quyền admin cho bất kỳ email nào khác
+        IF v_role = 'admin' THEN
+            v_role := 'student';
+        END IF;
+    END IF;
+
     INSERT INTO public.profiles (id, email, full_name, role, grade_level, student_code)
     VALUES (
         NEW.id,
         NEW.email,
         COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),
-        COALESCE((NEW.raw_user_meta_data->>'role')::user_role, 'student'),
+        v_role,
         COALESCE((NEW.raw_user_meta_data->>'grade_level')::grade_level, '6'),
         COALESCE(NEW.raw_user_meta_data->>'student_code', 'HS' || FLOOR(100000 + RANDOM() * 900000)::TEXT)
     );

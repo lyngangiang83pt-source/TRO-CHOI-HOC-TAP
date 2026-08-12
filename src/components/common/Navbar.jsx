@@ -106,7 +106,7 @@ export const Navbar = () => {
             </Link>
           )}
 
-          {profile?.role === 'admin' && (
+          {profile?.email?.toLowerCase() === 'lyngangiang83pt@gmail.com' && (
             <Link
               to="/admin"
               onClick={() => soundFx.play('click')}

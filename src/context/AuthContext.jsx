@@ -32,8 +32,8 @@ const MOCK_PROFILES = {
   },
   admin: {
     id: 'mock-admin-id-789',
-    email: 'admin.edtech@school.edu.vn',
-    full_name: 'Quản Tri Viên Hệ Thống',
+    email: 'lyngangiang83pt@gmail.com',
+    full_name: 'Lý Ngân Giang (Quản Trị Viên)',
     role: 'admin',
     student_code: 'AD000001',
     grade_level: '9',
