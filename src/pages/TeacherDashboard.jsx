@@ -34,14 +34,28 @@ export const TeacherDashboard = () => {
   const [zipBlobUrl, setZipBlobUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const handleCreateGame = async (e) => {
     e.preventDefault();
     soundFx.play('click');
-    setSubmitting(true);
-    setSuccessMsg(null);
 
     const finalUrl = gameType === 'html5_zip' ? zipBlobUrl : gameUrl;
+
+    if (!finalUrl) {
+      soundFx.play('wrong');
+      setSuccessMsg(null);
+      setErrorMsg(
+        gameType === 'html5_zip' 
+          ? '⚠️ Vui lòng chọn File nén HTML5 ZIP / PowerPoint (.zip, .html) trước khi tạo bài chơi!' 
+          : '⚠️ Vui lòng nhập đường dẫn URL nhúng (Wordwall/Quizizz/Canva)!'
+      );
+      return;
+    }
+
+    setSubmitting(true);
+    setSuccessMsg(null);
+    setErrorMsg(null);
 
     const gameData = {
       title,
@@ -59,10 +73,11 @@ export const TeacherDashboard = () => {
 
     if (!error) {
       soundFx.play('correct');
-      setSuccessMsg('Đã tạo trò chơi học tập mới thành công!');
+      setSuccessMsg('🎉 Đã tạo trò chơi học tập mới thành công! Bài chơi đã hiển thị tức thì trên Kho Game.');
       setTitle('');
       setDescription('');
       setGameUrl('');
+      setZipBlobUrl('');
     }
   };
 
@@ -184,6 +199,12 @@ export const TeacherDashboard = () => {
             </div>
           )}
 
+          {errorMsg && (
+            <div className="p-3.5 rounded-2xl bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-semibold flex items-center gap-2">
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
           <form onSubmit={handleCreateGame} className="space-y-4">
             
             {/* Game Type Switcher */}
@@ -268,7 +289,7 @@ export const TeacherDashboard = () => {
                 <label className="block text-xs font-semibold text-slate-300 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
                 <input
                   type="url"
-                  required
+                  required={gameType === 'iframe'}
                   value={gameUrl}
                   onChange={(e) => setGameUrl(e.target.value)}
                   placeholder="https://wordwall.net/embed/play/..."
