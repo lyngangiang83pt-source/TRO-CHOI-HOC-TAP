@@ -216,24 +216,45 @@ export const TeacherDashboard = () => {
             <RadarSkillChart title="Biểu Đồ Radar Đánh Giá Năng Lực Trung Bình Lớp Học" />
           </div>
 
-          <div className="glass-panel rounded-3xl p-6 border border-slate-800 space-y-4">
-            <h3 className="text-base font-heading font-bold text-white mb-2">
-              Chỉ Số Tương Tác Học Sinh
+          {/* KHUNG 3: CHỈ SỐ TƯƠNG TÁC HỌC SINH - NỀN XANH LÁ CÂY & THẺ VÀNG NHẠT XEN KẼ */}
+          <div 
+            style={{
+              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+              border: '2px solid #34D399',
+              boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+            }}
+            className="rounded-3xl p-6 space-y-4 shadow-xl text-white"
+          >
+            <h3 
+              style={{ color: '#FFFFFF', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+              className="text-base font-heading font-black mb-2 flex items-center gap-2"
+            >
+              <Sparkles className="w-5 h-5 text-amber-300" />
+              <span>Chỉ Số Tương Tác Học Sinh</span>
             </h3>
 
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-              <span className="text-xs text-slate-400 font-semibold">Tỉ Lệ Hoàn Thành Bài:</span>
-              <p className="text-2xl font-heading font-extrabold text-emerald-400">92.4%</p>
+            <div 
+              style={{ background: '#FEF9C3', border: '2px solid #FACC15' }}
+              className="p-4 rounded-2xl space-y-1 shadow-sm"
+            >
+              <span className="text-xs text-amber-950 font-black">Tỉ Lệ Hoàn Thành Bài:</span>
+              <p className="text-2xl font-heading font-black text-emerald-700">92.4%</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-              <span className="text-xs text-slate-400 font-semibold">Thời Gian Chơi Trung Bình:</span>
-              <p className="text-2xl font-heading font-extrabold text-indigo-400">8 phút 45 giây</p>
+            <div 
+              style={{ background: '#FEF9C3', border: '2px solid #FACC15' }}
+              className="p-4 rounded-2xl space-y-1 shadow-sm"
+            >
+              <span className="text-xs text-amber-950 font-black">Thời Gian Chơi Trung Bình:</span>
+              <p className="text-2xl font-heading font-black text-indigo-900">8 phút 45 giây</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-              <span className="text-xs text-slate-400 font-semibold">Môn Học Yêu Thích Nhất:</span>
-              <p className="text-xl font-heading font-bold text-amber-400">Khoa Học Tự Nhiên & Tiếng Anh</p>
+            <div 
+              style={{ background: '#FEF9C3', border: '2px solid #FACC15' }}
+              className="p-4 rounded-2xl space-y-1 shadow-sm"
+            >
+              <span className="text-xs text-amber-950 font-black">Môn Học Yêu Thích Nhất:</span>
+              <p className="text-sm font-heading font-black text-amber-950 leading-snug">Khoa Học Tự Nhiên & Tiếng Anh</p>
             </div>
           </div>
         </div>
@@ -403,18 +424,28 @@ export const TeacherDashboard = () => {
       {/* TAB 4: Manage & Delete Games */}
       {activeTab === 'manage_games' && (
         <div className="space-y-4">
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div 
+            style={{
+              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+              border: '2px solid #34D399',
+              boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.3)'
+            }}
+            className="p-5 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-white shadow-xl"
+          >
             <div>
-              <h3 className="text-base font-heading font-bold text-white flex items-center gap-2">
-                <Trash2 className="w-5 h-5 text-rose-500" />
+              <h3 className="text-base font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
+                <Trash2 className="w-5 h-5 text-rose-300" />
                 Quản Lý & Xóa Bài Chơi Trong Kho ({games.length})
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-400 font-bold">Thùng Rác Đỏ</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
+              <p className="text-xs text-emerald-100 mt-0.5 font-bold">
+                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-300 font-black">Thùng Rác</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
               </p>
             </div>
-            <span className="px-3.5 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold font-mono">
-              Kho Game Hiện Tại: {games.length} bài
+            <span 
+              style={{ background: '#FEF08A', color: '#881337', border: '2px solid #FACC15' }}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-black font-mono shadow-sm"
+            >
+              Kho Game: {games.length} bài
             </span>
           </div>
 
