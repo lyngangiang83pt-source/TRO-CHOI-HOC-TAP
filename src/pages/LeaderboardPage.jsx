@@ -24,38 +24,49 @@ export const LeaderboardPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       
-      {/* Header Banner */}
-      <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
-          <Trophy className="w-4 h-4 text-amber-400" />
-          BẢNG XẾP HẠNG TOP HỌC SINH TÍCH CỰC (GAME-07)
+      {/* Header Banner - NỀN XANH LÁ CÂY TƯƠI MÁT */}
+      <div 
+        style={{
+          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+          border: '2px solid #34D399',
+          boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+        }}
+        className="rounded-3xl p-6 sm:p-8 text-center space-y-2 text-white shadow-xl"
+      >
+        <div 
+          style={{ background: 'rgba(255, 255, 255, 0.25)', border: '1px solid rgba(255, 255, 255, 0.4)' }}
+          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-amber-200 text-xs font-black uppercase tracking-wider backdrop-blur-md"
+        >
+          <Trophy className="w-4 h-4 text-amber-300" />
+          <span>BẢNG XẾP HẠNG TOP HỌC SINH TÍCH CỰC GDPT 2018</span>
         </div>
-        <h1 className="text-3xl font-heading font-extrabold text-white">
+        <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-md">
           VINH DANH CAO THỦ HỌC VUI
         </h1>
-        <p className="text-xs text-slate-400 max-w-lg mx-auto">
+        <p className="text-xs sm:text-sm text-emerald-100 font-bold max-w-lg mx-auto leading-relaxed">
           Tích lũy điểm Kinh Nghiệm (EXP) từ các bài chơi để nâng cao thứ hạng và nhận huy hiệu danh giá.
         </p>
-      </div>
 
-      {/* Grade Selector Tabs */}
-      <div className="flex justify-center items-center gap-2 overflow-x-auto pb-2">
-        {GRADE_OPTIONS.map((grade) => (
-          <button
-            key={grade.id}
-            onClick={() => {
-              soundFx.play('click');
-              setSelectedGrade(grade.id);
-            }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-              selectedGrade === grade.id
-                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20'
-                : 'bg-slate-900/80 hover:bg-slate-800 text-slate-400 border border-slate-800'
-            }`}
-          >
-            {grade.label}
-          </button>
-        ))}
+        {/* Grade Selector Tabs Bên Trong Banner */}
+        <div className="flex justify-center items-center gap-2 overflow-x-auto pt-4">
+          {GRADE_OPTIONS.map((grade) => (
+            <button
+              key={grade.id}
+              onClick={() => {
+                soundFx.play('click');
+                setSelectedGrade(grade.id);
+              }}
+              style={
+                selectedGrade === grade.id
+                  ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                  : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
+              }
+              className="px-4 py-2 rounded-xl text-xs font-black transition-all shadow-md hover:scale-105"
+            >
+              {grade.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Podium Top 3 */}

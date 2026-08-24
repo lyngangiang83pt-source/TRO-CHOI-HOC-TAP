@@ -63,30 +63,42 @@ export const GamePlayPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       
-      {/* Top Header Controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-panel p-4 rounded-2xl border border-slate-800">
+      {/* Top Header Controls - NỀN XANH LÁ CÂY TƯƠI MÁT */}
+      <div 
+        style={{
+          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+          border: '2px solid #34D399',
+          boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.35)'
+        }}
+        className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl text-white shadow-xl"
+      >
         <div className="flex items-center gap-3">
           <Link
             to="/"
             onClick={() => soundFx.play('click')}
-            className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+            style={{ background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' }}
+            className="p-2 rounded-xl text-xs font-black shadow-md hover:opacity-90 transition-opacity"
+            title="Quay về Kho Game"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 text-emerald-950 font-black" />
           </Link>
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 text-[10px] font-bold border border-indigo-500/30">
+              <span 
+                style={{ background: 'rgba(255, 255, 255, 0.25)', border: '1px solid rgba(255, 255, 255, 0.4)' }}
+                className="px-2.5 py-0.5 rounded-md text-amber-200 text-[10px] font-black uppercase tracking-wider backdrop-blur-md"
+              >
                 Lớp {currentGame.grade_level} • {currentGame.subject}
               </span>
             </div>
-            <h1 className="text-lg font-heading font-bold text-white mt-0.5">
+            <h1 className="text-lg font-heading font-black text-white mt-0.5 drop-shadow-sm">
               {currentGame.title}
             </h1>
           </div>
         </div>
 
-        {/* Mode Selector Toggle (GAME-08) & Standalone New Tab & Fullscreen Buttons */}
+        {/* Mode Selector Toggle & Buttons */}
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={() => {
@@ -98,10 +110,11 @@ export const GamePlayPage = () => {
                 if (document.exitFullscreen) document.exitFullscreen();
               }
             }}
-            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:brightness-110 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all flex items-center gap-1.5"
+            style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+            className="px-3.5 py-1.5 rounded-xl font-black text-xs shadow-md transition-all flex items-center gap-1.5 hover:scale-105"
             title="Bật / Thoát chế độ Toàn Màn Hình"
           >
-            <Maximize2 className="w-3.5 h-3.5 text-emerald-200" />
+            <Maximize2 className="w-3.5 h-3.5 text-amber-950" />
             <span>🖥️ Full Màn Hình</span>
           </button>
 
@@ -110,41 +123,45 @@ export const GamePlayPage = () => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => soundFx.play('click')}
-            className="px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/30 text-xs font-bold transition-all flex items-center gap-1.5"
+            style={{ background: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)', color: '#FFFFFF' }}
+            className="px-3.5 py-1.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 hover:bg-white/30"
             title="Mở trò chơi trong cửa sổ độc lập mới"
           >
-            <ExternalLink className="w-3.5 h-3.5" />
+            <ExternalLink className="w-3.5 h-3.5 text-amber-300" />
             <span>Mở Tab Độc Lập</span>
           </a>
 
-          <div className="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-bold flex-1 sm:flex-initial">
+          <div 
+            style={{ background: 'rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255, 255, 255, 0.2)' }}
+            className="flex items-center gap-1 p-1 rounded-xl text-xs font-black flex-1 sm:flex-initial"
+          >
             <button
               onClick={() => {
                 soundFx.play('click');
                 setIsPractice(false);
               }}
-              className={`flex-1 sm:flex-initial px-4 py-1.5 rounded-lg transition-all ${
+              style={
                 !isPractice
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
+                  ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                  : { background: 'transparent', color: '#D1FAE5' }
+              }
+              className="px-3 py-1 rounded-lg transition-all font-black"
             >
-              Chơi Tính Điểm
+              🏆 Tính EXP
             </button>
-
             <button
               onClick={() => {
                 soundFx.play('click');
                 setIsPractice(true);
               }}
-              className={`flex-1 sm:flex-initial px-4 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${
+              style={
                 isPractice
-                  ? 'bg-amber-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
+                  ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                  : { background: 'transparent', color: '#D1FAE5' }
+              }
+              className="px-3 py-1 rounded-lg transition-all font-black"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Luyện Tập</span>
+              🎮 Luyện Tập
             </button>
           </div>
         </div>

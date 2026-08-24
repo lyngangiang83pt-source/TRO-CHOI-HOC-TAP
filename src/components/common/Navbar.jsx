@@ -40,7 +40,14 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white border-b border-emerald-500/40 shadow-md backdrop-blur-md transition-colors duration-300">
+    <header 
+      style={{
+        background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+        borderBottom: '2px solid #34D399',
+        boxShadow: '0 4px 20px -2px rgba(5, 150, 105, 0.4)'
+      }}
+      className="sticky top-0 z-40 w-full text-white backdrop-blur-md transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         {/* Brand Logo */}

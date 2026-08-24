@@ -19,60 +19,79 @@ export const ProfilePage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       
-      {/* Profile Header Banner */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 bg-gradient-to-r from-indigo-950/80 via-slate-950 to-purple-950/80 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+      {/* Profile Header Banner - NỀN XANH LÁ CÂY TƯƠI MÁT */}
+      <div 
+        style={{
+          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+          border: '2px solid #34D399',
+          boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+        }}
+        className="rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-center gap-6 text-center md:text-left shadow-xl"
+      >
         <div className="relative">
           <img
             src={profile.avatar_url}
             alt={profile.full_name}
-            className="w-24 h-24 rounded-3xl object-cover ring-4 ring-indigo-500/40 shadow-2xl"
+            className="w-24 h-24 rounded-3xl object-cover ring-4 ring-emerald-300 shadow-2xl"
           />
-          <span className="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[10px] font-black uppercase">
+          <span 
+            style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+            className="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase shadow-md"
+          >
             {profile.rank_tier}
           </span>
         </div>
 
         <div className="space-y-2 flex-1">
           <div className="flex flex-wrap justify-center md:justify-start gap-2">
-            <span className="px-2.5 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-500/30">
+            <span 
+              style={{ background: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+              className="px-2.5 py-0.5 rounded-md text-emerald-100 text-xs font-black backdrop-blur-md"
+            >
               {profile.role === 'student' ? `Học sinh Lớp ${profile.grade_level}` : profile.role === 'teacher' ? 'Giáo viên THCS' : 'Quản trị Admin'}
             </span>
 
             {profile.student_code && (
-              <span className="px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 text-xs font-mono font-bold border border-amber-500/30 flex items-center gap-1">
-                <Key className="w-3 h-3" />
+              <span 
+                style={{ background: '#FEF08A', color: '#064E3B', border: '1px solid #FACC15' }}
+                className="px-2.5 py-0.5 rounded-md text-xs font-mono font-black flex items-center gap-1 shadow-xs"
+              >
+                <Key className="w-3 h-3 text-emerald-950" />
                 Mã HS: {profile.student_code}
               </span>
             )}
           </div>
 
-          <h1 className="text-2xl font-heading font-extrabold text-white">
+          <h1 className="text-2xl font-heading font-black text-white drop-shadow-sm">
             {profile.full_name}
           </h1>
 
-          <p className="text-xs text-slate-400 font-mono">
+          <p className="text-xs text-emerald-100 font-mono font-bold">
             Email: {profile.email}
           </p>
         </div>
 
         {/* EXP & Coins */}
-        <div className="flex items-center gap-4 bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+        <div 
+          style={{ background: '#FEF9C3', border: '2px solid #FACC15' }}
+          className="flex items-center gap-4 p-4 rounded-2xl shadow-md text-amber-950"
+        >
           <div className="text-center px-3">
-            <div className="flex items-center justify-center gap-1 text-orange-400 font-bold text-lg">
-              <Flame className="w-5 h-5 fill-orange-400" />
+            <div className="flex items-center justify-center gap-1 text-orange-600 font-black text-lg">
+              <Flame className="w-5 h-5 fill-orange-500 text-orange-500" />
               <span>{profile.total_exp || 0}</span>
             </div>
-            <span className="text-[11px] text-slate-400 uppercase font-semibold">EXP Tích Lũy</span>
+            <span className="text-[11px] text-amber-900 uppercase font-black">EXP Tích Lũy</span>
           </div>
 
-          <div className="h-8 w-px bg-slate-800" />
+          <div className="h-8 w-px bg-amber-300" />
 
           <div className="text-center px-3">
-            <div className="flex items-center justify-center gap-1 text-amber-400 font-bold text-lg">
-              <Coins className="w-5 h-5" />
+            <div className="flex items-center justify-center gap-1 text-amber-700 font-black text-lg">
+              <Coins className="w-5 h-5 text-amber-600" />
               <span>{profile.coins || 0}</span>
             </div>
-            <span className="text-[11px] text-slate-400 uppercase font-semibold">Điểm Thưởng</span>
+            <span className="text-[11px] text-amber-900 uppercase font-black">Điểm Thưởng</span>
           </div>
         </div>
       </div>
