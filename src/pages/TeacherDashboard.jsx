@@ -40,6 +40,13 @@ export const TeacherDashboard = () => {
     e.preventDefault();
     soundFx.play('click');
 
+    if (!title || !title.trim()) {
+      soundFx.play('wrong');
+      setSuccessMsg(null);
+      setErrorMsg('⚠️ Vui lòng nhập Tên Trò Chơi!');
+      return;
+    }
+
     const finalUrl = gameType === 'html5_zip' ? zipBlobUrl : gameUrl;
 
     if (!finalUrl) {
@@ -205,7 +212,7 @@ export const TeacherDashboard = () => {
             </div>
           )}
 
-          <form onSubmit={handleCreateGame} className="space-y-4">
+          <form noValidate onSubmit={handleCreateGame} className="space-y-4">
             
             {/* Game Type Switcher */}
             <div>
