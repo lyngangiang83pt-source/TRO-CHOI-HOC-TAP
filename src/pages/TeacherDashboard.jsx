@@ -263,35 +263,41 @@ export const TeacherDashboard = () => {
       {/* TAB 2: Class Management */}
       {activeTab === 'classes' && <ClassManager />}
 
-      {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN VÀNG NHẠT SANG TRỌNG & SẮC NÉT */}
+      {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN XANH LÁ CÂY TƯƠI MÁT & SANG TRỌNG */}
       {activeTab === 'create_game' && (
         <div 
           style={{
-            background: '#FEF9C3',
-            border: '2px solid #F59E0B',
-            boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.25)'
+            background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+            border: '2px solid #34D399',
+            boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
           }}
-          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6"
+          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6 text-white shadow-2xl"
         >
-          <div className="border-b border-amber-400/80 pb-4">
-            <h3 className="text-xl font-heading font-black text-amber-950 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-amber-600" />
+          <div className="border-b border-emerald-500/40 pb-4">
+            <h3 className="text-xl font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
+              <Sparkles className="w-5 h-5 text-amber-300" />
               <span>Tạo Trò Chơi Học Tập Mới</span>
             </h3>
-            <p className="text-xs text-amber-900/90 mt-1 font-bold">
+            <p className="text-xs text-emerald-100 mt-1 font-bold">
               Hỗ trợ nhúng game ngoại bằng (Wordwall, Quizizz, Kahoot, Canva) hoặc upload file HTML5 ZIP giải nén tự động.
             </p>
           </div>
 
           {successMsg && (
-            <div className="p-3.5 rounded-2xl bg-emerald-100 text-emerald-950 border-2 border-emerald-400 text-xs font-black flex items-center gap-2 shadow-xs">
-              <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+            <div 
+              style={{ background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }}
+              className="p-3.5 rounded-2xl text-xs font-black flex items-center gap-2 shadow-xs"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-900 shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
 
           {errorMsg && (
-            <div className="p-3.5 rounded-2xl bg-rose-100 text-rose-950 border-2 border-rose-400 text-xs font-black flex items-center gap-2 shadow-xs">
+            <div 
+              style={{ background: '#FFE4E6', color: '#881337', border: '2px solid #FDA4AF' }}
+              className="p-3.5 rounded-2xl text-xs font-black flex items-center gap-2 shadow-xs"
+            >
               <span className="shrink-0">{errorMsg}</span>
             </div>
           )}
@@ -300,55 +306,57 @@ export const TeacherDashboard = () => {
             
             {/* Game Type Switcher */}
             <div>
-              <label className="block text-xs font-black text-amber-950 mb-1.5">Loại Trò Chơi:</label>
+              <label className="block text-xs font-black text-amber-200 mb-1.5">Loại Trò Chơi:</label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setGameType('iframe')}
-                  className={`p-3 rounded-xl border-2 text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs ${
+                  style={
                     gameType === 'iframe'
-                      ? 'bg-amber-400 text-amber-950 border-amber-500 shadow-md ring-2 ring-amber-300'
-                      : 'bg-white/80 text-amber-900 border-amber-300 hover:bg-amber-100'
-                  }`}
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
+                  }
+                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
-                  <LinkIcon className="w-4 h-4" />
+                  <LinkIcon className="w-4 h-4 text-amber-950" />
                   <span>Nhúng iFrame (GAME-01)</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setGameType('html5_zip')}
-                  className={`p-3 rounded-xl border-2 text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs ${
+                  style={
                     gameType === 'html5_zip'
-                      ? 'bg-amber-400 text-amber-950 border-amber-500 shadow-md ring-2 ring-amber-300'
-                      : 'bg-white/80 text-amber-900 border-amber-300 hover:bg-amber-100'
-                  }`}
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
+                  }
+                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
-                  <FileArchive className="w-4 h-4" />
+                  <FileArchive className="w-4 h-4 text-amber-950" />
                   <span>Upload HTML5 ZIP (GAME-02)</span>
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-amber-950 mb-1">Tên Trò Chơi:</label>
+              <label className="block text-xs font-black text-amber-200 mb-1">Tên Trò Chơi:</label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ví dụ: Chinh Phục Kiến Thức KHTN 7"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-200 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300 shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-black text-amber-950 mb-1">Khối Lớp:</label>
+                <label className="block text-xs font-black text-amber-200 mb-1">Khối Lớp:</label>
                 <select
                   value={gradeLevel}
                   onChange={(e) => setGradeLevel(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-200 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-400 shadow-inner"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
                 >
                   <option value="6">Lớp 6</option>
                   <option value="7">Lớp 7</option>
@@ -358,11 +366,11 @@ export const TeacherDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-black text-amber-950 mb-1">Môn Học (GDPT 2018):</label>
+                <label className="block text-xs font-black text-amber-200 mb-1">Môn Học (GDPT 2018):</label>
                 <select
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-200 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-400 shadow-inner"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
                 >
                   <option value="Toán Học">Toán Học</option>
                   <option value="Ngữ Văn">Ngữ Văn</option>
@@ -377,14 +385,14 @@ export const TeacherDashboard = () => {
 
             {gameType === 'iframe' ? (
               <div>
-                <label className="block text-xs font-black text-amber-950 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
+                <label className="block text-xs font-black text-amber-200 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
                 <input
                   type="url"
                   required={gameType === 'iframe'}
                   value={gameUrl}
                   onChange={(e) => setGameUrl(e.target.value)}
                   placeholder="https://wordwall.net/embed/play/..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-200 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300 shadow-inner"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
                 />
               </div>
             ) : (
@@ -400,22 +408,23 @@ export const TeacherDashboard = () => {
             )}
 
             <div>
-              <label className="block text-xs font-black text-amber-950 mb-1">Mô tả trò chơi:</label>
+              <label className="block text-xs font-black text-amber-200 mb-1">Mô tả trò chơi:</label>
               <textarea
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Mô tả nội dung bài học và hướng dẫn học sinh..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-200 text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300 shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm shadow-xl shadow-emerald-600/30 transition-all border border-emerald-400 transform hover:scale-[1.01] active:scale-[0.99]"
+              style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+              className="w-full py-3.5 rounded-xl font-black text-sm shadow-xl hover:opacity-95 transition-all transform hover:scale-[1.01] active:scale-[0.99]"
             >
-              {submitting ? 'Đang Khởi Tạo Trò Chơi...' : 'Đăng Trò Chơi Mới'}
+              {submitting ? 'Đang Khởi Tạo Trò Chơi...' : '🚀 Đăng Trò Chơi Mới'}
             </button>
           </form>
         </div>

@@ -238,46 +238,58 @@ export const AiQuestionGenerator = ({ onGameCreated }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner */}
-      <div className="glass-panel p-5 rounded-3xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Header Banner - NỀN XANH LÁ CÂY TƯƠI MÁT */}
+      <div 
+        style={{
+          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+          border: '2px solid #34D399',
+          boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+        }}
+        className="p-6 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 text-white shadow-2xl"
+      >
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-lg shadow-purple-600/30">
-            <Bot className="w-6 h-6 animate-pulse" />
+          <div className="w-12 h-12 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center shadow-lg border border-amber-300 font-black">
+            <Bot className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-heading font-extrabold text-white flex items-center gap-2">
+            <h3 className="text-lg font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
               TRỢ LÝ AI TẠO CÂU HỎI & KHO CÂU HỎI BÀI HỌC
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-emerald-100 mt-0.5 font-bold">
               Tự động hóa 100% quá trình tạo câu hỏi trắc nghiệm & tự luận theo chương trình GDPT 2018
             </p>
           </div>
         </div>
 
         {/* Sub Tab Switcher */}
-        <div className="flex bg-slate-900/90 p-1 rounded-2xl border border-slate-800 text-xs font-bold shrink-0">
+        <div 
+          style={{ background: 'rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255, 255, 255, 0.2)' }}
+          className="flex p-1 rounded-2xl text-xs font-black shrink-0"
+        >
           <button
             onClick={() => setActiveSubTab('ai_generator')}
-            className={`px-4 py-2 rounded-xl transition-all flex items-center gap-2 ${
+            style={
               activeSubTab === 'ai_generator'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+                ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                : { background: 'transparent', color: '#FFFFFF' }
+            }
+            className="px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-xs font-black"
           >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>🤖 AI Tạo Câu Hỏi Mới</span>
+            <Sparkles className="w-4 h-4 text-amber-600" />
+            <span>🤖 AI Tạo Câu Hỏi</span>
           </button>
 
           <button
             onClick={() => setActiveSubTab('preset_bank')}
-            className={`px-4 py-2 rounded-xl transition-all flex items-center gap-2 ${
+            style={
               activeSubTab === 'preset_bank'
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
+                ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                : { background: 'transparent', color: '#FFFFFF' }
+            }
+            className="px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-xs font-black"
           >
-            <BookOpen className="w-4 h-4 text-emerald-300" />
-            <span>📚 Kho Câu Hỏi Mẫu GDPT</span>
+            <BookOpen className="w-4 h-4 text-emerald-700" />
+            <span>📚 Kho Câu Hỏi Mẫu</span>
           </button>
         </div>
       </div>
@@ -289,10 +301,17 @@ export const AiQuestionGenerator = ({ onGameCreated }) => {
       {activeSubTab === 'ai_generator' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* Generator Form Panel */}
-          <div className="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
-            <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-purple-300 text-sm font-heading font-bold">
-              <Wand2 className="w-4 h-4 text-amber-400" />
+          {/* Generator Form Panel - NỀN XANH LÁ CÂY */}
+          <div 
+            style={{
+              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+              border: '2px solid #34D399',
+              boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+            }}
+            className="p-6 rounded-3xl space-y-4 text-white shadow-xl"
+          >
+            <div className="flex items-center gap-2 pb-3 border-b border-emerald-500/40 text-amber-200 text-sm font-heading font-black">
+              <Wand2 className="w-4 h-4 text-amber-300" />
               <span>Thiết Lập Yêu Cầu Tạo Câu Hỏi AI</span>
             </div>
 
