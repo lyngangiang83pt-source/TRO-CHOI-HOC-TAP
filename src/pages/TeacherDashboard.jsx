@@ -119,39 +119,54 @@ export const TeacherDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       
-      {/* Top Banner Header - NỀN XANH LÁ CÂY TƯƠI MÁT & SANG TRỌNG */}
-      <div className="rounded-3xl p-6 sm:p-8 border-2 border-emerald-400 bg-gradient-to-r from-[#065F46] via-[#059669] to-[#047857] text-white shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+      {/* Top Banner Header - NỀN XANH LÁ CÂY CHUẨN 100% */}
+      <div 
+        style={{
+          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+          border: '2px solid #34D399',
+          boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+        }}
+        className="rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden"
+      >
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 border border-white/30 text-emerald-100 text-xs font-black uppercase tracking-wider backdrop-blur-md">
+          <div 
+            style={{ background: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-white text-xs font-black uppercase tracking-wider backdrop-blur-md"
+          >
             <GraduationCap className="w-4 h-4 text-amber-300" />
             <span>Hệ Thống Quản Lý Dành Cho Giáo Viên</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-sm">
+          <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-md">
             GÓC GIÁO VIÊN THCS
           </h1>
-          <p className="text-xs sm:text-sm text-emerald-100 font-medium max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-emerald-100 font-bold max-w-xl leading-relaxed">
             Tạo bài tập game, nhúng iFrame (GAME-01), upload HTML5 ZIP (GAME-02), quản lý lớp học và theo dõi biểu đồ năng lực học sinh.
           </p>
         </div>
 
         <button
           onClick={() => setIsAssignModalOpen(true)}
-          className="px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-black text-xs flex items-center gap-2 shadow-xl border border-amber-300 transition-all transform hover:scale-105"
+          style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+          className="px-5 py-3 rounded-2xl font-black text-xs flex items-center gap-2 shadow-xl hover:opacity-90 transition-all transform hover:scale-105"
         >
-          <Send className="w-4 h-4" />
+          <Send className="w-4 h-4 text-amber-950" />
           <span>Giao Bài Tập Cho Lớp</span>
         </button>
       </div>
 
-      {/* Navigation Tabs - NỀN VÀNG NHẠT XEN KẼ BẮT MẮT & DỄ NHÌN */}
-      <div className="bg-[#FEF9C3] p-2 sm:p-2.5 rounded-2xl border-2 border-amber-300 shadow-md flex items-center gap-2 overflow-x-auto scrollbar-none">
+      {/* Navigation Tabs - NỀN XANH LÁ CÂY ĐỒNG BỘ 100% */}
+      <div 
+        style={{
+          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+          border: '2px solid #34D399',
+          boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.3)'
+        }}
+        className="p-2 sm:p-2.5 rounded-2xl flex items-center gap-2 overflow-x-auto scrollbar-none"
+      >
         <button
           onClick={() => { setActiveTab('analytics'); soundFx.play('click'); }}
-          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
-            activeTab === 'analytics'
-              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
-              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
-          }`}
+          style={activeTab === 'analytics' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
         >
           <BarChart3 className="w-4 h-4" />
           <span>Thống Kê Năng Lực & Biểu Đồ</span>
@@ -159,11 +174,8 @@ export const TeacherDashboard = () => {
 
         <button
           onClick={() => { setActiveTab('classes'); soundFx.play('click'); }}
-          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
-            activeTab === 'classes'
-              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
-              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
-          }`}
+          style={activeTab === 'classes' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
         >
           <Users className="w-4 h-4" />
           <span>Quản Lý Lớp Học & Mã HS</span>
@@ -171,37 +183,28 @@ export const TeacherDashboard = () => {
 
         <button
           onClick={() => { setActiveTab('create_game'); soundFx.play('click'); }}
-          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
-            activeTab === 'create_game'
-              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
-              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
-          }`}
+          style={activeTab === 'create_game' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
         >
-          <Plus className="w-4 h-4 text-emerald-600" />
+          <Plus className="w-4 h-4" />
           <span>Tạo / Upload Trò Chơi Mới</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('manage_games'); soundFx.play('click'); }}
-          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
-            activeTab === 'manage_games'
-              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
-              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
-          }`}
+          style={activeTab === 'manage_games' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
         >
-          <Trash2 className="w-4 h-4 text-rose-600" />
+          <Trash2 className="w-4 h-4 text-rose-300" />
           <span>Quản Lý & Xóa Bài Chơi ({games.length})</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('ai_generator'); soundFx.play('click'); }}
-          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
-            activeTab === 'ai_generator'
-              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
-              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
-          }`}
+          style={activeTab === 'ai_generator' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
         >
-          <Bot className="w-4 h-4 text-purple-600" />
+          <Bot className="w-4 h-4 text-amber-300" />
           <span>🤖 AI Tạo Câu Hỏi & Kho Câu Hỏi</span>
         </button>
       </div>
@@ -241,8 +244,15 @@ export const TeacherDashboard = () => {
 
       {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN VÀNG NHẠT SANG TRỌNG & SẮC NÉT */}
       {activeTab === 'create_game' && (
-        <div className="bg-[#FEF9C3] rounded-3xl p-6 sm:p-8 border-2 border-amber-300 shadow-2xl max-w-3xl mx-auto space-y-6">
-          <div className="border-b border-amber-300/80 pb-4">
+        <div 
+          style={{
+            background: '#FEF9C3',
+            border: '2px solid #F59E0B',
+            boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.25)'
+          }}
+          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6"
+        >
+          <div className="border-b border-amber-400/80 pb-4">
             <h3 className="text-xl font-heading font-black text-amber-950 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-600" />
               <span>Tạo Trò Chơi Học Tập Mới</span>
