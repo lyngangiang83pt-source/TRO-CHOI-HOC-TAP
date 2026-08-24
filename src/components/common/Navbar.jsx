@@ -164,15 +164,6 @@ export const Navbar = () => {
             {muted ? <VolumeX className="w-4 h-4 text-rose-300" /> : <Volume2 className="w-4 h-4 text-emerald-300" />}
           </button>
 
-          {/* Dark / Light Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg bg-white/15 hover:bg-white/25 text-white transition-colors focus:outline-none border border-white/20"
-            title="Đổi giao diện Sáng / Tối"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-emerald-100" />}
-          </button>
-
           {/* Quick Demo Role Switcher Dropdown - Nền Vàng Nhạt Sang Trọng & Sắc Nét */}
           <div className="relative group">
             <button className="px-2.5 py-1.5 rounded-xl bg-amber-400/90 hover:bg-amber-400 border border-amber-200 text-xs font-black text-amber-950 flex items-center gap-1.5 shadow-sm transition-all">
