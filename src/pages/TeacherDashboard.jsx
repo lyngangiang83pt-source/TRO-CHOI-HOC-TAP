@@ -117,7 +117,16 @@ export const TeacherDashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+    <div 
+      style={{
+        backgroundColor: '#064E3B',
+        backgroundImage: 'radial-gradient(circle at 50% 0%, #065F46 0%, #064E3B 65%, #022C22 100%)',
+        minHeight: '100vh',
+        color: '#FFFFFF'
+      }}
+      className="w-full py-6 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-7xl mx-auto space-y-8">
       
       {/* Top Banner Header - NỀN XANH LÁ CÂY CHUẨN 100% */}
       <div 
@@ -483,6 +492,7 @@ export const TeacherDashboard = () => {
         games={games}
       />
 
+      </div>
     </div>
   );
 };
