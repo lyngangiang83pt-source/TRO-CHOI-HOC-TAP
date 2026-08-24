@@ -45,11 +45,13 @@ export const StudentDashboard = () => {
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { games, loading, deleteGame } = useGames(selectedGrade, selectedSubject);
+  const { games = [], loading, deleteGame } = useGames(selectedGrade, selectedSubject);
 
-  const filteredGames = games.filter(game =>
-    game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    game.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const safeGames = Array.isArray(games) ? games.filter(Boolean) : [];
+
+  const filteredGames = safeGames.filter(game =>
+    ((game?.title || '')).toLowerCase().includes((searchTerm || '').toLowerCase()) ||
+    ((game?.description || '')).toLowerCase().includes((searchTerm || '').toLowerCase())
   );
 
   return (

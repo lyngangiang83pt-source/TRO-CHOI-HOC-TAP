@@ -126,12 +126,14 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
   const fetchGames = useCallback(() => {
     setError(null);
 
-    // Lấy danh sách game do giáo viên tạo lưu trong localStorage
     let localCustomGames = [];
     try {
       const saved = localStorage.getItem('custom_created_games');
       if (saved) {
-        localCustomGames = JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          localCustomGames = parsed.filter(g => g && typeof g === 'object' && g.title);
+        }
       }
     } catch (e) {
       console.warn('Lỗi đọc local custom games:', e);
@@ -153,7 +155,7 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
       return sStr.includes(tStr) || tStr.includes(sStr);
     };
 
-    const allRaw = [...localCustomGames, ...GLOBAL_IN_MEMORY_GAMES];
+    const allRaw = [...localCustomGames, ...GLOBAL_IN_MEMORY_GAMES].filter(g => g && g.title);
     const seen = new Set();
     const uniqueGames = [];
     for (const g of allRaw) {
