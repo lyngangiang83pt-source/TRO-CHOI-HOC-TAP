@@ -105,14 +105,24 @@ export const Navbar = () => {
             <Link
               to="/teacher"
               onClick={() => soundFx.play('click')}
-              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-1.5 ${
-                location.pathname === '/teacher' 
-                  ? 'bg-white/25 text-white border border-white/40 shadow-sm' 
-                  : 'text-emerald-100 hover:text-white hover:bg-white/15'
-              }`}
+              style={
+                location.pathname === '/teacher'
+                  ? {
+                      background: '#047857',
+                      border: '2px solid #34D399',
+                      color: '#FFFFFF',
+                      boxShadow: '0 4px 14px rgba(4, 120, 87, 0.5)'
+                    }
+                  : {
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      color: '#FFFFFF'
+                    }
+              }
+              className="px-4 py-2 rounded-xl text-sm font-black transition-all flex items-center gap-2 shadow-sm"
             >
               <GraduationCap className="w-4 h-4 text-amber-300" />
-              Góc Giáo Viên
+              <span>Góc Giáo Viên</span>
             </Link>
           )}
 
@@ -120,14 +130,24 @@ export const Navbar = () => {
             <Link
               to="/admin"
               onClick={() => soundFx.play('click')}
-              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-1.5 ${
-                location.pathname === '/admin' 
-                  ? 'bg-white/25 text-white border border-white/40 shadow-sm' 
-                  : 'text-emerald-100 hover:text-white hover:bg-white/15'
-              }`}
+              style={
+                location.pathname === '/admin'
+                  ? {
+                      background: '#047857',
+                      border: '2px solid #34D399',
+                      color: '#FFFFFF',
+                      boxShadow: '0 4px 14px rgba(4, 120, 87, 0.5)'
+                    }
+                  : {
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      color: '#FFFFFF'
+                    }
+              }
+              className="px-4 py-2 rounded-xl text-sm font-black transition-all flex items-center gap-2 shadow-sm"
             >
               <ShieldCheck className="w-4 h-4 text-amber-300" />
-              Quản Trị Admin
+              <span>Quản Trị Admin</span>
             </Link>
           )}
         </nav>
@@ -164,54 +184,74 @@ export const Navbar = () => {
             {muted ? <VolumeX className="w-4 h-4 text-rose-300" /> : <Volume2 className="w-4 h-4 text-emerald-300" />}
           </button>
 
-          {/* Quick Demo Role Switcher Dropdown - Nền Vàng Nhạt Sang Trọng & Sắc Nét */}
+          {/* Quick Demo Role Switcher Dropdown - Nền Xanh Lá Cây Tươi Mát Đồng Bộ */}
           <div className="relative group">
-            <button className="px-2.5 py-1.5 rounded-xl bg-amber-400/90 hover:bg-amber-400 border border-amber-200 text-xs font-black text-amber-950 flex items-center gap-1.5 shadow-sm transition-all">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+            <button 
+              style={{
+                background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)',
+                border: '2px solid #34D399',
+                color: '#FFFFFF'
+              }}
+              className="px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-2 shadow-md transition-all"
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
               <span className="capitalize">{profile?.role || 'student'}</span>
             </button>
 
-            {/* Khung Dropdown Nền Vàng Nhạt (#FEF9C3) Chữ Đậm Rõ Nét */}
-            <div className="absolute right-0 top-full mt-2 w-48 bg-[#FEF9C3] rounded-2xl shadow-2xl py-1.5 hidden group-hover:block border-2 border-amber-300 text-xs z-50 animate-in fade-in slide-in-from-top-1 duration-200">
-              <div className="px-3.5 py-2 text-[10px] uppercase font-black text-amber-900 border-b border-amber-200 bg-amber-100/70 rounded-t-xl tracking-wider">
-                🎯 Thử Nghiệm Vai Trò:
+            {/* Khung Dropdown Nền Xanh Lá Cây (#065F46 - #059669) Chữ Trắng & Vàng Nét Đậm */}
+            <div 
+              style={{
+                background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)',
+                border: '2px solid #34D399',
+                boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.4)'
+              }}
+              className="absolute right-0 top-full mt-2 w-52 rounded-2xl shadow-2xl py-1.5 hidden group-hover:block text-xs z-50 animate-in fade-in slide-in-from-top-1 duration-200"
+            >
+              <div 
+                style={{ background: 'rgba(0, 0, 0, 0.25)', color: '#FEF08A' }}
+                className="px-3.5 py-2 text-[10px] uppercase font-black rounded-t-xl tracking-wider border-b border-emerald-500/40"
+              >
+                🎯 Chuyển Đổi Vai Trò:
               </div>
 
-              <div className="p-1 space-y-1">
+              <div className="p-1.5 space-y-1">
                 <button 
                   onClick={() => switchDemoRole('student')}
-                  className={`w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black ${
+                  style={
                     profile?.role === 'student'
-                      ? 'bg-amber-300 text-amber-950 shadow-xs border border-amber-400'
-                      : 'text-amber-950 hover:bg-amber-200/80'
-                  }`}
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.2)' }
+                  }
+                  className="w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black shadow-xs"
                 >
                   <span>👨‍🎓 Học sinh (Lớp 7)</span>
-                  {profile?.role === 'student' && <span className="text-emerald-700 font-black text-sm">✓</span>}
+                  {profile?.role === 'student' && <span className="text-emerald-900 font-black text-sm">✓</span>}
                 </button>
 
                 <button 
                   onClick={() => switchDemoRole('teacher')}
-                  className={`w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black ${
+                  style={
                     profile?.role === 'teacher'
-                      ? 'bg-amber-300 text-amber-950 shadow-xs border border-amber-400'
-                      : 'text-amber-950 hover:bg-amber-200/80'
-                  }`}
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.2)' }
+                  }
+                  className="w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black shadow-xs"
                 >
                   <span>👩‍🏫 Giáo viên THCS</span>
-                  {profile?.role === 'teacher' && <span className="text-emerald-700 font-black text-sm">✓</span>}
+                  {profile?.role === 'teacher' && <span className="text-emerald-900 font-black text-sm">✓</span>}
                 </button>
 
                 <button 
                   onClick={() => switchDemoRole('admin')}
-                  className={`w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black ${
+                  style={
                     profile?.role === 'admin'
-                      ? 'bg-amber-300 text-amber-950 shadow-xs border border-amber-400'
-                      : 'text-amber-950 hover:bg-amber-200/80'
-                  }`}
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.2)' }
+                  }
+                  className="w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black shadow-xs"
                 >
                   <span>👑 Quản trị Admin</span>
-                  {profile?.role === 'admin' && <span className="text-emerald-700 font-black text-sm">✓</span>}
+                  {profile?.role === 'admin' && <span className="text-emerald-900 font-black text-sm">✓</span>}
                 </button>
               </div>
             </div>
