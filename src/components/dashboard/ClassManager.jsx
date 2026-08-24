@@ -41,15 +41,15 @@ export const ClassManager = () => {
   return (
     <div 
       style={{
-        background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-        border: '2px solid #34D399',
-        boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+        background: '#FFFBEB',
+        border: '2px solid #FDE047',
+        boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
       }}
-      className="w-full rounded-3xl p-6 sm:p-8 space-y-6 text-white shadow-2xl"
+      className="w-full rounded-3xl p-6 sm:p-8 space-y-6 text-amber-950 shadow-xl"
     >
-      <div className="flex items-center justify-between border-b border-emerald-500/40 pb-4">
-        <div className="flex items-center gap-2 font-heading font-black text-xl text-white drop-shadow-sm">
-          <GraduationCap className="w-6 h-6 text-amber-300" />
+      <div className="flex items-center justify-between border-b border-amber-300/80 pb-4">
+        <div className="flex items-center gap-2 font-heading font-black text-xl text-amber-950 drop-shadow-xs">
+          <GraduationCap className="w-6 h-6 text-emerald-700" />
           <span>Quản Lý Lớp Học THCS GDPT 2018</span>
         </div>
       </div>
@@ -57,8 +57,8 @@ export const ClassManager = () => {
       {/* Form Tạo Lớp Mới */}
       <form 
         onSubmit={handleCreateClass} 
-        style={{ background: 'rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255, 255, 255, 0.2)' }}
-        className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-2xl"
+        style={{ background: '#FEF9C3', border: '2px solid #FACC15' }}
+        className="grid grid-cols-1 sm:grid-cols-4 gap-3 p-4 rounded-2xl shadow-sm"
       >
         <div className="sm:col-span-2">
           <input
@@ -67,7 +67,7 @@ export const ClassManager = () => {
             value={newClassName}
             onChange={(e) => setNewClassName(e.target.value)}
             placeholder="Tên lớp (Ví dụ: Lớp 7A1 - KHTN)"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none shadow-inner"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
           />
         </div>
 
@@ -75,7 +75,7 @@ export const ClassManager = () => {
           <select
             value={newGrade}
             onChange={(e) => setNewGrade(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
+            className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
           >
             <option value="6">Khối Lớp 6</option>
             <option value="7">Khối Lớp 7</option>
@@ -86,10 +86,15 @@ export const ClassManager = () => {
 
         <button
           type="submit"
-          style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+          style={{
+            background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)',
+            color: '#FFFFFF',
+            border: '2px solid #34D399',
+            boxShadow: '0 10px 15px -3px rgba(5, 150, 105, 0.4)'
+          }}
           className="py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 shadow-md hover:scale-105 transition-all"
         >
-          <Plus className="w-4 h-4 text-amber-950" />
+          <Plus className="w-4 h-4 text-amber-300" />
           <span>Tạo Lớp Mới</span>
         </button>
       </form>

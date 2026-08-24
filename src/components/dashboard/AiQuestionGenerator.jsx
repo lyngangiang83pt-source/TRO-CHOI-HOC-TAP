@@ -238,24 +238,24 @@ export const AiQuestionGenerator = ({ onGameCreated }) => {
   return (
     <div className="space-y-6">
       
-      {/* Header Banner - NỀN XANH LÁ CÂY TƯƠI MÁT */}
+      {/* Header Banner - NỀN VÀNG NHẠT */}
       <div 
         style={{
-          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-          border: '2px solid #34D399',
-          boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+          background: '#FFFBEB',
+          border: '2px solid #FDE047',
+          boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
         }}
-        className="p-6 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 text-white shadow-2xl"
+        className="p-6 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 text-amber-950 shadow-xl"
       >
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center shadow-lg border border-amber-300 font-black">
+          <div className="w-12 h-12 rounded-2xl bg-amber-400 text-amber-950 flex items-center justify-center shadow-md border border-amber-500 font-black">
             <Bot className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
+            <h3 className="text-lg font-heading font-black text-amber-950 flex items-center gap-2 drop-shadow-xs">
               TRỢ LÝ AI TẠO CÂU HỎI & KHO CÂU HỎI BÀI HỌC
             </h3>
-            <p className="text-xs text-emerald-100 mt-0.5 font-bold">
+            <p className="text-xs text-amber-900 mt-0.5 font-bold">
               Tự động hóa 100% quá trình tạo câu hỏi trắc nghiệm & tự luận theo chương trình GDPT 2018
             </p>
           </div>
@@ -263,19 +263,19 @@ export const AiQuestionGenerator = ({ onGameCreated }) => {
 
         {/* Sub Tab Switcher */}
         <div 
-          style={{ background: 'rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255, 255, 255, 0.2)' }}
+          style={{ background: '#FEF9C3', border: '1.5px solid #FDE047' }}
           className="flex p-1 rounded-2xl text-xs font-black shrink-0"
         >
           <button
             onClick={() => setActiveSubTab('ai_generator')}
             style={
               activeSubTab === 'ai_generator'
-                ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
-                : { background: 'transparent', color: '#FFFFFF' }
+                ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+                : { background: 'transparent', color: '#78350F' }
             }
             className="px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-xs font-black"
           >
-            <Sparkles className="w-4 h-4 text-amber-600" />
+            <Sparkles className="w-4 h-4 text-amber-300" />
             <span>🤖 AI Tạo Câu Hỏi</span>
           </button>
 
@@ -283,12 +283,12 @@ export const AiQuestionGenerator = ({ onGameCreated }) => {
             onClick={() => setActiveSubTab('preset_bank')}
             style={
               activeSubTab === 'preset_bank'
-                ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
-                : { background: 'transparent', color: '#FFFFFF' }
+                ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+                : { background: 'transparent', color: '#78350F' }
             }
             className="px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-xs font-black"
           >
-            <BookOpen className="w-4 h-4 text-emerald-700" />
+            <BookOpen className="w-4 h-4 text-emerald-300" />
             <span>📚 Kho Câu Hỏi Mẫu</span>
           </button>
         </div>
@@ -301,27 +301,27 @@ export const AiQuestionGenerator = ({ onGameCreated }) => {
       {activeSubTab === 'ai_generator' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* Generator Form Panel - NỀN XANH LÁ CÂY */}
+          {/* Generator Form Panel - NỀN VÀNG NHẠT */}
           <div 
             style={{
-              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-              border: '2px solid #34D399',
-              boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+              background: '#FFFBEB',
+              border: '2px solid #FDE047',
+              boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
             }}
-            className="p-6 rounded-3xl space-y-4 text-white shadow-xl"
+            className="p-6 rounded-3xl space-y-4 text-amber-950 shadow-xl"
           >
-            <div className="flex items-center gap-2 pb-3 border-b border-emerald-500/40 text-amber-200 text-sm font-heading font-black">
-              <Wand2 className="w-4 h-4 text-amber-300" />
+            <div className="flex items-center gap-2 pb-3 border-b border-amber-300/80 text-amber-950 text-sm font-heading font-black">
+              <Wand2 className="w-4 h-4 text-amber-600" />
               <span>Thiết Lập Yêu Cầu Tạo Câu Hỏi AI</span>
             </div>
 
             <form onSubmit={handleGenerateAiQuiz} className="space-y-3.5">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">Môn Học (GDPT 2018):</label>
+                <label className="block text-xs font-black text-amber-950 mb-1">Môn Học (GDPT 2018):</label>
                 <select
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
                 >
                   <option value="Khoa Học Tự Nhiên">Khoa Học Tự Nhiên</option>
                   <option value="Toán Học">Toán Học</option>

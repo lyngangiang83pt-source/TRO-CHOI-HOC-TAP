@@ -119,63 +119,72 @@ export const TeacherDashboard = () => {
   return (
     <div 
       style={{
-        backgroundColor: '#064E3B',
-        backgroundImage: 'radial-gradient(circle at 50% 0%, #065F46 0%, #064E3B 65%, #022C22 100%)',
+        backgroundColor: '#FEF9C3',
+        backgroundImage: 'radial-gradient(circle at 50% 0%, #FFFBEB 0%, #FEF9C3 60%, #FEF08A 100%)',
         minHeight: '100vh',
-        color: '#FFFFFF'
+        color: '#1C1917'
       }}
       className="w-full py-6 px-4 sm:px-6 lg:px-8"
     >
       <div className="max-w-7xl mx-auto space-y-8">
       
-      {/* Top Banner Header - NỀN XANH LÁ CÂY CHUẨN 100% */}
+      {/* Top Banner Header - NỀN VÀNG NHẠT SANG TRỌNG */}
       <div 
         style={{
-          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-          border: '2px solid #34D399',
-          boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+          background: 'linear-gradient(135deg, #FEF08A 0%, #FDE047 50%, #FBBF24 100%)',
+          border: '2px solid #F59E0B',
+          boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.25)'
         }}
-        className="rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden"
+        className="rounded-3xl p-6 sm:p-8 text-amber-950 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden shadow-xl"
       >
         <div className="space-y-2">
           <div 
-            style={{ background: 'rgba(255, 255, 255, 0.2)', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-white text-xs font-black uppercase tracking-wider backdrop-blur-md"
+            style={{ background: 'rgba(255, 255, 255, 0.9)', border: '1.5px solid #F59E0B', color: '#78350F' }}
+            className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider shadow-xs"
           >
-            <GraduationCap className="w-4 h-4 text-amber-300" />
+            <GraduationCap className="w-4 h-4 text-emerald-800" />
             <span>Hệ Thống Quản Lý Dành Cho Giáo Viên</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-md">
+          <h1 className="text-2xl sm:text-3xl font-heading font-black text-amber-950 drop-shadow-xs">
             GÓC GIÁO VIÊN THCS
           </h1>
-          <p className="text-xs sm:text-sm text-emerald-100 font-bold max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-amber-900 font-bold max-w-xl leading-relaxed">
             Tạo bài tập game, nhúng iFrame (GAME-01), upload HTML5 ZIP (GAME-02), quản lý lớp học và theo dõi biểu đồ năng lực học sinh.
           </p>
         </div>
 
         <button
           onClick={() => setIsAssignModalOpen(true)}
-          style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+          style={{
+            background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)',
+            color: '#FFFFFF',
+            border: '2px solid #34D399',
+            boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.4)'
+          }}
           className="px-5 py-3 rounded-2xl font-black text-xs flex items-center gap-2 shadow-xl hover:opacity-90 transition-all transform hover:scale-105"
         >
-          <Send className="w-4 h-4 text-amber-950" />
+          <Send className="w-4 h-4 text-amber-300" />
           <span>Giao Bài Tập Cho Lớp</span>
         </button>
       </div>
 
-      {/* Navigation Tabs - NỀN XANH LÁ CÂY ĐỒNG BỘ 100% */}
+      {/* Navigation Tabs - NỀN VÀNG NHẠT ĐỒNG BỘ */}
       <div 
         style={{
-          background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-          border: '2px solid #34D399',
-          boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.3)'
+          background: '#FFFBEB',
+          border: '2px solid #FDE047',
+          boxShadow: '0 10px 20px -5px rgba(245, 158, 11, 0.15)'
         }}
         className="p-2 sm:p-2.5 rounded-2xl flex items-center gap-2 overflow-x-auto scrollbar-none"
       >
         <button
           onClick={() => { setActiveTab('analytics'); soundFx.play('click'); }}
-          style={activeTab === 'analytics' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
+          style={
+            activeTab === 'analytics'
+              ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+              : { background: '#FEF9C3', color: '#78350F', border: '1px solid #FDE047' }
+          }
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
         >
           <BarChart3 className="w-4 h-4" />
           <span>Thống Kê Năng Lực & Biểu Đồ</span>
@@ -183,8 +192,12 @@ export const TeacherDashboard = () => {
 
         <button
           onClick={() => { setActiveTab('classes'); soundFx.play('click'); }}
-          style={activeTab === 'classes' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
+          style={
+            activeTab === 'classes'
+              ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+              : { background: '#FEF9C3', color: '#78350F', border: '1px solid #FDE047' }
+          }
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
         >
           <Users className="w-4 h-4" />
           <span>Quản Lý Lớp Học & Mã HS</span>
@@ -192,8 +205,12 @@ export const TeacherDashboard = () => {
 
         <button
           onClick={() => { setActiveTab('create_game'); soundFx.play('click'); }}
-          style={activeTab === 'create_game' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
+          style={
+            activeTab === 'create_game'
+              ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+              : { background: '#FEF9C3', color: '#78350F', border: '1px solid #FDE047' }
+          }
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Tạo / Upload Trò Chơi Mới</span>
@@ -201,19 +218,27 @@ export const TeacherDashboard = () => {
 
         <button
           onClick={() => { setActiveTab('manage_games'); soundFx.play('click'); }}
-          style={activeTab === 'manage_games' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
+          style={
+            activeTab === 'manage_games'
+              ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+              : { background: '#FEF9C3', color: '#78350F', border: '1px solid #FDE047' }
+          }
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
         >
-          <Trash2 className="w-4 h-4 text-rose-300" />
+          <Trash2 className="w-4 h-4 text-rose-600" />
           <span>Quản Lý & Xóa Bài Chơi ({games.length})</span>
         </button>
 
         <button
           onClick={() => { setActiveTab('ai_generator'); soundFx.play('click'); }}
-          style={activeTab === 'ai_generator' ? { background: '#FEF08A', color: '#1E3A8A', border: '2px solid #FACC15' } : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }}
-          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-md"
+          style={
+            activeTab === 'ai_generator'
+              ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+              : { background: '#FEF9C3', color: '#78350F', border: '1px solid #FDE047' }
+          }
+          className="px-4 py-2.5 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
         >
-          <Bot className="w-4 h-4 text-amber-300" />
+          <Bot className="w-4 h-4 text-emerald-700" />
           <span>🤖 AI Tạo Câu Hỏi & Kho Câu Hỏi</span>
         </button>
       </div>
@@ -225,20 +250,20 @@ export const TeacherDashboard = () => {
             <RadarSkillChart title="Biểu Đồ Radar Đánh Giá Năng Lực Trung Bình Lớp Học" />
           </div>
 
-          {/* KHUNG 3: CHỈ SỐ TƯƠNG TÁC HỌC SINH - NỀN XANH LÁ CÂY & THẺ VÀNG NHẠT XEN KẼ */}
+          {/* KHUNG 3: CHỈ SỐ TƯƠNG TÁC HỌC SINH - NỀN VÀNG NHẠT */}
           <div 
             style={{
-              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-              border: '2px solid #34D399',
-              boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+              background: '#FFFBEB',
+              border: '2px solid #FDE047',
+              boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
             }}
-            className="rounded-3xl p-6 space-y-4 shadow-xl text-white"
+            className="rounded-3xl p-6 space-y-4 shadow-xl text-amber-950"
           >
             <h3 
-              style={{ color: '#FFFFFF', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+              style={{ color: '#78350F' }}
               className="text-base font-heading font-black mb-2 flex items-center gap-2"
             >
-              <Sparkles className="w-5 h-5 text-amber-300" />
+              <Sparkles className="w-5 h-5 text-amber-600" />
               <span>Chỉ Số Tương Tác Học Sinh</span>
             </h3>
 
@@ -272,32 +297,32 @@ export const TeacherDashboard = () => {
       {/* TAB 2: Class Management */}
       {activeTab === 'classes' && <ClassManager />}
 
-      {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN XANH LÁ CÂY TƯƠI MÁT & SANG TRỌNG */}
+      {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN VÀNG NHẠT SANG TRỌNG */}
       {activeTab === 'create_game' && (
         <div 
           style={{
-            background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-            border: '2px solid #34D399',
-            boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
+            background: '#FFFBEB',
+            border: '2px solid #FDE047',
+            boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
           }}
-          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6 text-white shadow-2xl"
+          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6 text-amber-950 shadow-xl"
         >
-          <div className="border-b border-emerald-500/40 pb-4">
-            <h3 className="text-xl font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
-              <Sparkles className="w-5 h-5 text-amber-300" />
+          <div className="border-b border-amber-300/80 pb-4">
+            <h3 className="text-xl font-heading font-black text-amber-950 flex items-center gap-2 drop-shadow-xs">
+              <Sparkles className="w-5 h-5 text-amber-600" />
               <span>Tạo Trò Chơi Học Tập Mới</span>
             </h3>
-            <p className="text-xs text-emerald-100 mt-1 font-bold">
+            <p className="text-xs text-amber-900 mt-1 font-bold">
               Hỗ trợ nhúng game ngoại bằng (Wordwall, Quizizz, Kahoot, Canva) hoặc upload file HTML5 ZIP giải nén tự động.
             </p>
           </div>
 
           {successMsg && (
             <div 
-              style={{ background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }}
+              style={{ background: '#DCFCE7', color: '#064E3B', border: '2px solid #86EFAC' }}
               className="p-3.5 rounded-2xl text-xs font-black flex items-center gap-2 shadow-xs"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-900 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
@@ -315,19 +340,19 @@ export const TeacherDashboard = () => {
             
             {/* Game Type Switcher */}
             <div>
-              <label className="block text-xs font-black text-amber-200 mb-1.5">Loại Trò Chơi:</label>
+              <label className="block text-xs font-black text-amber-950 mb-1.5">Loại Trò Chơi:</label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setGameType('iframe')}
                   style={
                     gameType === 'iframe'
-                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
-                      : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
+                      ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+                      : { background: '#FEF9C3', color: '#78350F', border: '1.5px solid #FDE047' }
                   }
-                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs"
                 >
-                  <LinkIcon className="w-4 h-4 text-amber-950" />
+                  <LinkIcon className="w-4 h-4" />
                   <span>Nhúng iFrame (GAME-01)</span>
                 </button>
 
@@ -336,36 +361,36 @@ export const TeacherDashboard = () => {
                   onClick={() => setGameType('html5_zip')}
                   style={
                     gameType === 'html5_zip'
-                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
-                      : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
+                      ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
+                      : { background: '#FEF9C3', color: '#78350F', border: '1.5px solid #FDE047' }
                   }
-                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs"
                 >
-                  <FileArchive className="w-4 h-4 text-amber-950" />
+                  <FileArchive className="w-4 h-4" />
                   <span>Upload HTML5 ZIP (GAME-02)</span>
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-amber-200 mb-1">Tên Trò Chơi:</label>
+              <label className="block text-xs font-black text-amber-950 mb-1">Tên Trò Chơi:</label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ví dụ: Chinh Phục Kiến Thức KHTN 7"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-black text-amber-200 mb-1">Khối Lớp:</label>
+                <label className="block text-xs font-black text-amber-950 mb-1">Khối Lớp:</label>
                 <select
                   value={gradeLevel}
                   onChange={(e) => setGradeLevel(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
                 >
                   <option value="6">Lớp 6</option>
                   <option value="7">Lớp 7</option>
@@ -375,11 +400,11 @@ export const TeacherDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-black text-amber-200 mb-1">Môn Học (GDPT 2018):</label>
+                <label className="block text-xs font-black text-amber-950 mb-1">Môn Học (GDPT 2018):</label>
                 <select
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
                 >
                   <option value="Toán Học">Toán Học</option>
                   <option value="Ngữ Văn">Ngữ Văn</option>
@@ -394,14 +419,14 @@ export const TeacherDashboard = () => {
 
             {gameType === 'iframe' ? (
               <div>
-                <label className="block text-xs font-black text-amber-200 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
+                <label className="block text-xs font-black text-amber-950 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
                 <input
                   type="url"
                   required={gameType === 'iframe'}
                   value={gameUrl}
                   onChange={(e) => setGameUrl(e.target.value)}
                   placeholder="https://wordwall.net/embed/play/..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
                 />
               </div>
             ) : (
@@ -417,20 +442,25 @@ export const TeacherDashboard = () => {
             )}
 
             <div>
-              <label className="block text-xs font-black text-amber-200 mb-1">Mô tả trò chơi:</label>
+              <label className="block text-xs font-black text-amber-950 mb-1">Mô tả trò chơi:</label>
               <textarea
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Mô tả nội dung bài học và hướng dẫn học sinh..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
+              style={{
+                background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)',
+                color: '#FFFFFF',
+                border: '2px solid #34D399',
+                boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.4)'
+              }}
               className="w-full py-3.5 rounded-xl font-black text-sm shadow-xl hover:opacity-95 transition-all transform hover:scale-[1.01] active:scale-[0.99]"
             >
               {submitting ? 'Đang Khởi Tạo Trò Chơi...' : '🚀 Đăng Trò Chơi Mới'}
@@ -439,29 +469,29 @@ export const TeacherDashboard = () => {
         </div>
       )}
 
-      {/* TAB 4: Manage & Delete Games */}
+      {/* TAB 4: Manage & Delete Games - NỀN VÀNG NHẠT */}
       {activeTab === 'manage_games' && (
         <div className="space-y-4">
           <div 
             style={{
-              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
-              border: '2px solid #34D399',
-              boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.3)'
+              background: '#FFFBEB',
+              border: '2px solid #FDE047',
+              boxShadow: '0 10px 20px -5px rgba(245, 158, 11, 0.15)'
             }}
-            className="p-5 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-white shadow-xl"
+            className="p-5 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-amber-950 shadow-md"
           >
             <div>
-              <h3 className="text-base font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
-                <Trash2 className="w-5 h-5 text-rose-300" />
+              <h3 className="text-base font-heading font-black text-amber-950 flex items-center gap-2">
+                <Trash2 className="w-5 h-5 text-rose-600" />
                 Quản Lý & Xóa Bài Chơi Trong Kho ({games.length})
               </h3>
-              <p className="text-xs text-emerald-100 mt-0.5 font-bold">
-                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-300 font-black">Thùng Rác</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
+              <p className="text-xs text-amber-900 mt-0.5 font-bold">
+                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-600 font-black">Thùng Rác</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
               </p>
             </div>
             <span 
-              style={{ background: '#FEF08A', color: '#881337', border: '2px solid #FACC15' }}
-              className="px-3.5 py-1.5 rounded-xl text-xs font-black font-mono shadow-sm"
+              style={{ background: '#FEF9C3', color: '#78350F', border: '2px solid #FACC15' }}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-black font-mono shadow-xs"
             >
               Kho Game: {games.length} bài
             </span>
