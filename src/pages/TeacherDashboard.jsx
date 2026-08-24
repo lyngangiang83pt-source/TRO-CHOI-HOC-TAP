@@ -143,14 +143,14 @@ export const TeacherDashboard = () => {
         </button>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex border-b border-slate-800 text-xs font-bold">
+      {/* Navigation Tabs - NỀN VÀNG NHẠT XEN KẼ BẮT MẮT & DỄ NHÌN */}
+      <div className="bg-[#FEF9C3] p-2 sm:p-2.5 rounded-2xl border-2 border-amber-300 shadow-md flex items-center gap-2 overflow-x-auto scrollbar-none">
         <button
-          onClick={() => setActiveTab('analytics')}
-          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+          onClick={() => { setActiveTab('analytics'); soundFx.play('click'); }}
+          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
             activeTab === 'analytics'
-              ? 'border-emerald-400 text-emerald-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
+              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
           }`}
         >
           <BarChart3 className="w-4 h-4" />
@@ -158,11 +158,11 @@ export const TeacherDashboard = () => {
         </button>
 
         <button
-          onClick={() => setActiveTab('classes')}
-          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+          onClick={() => { setActiveTab('classes'); soundFx.play('click'); }}
+          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
             activeTab === 'classes'
-              ? 'border-emerald-400 text-emerald-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
+              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
           }`}
         >
           <Users className="w-4 h-4" />
@@ -170,38 +170,38 @@ export const TeacherDashboard = () => {
         </button>
 
         <button
-          onClick={() => setActiveTab('create_game')}
-          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+          onClick={() => { setActiveTab('create_game'); soundFx.play('click'); }}
+          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
             activeTab === 'create_game'
-              ? 'border-emerald-400 text-emerald-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
+              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
           }`}
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 text-emerald-600" />
           <span>Tạo / Upload Trò Chơi Mới</span>
         </button>
 
         <button
-          onClick={() => setActiveTab('manage_games')}
-          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+          onClick={() => { setActiveTab('manage_games'); soundFx.play('click'); }}
+          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
             activeTab === 'manage_games'
-              ? 'border-rose-400 text-rose-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
+              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
           }`}
         >
-          <Trash2 className="w-4 h-4 text-rose-400" />
+          <Trash2 className="w-4 h-4 text-rose-600" />
           <span>Quản Lý & Xóa Bài Chơi ({games.length})</span>
         </button>
 
         <button
-          onClick={() => setActiveTab('ai_generator')}
-          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+          onClick={() => { setActiveTab('ai_generator'); soundFx.play('click'); }}
+          className={`px-4 py-2 rounded-xl font-black text-xs transition-all flex items-center gap-2 whitespace-nowrap shadow-xs ${
             activeTab === 'ai_generator'
-              ? 'border-purple-400 text-purple-400'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              ? 'bg-emerald-600 text-white shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400 scale-105'
+              : 'bg-white text-amber-950 hover:bg-amber-200/90 border border-amber-200 font-black'
           }`}
         >
-          <Bot className="w-4 h-4 text-purple-400" />
+          <Bot className="w-4 h-4 text-purple-600" />
           <span>🤖 AI Tạo Câu Hỏi & Kho Câu Hỏi</span>
         </button>
       </div>
