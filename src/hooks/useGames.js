@@ -123,7 +123,7 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchGames = useCallback(() => {
+  const fetchGames = useCallback(async () => {
     setError(null);
 
     let localCustomGames = [];
@@ -137,6 +137,22 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
       }
     } catch (e) {
       console.warn('Lỗi đọc local custom games:', e);
+    }
+
+    let supabaseGames = [];
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase
+          .from('games')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!error && Array.isArray(data)) {
+          supabaseGames = data.filter(g => g && g.title);
+        }
+      } catch (err) {
+        console.warn('Lỗi truy vấn Supabase games:', err);
+      }
     }
 
     const matchGrade = (gameGrade, targetGrade) => {
@@ -155,7 +171,7 @@ export const useGames = (selectedGrade = 'all', selectedSubject = 'all') => {
       return sStr.includes(tStr) || tStr.includes(sStr);
     };
 
-    const allRaw = [...localCustomGames, ...GLOBAL_IN_MEMORY_GAMES].filter(g => g && g.title);
+    const allRaw = [...supabaseGames, ...localCustomGames, ...GLOBAL_IN_MEMORY_GAMES].filter(g => g && g.title);
     const seen = new Set();
     const uniqueGames = [];
     for (const g of allRaw) {
