@@ -173,37 +173,56 @@ export const Navbar = () => {
             {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-emerald-100" />}
           </button>
 
-          {/* Quick Demo Role Switcher Dropdown */}
+          {/* Quick Demo Role Switcher Dropdown - Nền Vàng Nhạt Sang Trọng & Sắc Nét */}
           <div className="relative group">
-            <button className="px-2.5 py-1.5 rounded-lg bg-white/15 border border-white/30 text-xs font-bold text-white flex items-center gap-1.5 hover:bg-white/25">
-              <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+            <button className="px-2.5 py-1.5 rounded-xl bg-amber-400/90 hover:bg-amber-400 border border-amber-200 text-xs font-black text-amber-950 flex items-center gap-1.5 shadow-sm transition-all">
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
               <span className="capitalize">{profile?.role || 'student'}</span>
             </button>
-            <div className="absolute right-0 top-full mt-1 w-40 glass-panel rounded-xl shadow-xl py-1 hidden group-hover:block border border-slate-700/80 text-xs z-50">
-              <div className="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 border-b border-slate-800">
-                Thử nghiệm Vai Trò:
+
+            {/* Khung Dropdown Nền Vàng Nhạt (#FEF9C3) Chữ Đậm Rõ Nét */}
+            <div className="absolute right-0 top-full mt-2 w-48 bg-[#FEF9C3] rounded-2xl shadow-2xl py-1.5 hidden group-hover:block border-2 border-amber-300 text-xs z-50 animate-in fade-in slide-in-from-top-1 duration-200">
+              <div className="px-3.5 py-2 text-[10px] uppercase font-black text-amber-900 border-b border-amber-200 bg-amber-100/70 rounded-t-xl tracking-wider">
+                🎯 Thử Nghiệm Vai Trò:
               </div>
-              <button 
-                onClick={() => switchDemoRole('student')}
-                className="w-full px-3 py-2 text-left hover:bg-emerald-600/20 text-slate-200 flex items-center justify-between font-bold"
-              >
-                <span>Học sinh (Lớp 7)</span>
-                {profile?.role === 'student' && <span className="text-emerald-400 font-bold">✓</span>}
-              </button>
-              <button 
-                onClick={() => switchDemoRole('teacher')}
-                className="w-full px-3 py-2 text-left hover:bg-emerald-600/20 text-slate-200 flex items-center justify-between font-bold"
-              >
-                <span>Giáo viên THCS</span>
-                {profile?.role === 'teacher' && <span className="text-emerald-400 font-bold">✓</span>}
-              </button>
-              <button 
-                onClick={() => switchDemoRole('admin')}
-                className="w-full px-3 py-2 text-left hover:bg-emerald-600/20 text-slate-200 flex items-center justify-between font-bold"
-              >
-                <span>Quản trị Admin</span>
-                {profile?.role === 'admin' && <span className="text-emerald-400 font-bold">✓</span>}
-              </button>
+
+              <div className="p-1 space-y-1">
+                <button 
+                  onClick={() => switchDemoRole('student')}
+                  className={`w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black ${
+                    profile?.role === 'student'
+                      ? 'bg-amber-300 text-amber-950 shadow-xs border border-amber-400'
+                      : 'text-amber-950 hover:bg-amber-200/80'
+                  }`}
+                >
+                  <span>👨‍🎓 Học sinh (Lớp 7)</span>
+                  {profile?.role === 'student' && <span className="text-emerald-700 font-black text-sm">✓</span>}
+                </button>
+
+                <button 
+                  onClick={() => switchDemoRole('teacher')}
+                  className={`w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black ${
+                    profile?.role === 'teacher'
+                      ? 'bg-amber-300 text-amber-950 shadow-xs border border-amber-400'
+                      : 'text-amber-950 hover:bg-amber-200/80'
+                  }`}
+                >
+                  <span>👩‍🏫 Giáo viên THCS</span>
+                  {profile?.role === 'teacher' && <span className="text-emerald-700 font-black text-sm">✓</span>}
+                </button>
+
+                <button 
+                  onClick={() => switchDemoRole('admin')}
+                  className={`w-full px-3 py-2 rounded-xl text-left transition-all flex items-center justify-between font-black ${
+                    profile?.role === 'admin'
+                      ? 'bg-amber-300 text-amber-950 shadow-xs border border-amber-400'
+                      : 'text-amber-950 hover:bg-amber-200/80'
+                  }`}
+                >
+                  <span>👑 Quản trị Admin</span>
+                  {profile?.role === 'admin' && <span className="text-emerald-700 font-black text-sm">✓</span>}
+                </button>
+              </div>
             </div>
           </div>
 
