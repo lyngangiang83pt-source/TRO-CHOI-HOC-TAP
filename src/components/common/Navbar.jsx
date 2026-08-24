@@ -20,7 +20,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { soundFx } from '../../lib/soundFx';
 
 export const Navbar = () => {
-  const { profile, signOut, switchDemoRole } = useAuth();
+  const { user, profile, signOut, switchDemoRole } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [muted, setMuted] = React.useState(false);
@@ -140,17 +140,17 @@ export const Navbar = () => {
             <div className="hidden sm:flex items-center gap-2">
               <div className={`px-2.5 py-1 rounded-full text-xs font-bold border bg-white/15 text-white border-white/30 flex items-center gap-1.5`}>
                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                <span>{profile.rank_tier}</span>
+                <span>{profile?.rank_tier || 'Đồng'}</span>
               </div>
 
               <div className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 flex items-center gap-1">
                 <Flame className="w-3.5 h-3.5 text-orange-300 fill-orange-300" />
-                <span>{profile.total_exp || 0} EXP</span>
+                <span>{profile?.total_exp || 0} EXP</span>
               </div>
 
               <div className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 flex items-center gap-1">
                 <Coins className="w-3.5 h-3.5 text-amber-300" />
-                <span>{profile.coins || 0}</span>
+                <span>{profile?.coins || 0}</span>
               </div>
             </div>
           )}
