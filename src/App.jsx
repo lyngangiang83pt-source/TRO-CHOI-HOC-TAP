@@ -29,7 +29,7 @@ const RequireAdmin = ({ children }) => {
 
 function AppContent() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF4E8] text-[#1C1917] transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[#FAF4E8] dark:bg-[#0C0F17] text-[#1C1917] dark:text-slate-100 transition-colors duration-300">
       <Navbar />
       <main className="flex-1 pb-12">
         <Routes>

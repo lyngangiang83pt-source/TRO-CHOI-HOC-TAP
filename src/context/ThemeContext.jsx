@@ -4,22 +4,35 @@ import { soundFx } from '../lib/soundFx';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('cap2_theme') || 'light';
+    } catch {
+      return 'light';
+    }
+  });
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.add('light');
-    root.classList.remove('dark');
-    localStorage.setItem('cap2_theme', 'light');
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    }
+    try {
+      localStorage.setItem('cap2_theme', theme);
+    } catch (e) {}
   }, [theme]);
 
   const toggleTheme = () => {
     soundFx.play('click');
-    setTheme('light');
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   return (
-    <ThemeContext.Provider value={{ theme: 'light', toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
