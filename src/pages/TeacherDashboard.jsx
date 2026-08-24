@@ -119,24 +119,24 @@ export const TeacherDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       
-      {/* Top Banner Header */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 bg-gradient-to-r from-emerald-950/60 via-slate-950 to-indigo-950/60 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
-            <GraduationCap className="w-4 h-4" />
-            Hệ Thống Quản Lý Dành Cho Giáo Viên
+      {/* Top Banner Header - NỀN XANH LÁ CÂY TƯƠI MÁT & SANG TRỌNG */}
+      <div className="rounded-3xl p-6 sm:p-8 border-2 border-emerald-400 bg-gradient-to-r from-[#065F46] via-[#059669] to-[#047857] text-white shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 border border-white/30 text-emerald-100 text-xs font-black uppercase tracking-wider backdrop-blur-md">
+            <GraduationCap className="w-4 h-4 text-amber-300" />
+            <span>Hệ Thống Quản Lý Dành Cho Giáo Viên</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-white">
+          <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-sm">
             GÓC GIÁO VIÊN THCS
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
+          <p className="text-xs sm:text-sm text-emerald-100 font-medium max-w-xl leading-relaxed">
             Tạo bài tập game, nhúng iFrame (GAME-01), upload HTML5 ZIP (GAME-02), quản lý lớp học và theo dõi biểu đồ năng lực học sinh.
           </p>
         </div>
 
         <button
           onClick={() => setIsAssignModalOpen(true)}
-          className="px-5 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30 hover:opacity-90 transition-opacity"
+          className="px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-black text-xs flex items-center gap-2 shadow-xl border border-amber-300 transition-all transform hover:scale-105"
         >
           <Send className="w-4 h-4" />
           <span>Giao Bài Tập Cho Lớp</span>

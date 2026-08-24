@@ -404,22 +404,22 @@ export const AdminDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 font-sans">
       
-      {/* 1. Header Banner Quản Trị Tối Cao */}
-      <div className="bg-gradient-to-r from-[#1E1B4B] via-[#2E2A72] to-[#4338CA] text-white p-6 sm:p-8 rounded-3xl shadow-xl border border-indigo-500/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl -z-10" />
+      {/* 1. Header Banner Quản Trị Tối Cao - NỀN XANH LÁ CÂY TƯƠI MÁT & SANG TRỌNG */}
+      <div className="rounded-3xl p-6 sm:p-8 border-2 border-emerald-400 bg-gradient-to-r from-[#065F46] via-[#059669] to-[#047857] text-white shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl -z-10" />
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300 text-amber-300 text-xs font-black uppercase tracking-wider">
-              <ShieldCheck className="w-4 h-4 text-amber-400" />
-              QUẢN TRỊ VIÊN HỆ THỐNG: lyngangiang83pt@gmail.com
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 border border-white/30 text-emerald-100 text-xs font-black uppercase tracking-wider backdrop-blur-md">
+              <ShieldCheck className="w-4 h-4 text-amber-300" />
+              <span>QUẢN TRỊ VIÊN HỆ THỐNG: lyngangiang83pt@gmail.com</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-heading font-black text-white">
+            <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-sm">
               TRUNG TÂM ĐIỀU HÀNH TOÀN DIỆN
             </h1>
 
-            <p className="text-xs text-indigo-200 max-w-2xl font-medium leading-relaxed">
+            <p className="text-xs text-emerald-100 max-w-2xl font-medium leading-relaxed">
               Quản trị toàn bộ Trò chơi, Tài khoản Người dùng, Phân quyền Giáo viên/Học sinh, 7 Môn học GDPT 2018, Bảng Xếp Hạng và Trạng thái Database Supabase.
             </p>
           </div>

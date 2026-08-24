@@ -57,9 +57,9 @@ export const StudentDashboard = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       
-      {/* Hero Welcome & EXP Banner */}
-      <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 bg-gradient-to-r from-indigo-950/60 via-purple-950/40 to-slate-950 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl -z-10" />
+      {/* Hero Welcome & EXP Banner - NỀN XANH LÁ CÂY TƯƠI MÁT & SANG TRỌNG */}
+      <div className="rounded-3xl p-6 sm:p-8 border-2 border-emerald-400 bg-gradient-to-r from-[#065F46] via-[#059669] to-[#047857] text-white shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl -z-10" />
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-start sm:items-center gap-4 sm:gap-6">
@@ -69,19 +69,19 @@ export const StudentDashboard = () => {
               <img 
                 src="/logo2.png" 
                 alt="Logo 2" 
-                className="h-20 sm:h-28 w-auto max-w-none object-contain filter drop-shadow-[0_10px_20px_rgba(99,102,241,0.3)] group-hover:scale-110 transition-transform duration-300" 
+                className="h-20 sm:h-28 w-auto max-w-none object-contain filter drop-shadow-[0_10px_20px_rgba(5,150,105,0.4)] group-hover:scale-110 transition-transform duration-300" 
               />
             </picture>
 
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                Chương Trình GDPT 2018 THCS
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 border border-white/30 text-emerald-100 text-xs font-black uppercase tracking-wider mb-2 backdrop-blur-md">
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>Chương Trình GDPT 2018 THCS</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-white">
-                Xin chào: <span className="bg-gradient-to-r from-indigo-400 to-pink-400 bg-clip-text text-transparent">{profile?.full_name || 'Thầy Huỳnh Ngân Giang'}</span>! 👋
+              <h1 className="text-2xl sm:text-3xl font-heading font-black text-white drop-shadow-sm">
+                Xin chào: <span className="text-amber-300 font-extrabold">{profile?.full_name || 'Thầy Huỳnh Ngân Giang'}</span>! 👋
               </h1>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-emerald-100 mt-1 max-w-xl font-medium leading-relaxed">
                 Khám phá hàng trăm trò chơi trắc nghiệm đối kháng, giải mã phòng kín và mini-game hấp dẫn để tích lũy EXP và chinh phục Bảng Xếp Hạng.
               </p>
             </div>
@@ -89,22 +89,22 @@ export const StudentDashboard = () => {
 
           {/* User Rank Progress */}
           {profile && (
-            <div className="w-full md:w-auto glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/80 space-y-2 min-w-[240px]">
-              <div className="flex justify-between items-center text-xs font-bold">
-                <span className="text-slate-400">Cấp Bậc Hiện Tại:</span>
-                <span className="text-amber-400 font-heading">{profile.rank_tier}</span>
+            <div className="w-full md:w-auto bg-emerald-950/70 p-4 rounded-2xl border-2 border-emerald-400/50 shadow-xl space-y-2 min-w-[240px] backdrop-blur-md">
+              <div className="flex justify-between items-center text-xs font-black">
+                <span className="text-emerald-200">Cấp Bậc Hiện Tại:</span>
+                <span className="text-amber-300 font-heading text-sm">{profile?.rank_tier || 'Đồng'}</span>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+              <div className="w-full h-3.5 bg-emerald-900 rounded-full overflow-hidden p-0.5 border border-emerald-500/50">
                 <div
-                  className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-500"
-                  style={{ width: `${Math.min(100, ((profile.total_exp || 0) / 3000) * 100)}%` }}
+                  className="h-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-300 rounded-full transition-all duration-500 shadow-sm"
+                  style={{ width: `${Math.min(100, (((profile?.total_exp || 100) / 3000) * 100))}%` }}
                 />
               </div>
 
-              <div className="flex justify-between items-center text-[11px] font-semibold text-slate-400">
-                <span>{profile.total_exp || 0} EXP</span>
+              <div className="flex justify-between items-center text-[11px] font-bold text-emerald-200">
+                <span>{profile?.total_exp || 0} EXP</span>
                 <span>Mục tiêu: 3000 EXP</span>
               </div>
             </div>
