@@ -80,7 +80,7 @@ export const AuthPage = () => {
           setLoading(false);
           return;
         }
-        const { error } = await signUpWithUsername(username || email.split('@')[0], password, fullName, role, gradeLevel);
+        const { error } = await signUpWithUsername(username || email.split('@')[0], password, fullName, email, role, gradeLevel);
         if (error) throw error;
         
         // Đăng ký thành công -> Tự động chuyển sang Đăng Nhập

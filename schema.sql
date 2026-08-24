@@ -34,6 +34,7 @@ END $$;
 -- 3. BẢNG PROFILES (THÔNG TIN NGUỜI DÙNG TÍCH HỢP SUPABASE AUTH)
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    username TEXT UNIQUE,
     email TEXT NOT NULL,
     full_name TEXT NOT NULL,
     role user_role NOT NULL DEFAULT 'student',
@@ -46,6 +47,9 @@ CREATE TABLE IF NOT EXISTS public.profiles (
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_profiles_username ON public.profiles(username);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON public.profiles(email);
 
 -- 4. BẢNG CATEGORIES (KHỐI LỚP & MÔN HỌC CHUẨN GDPT 2018)
 CREATE TABLE IF NOT EXISTS public.categories (

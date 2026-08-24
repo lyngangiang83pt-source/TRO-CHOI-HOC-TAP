@@ -209,11 +209,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUpWithUsername = async (username, password, fullName, role = 'student', gradeLevel = '7') => {
+  const signUpWithUsername = async (username, password, fullName, customEmail = '', role = 'student', gradeLevel = '7') => {
     soundFx.play('click');
     const cleanUsername = username.trim().toLowerCase();
-    const mappedEmail = `${cleanUsername}@gmail.com`;
-    const isAdminUser = cleanUsername === 'lyngangiang83pt' || mappedEmail.toLowerCase() === 'lyngangiang83pt@gmail.com';
+    const mappedEmail = (customEmail && customEmail.includes('@')) 
+      ? customEmail.trim().toLowerCase() 
+      : `${cleanUsername}@gmail.com`;
+
+    const isAdminUser = cleanUsername === 'lyngangiang83pt' || mappedEmail === 'lyngangiang83pt@gmail.com';
     const actualRole = isAdminUser ? 'admin' : (role === 'admin' ? 'student' : role);
 
     const newProf = {
@@ -234,11 +237,12 @@ export const AuthProvider = ({ children }) => {
       setProfile(newProf);
       setUser(newProf);
       saveStoredUser(newProf);
+      try { localStorage.setItem('cap2_logged_in_user', JSON.stringify(newProf)); } catch (e) {}
       return { data: { user: newProf }, error: null };
     }
 
     try {
-      // 1. Kiểm tra username trùng lặp trong DB
+      // 1. Kiểm tra username trùng lặp trong DB Supabase
       const { data: existingUser } = await supabase
         .from('profiles')
         .select('username')
@@ -271,7 +275,7 @@ export const AuthProvider = ({ children }) => {
           id: data.user.id,
           username: cleanUsername,
           email: mappedEmail,
-          full_name: fullName,
+          full_name: fullName || cleanUsername,
           role: actualRole,
           student_code: newProf.student_code,
           grade_level: gradeLevel,
@@ -284,15 +288,17 @@ export const AuthProvider = ({ children }) => {
         setProfile(profilePayload);
         setUser(data.user);
         saveStoredUser(profilePayload);
+        try { localStorage.setItem('cap2_logged_in_user', JSON.stringify(profilePayload)); } catch (e) {}
       }
 
       return { data: { user: newProf }, error: null };
     } catch (err) {
-      // Xử lý tự động khi gặp lỗi kết nối mạng "Failed to fetch" hoặc dịch vụ Supabase chưa bật Auth
+      // Xử lý tự động khi gặp lỗi kết nối mạng "Failed to fetch" hoặc Supabase chưa bật Auth
       console.warn('Supabase auth notice, activating instant fallback mode:', err.message);
       setProfile(newProf);
       setUser(newProf);
       saveStoredUser(newProf);
+      try { localStorage.setItem('cap2_logged_in_user', JSON.stringify(newProf)); } catch (e) {}
       return { data: { user: newProf }, error: null };
     }
   };
