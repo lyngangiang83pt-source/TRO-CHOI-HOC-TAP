@@ -250,20 +250,20 @@ export const TeacherDashboard = () => {
             <RadarSkillChart title="Biểu Đồ Radar Đánh Giá Năng Lực Trung Bình Lớp Học" />
           </div>
 
-          {/* KHUNG 3: CHỈ SỐ TƯƠNG TÁC HỌC SINH - NỀN VÀNG NHẠT */}
+          {/* KHUNG 3: BẢNG CHỈ SỐ TƯƠNG TÁC HỌC SINH - NỀN XANH LÁ CÂY */}
           <div 
             style={{
-              background: '#FFFBEB',
-              border: '2px solid #FDE047',
-              boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
+              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+              border: '2px solid #34D399',
+              boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
             }}
-            className="rounded-3xl p-6 space-y-4 shadow-xl text-amber-950"
+            className="rounded-3xl p-6 space-y-4 shadow-xl text-white"
           >
             <h3 
-              style={{ color: '#78350F' }}
+              style={{ color: '#FFFFFF', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
               className="text-base font-heading font-black mb-2 flex items-center gap-2"
             >
-              <Sparkles className="w-5 h-5 text-amber-600" />
+              <Sparkles className="w-5 h-5 text-amber-300" />
               <span>Chỉ Số Tương Tác Học Sinh</span>
             </h3>
 
@@ -297,32 +297,32 @@ export const TeacherDashboard = () => {
       {/* TAB 2: Class Management */}
       {activeTab === 'classes' && <ClassManager />}
 
-      {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN VÀNG NHẠT SANG TRỌNG */}
+      {/* TAB 3: Create Game (iFrame GAME-01 or HTML5 ZIP GAME-02) - NỀN XANH LÁ CÂY TƯƠI MÁT */}
       {activeTab === 'create_game' && (
         <div 
           style={{
-            background: '#FFFBEB',
-            border: '2px solid #FDE047',
-            boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)'
+            background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+            border: '2px solid #34D399',
+            boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.35)'
           }}
-          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6 text-amber-950 shadow-xl"
+          className="rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6 text-white shadow-2xl"
         >
-          <div className="border-b border-amber-300/80 pb-4">
-            <h3 className="text-xl font-heading font-black text-amber-950 flex items-center gap-2 drop-shadow-xs">
-              <Sparkles className="w-5 h-5 text-amber-600" />
+          <div className="border-b border-emerald-500/40 pb-4">
+            <h3 className="text-xl font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
+              <Sparkles className="w-5 h-5 text-amber-300" />
               <span>Tạo Trò Chơi Học Tập Mới</span>
             </h3>
-            <p className="text-xs text-amber-900 mt-1 font-bold">
+            <p className="text-xs text-emerald-100 mt-1 font-bold">
               Hỗ trợ nhúng game ngoại bằng (Wordwall, Quizizz, Kahoot, Canva) hoặc upload file HTML5 ZIP giải nén tự động.
             </p>
           </div>
 
           {successMsg && (
             <div 
-              style={{ background: '#DCFCE7', color: '#064E3B', border: '2px solid #86EFAC' }}
+              style={{ background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }}
               className="p-3.5 rounded-2xl text-xs font-black flex items-center gap-2 shadow-xs"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-emerald-900 shrink-0" />
               <span>{successMsg}</span>
             </div>
           )}
@@ -340,19 +340,19 @@ export const TeacherDashboard = () => {
             
             {/* Game Type Switcher */}
             <div>
-              <label className="block text-xs font-black text-amber-950 mb-1.5">Loại Trò Chơi:</label>
+              <label className="block text-xs font-black text-amber-200 mb-1.5">Loại Trò Chơi:</label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setGameType('iframe')}
                   style={
                     gameType === 'iframe'
-                      ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
-                      : { background: '#FEF9C3', color: '#78350F', border: '1.5px solid #FDE047' }
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
                   }
-                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs"
+                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
-                  <LinkIcon className="w-4 h-4" />
+                  <LinkIcon className="w-4 h-4 text-amber-950" />
                   <span>Nhúng iFrame (GAME-01)</span>
                 </button>
 
@@ -361,36 +361,36 @@ export const TeacherDashboard = () => {
                   onClick={() => setGameType('html5_zip')}
                   style={
                     gameType === 'html5_zip'
-                      ? { background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)', color: '#FFFFFF', border: '2px solid #34D399' }
-                      : { background: '#FEF9C3', color: '#78350F', border: '1.5px solid #FDE047' }
+                      ? { background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }
+                      : { background: 'rgba(255, 255, 255, 0.2)', color: '#FFFFFF', border: '1px solid rgba(255, 255, 255, 0.3)' }
                   }
-                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-xs"
+                  className="p-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
-                  <FileArchive className="w-4 h-4" />
+                  <FileArchive className="w-4 h-4 text-amber-950" />
                   <span>Upload HTML5 ZIP (GAME-02)</span>
                 </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-black text-amber-950 mb-1">Tên Trò Chơi:</label>
+              <label className="block text-xs font-black text-amber-200 mb-1">Tên Trò Chơi:</label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Ví dụ: Chinh Phục Kiến Thức KHTN 7"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-black text-amber-950 mb-1">Khối Lớp:</label>
+                <label className="block text-xs font-black text-amber-200 mb-1">Khối Lớp:</label>
                 <select
                   value={gradeLevel}
                   onChange={(e) => setGradeLevel(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
                 >
                   <option value="6">Lớp 6</option>
                   <option value="7">Lớp 7</option>
@@ -400,11 +400,11 @@ export const TeacherDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-black text-amber-950 mb-1">Môn Học (GDPT 2018):</label>
+                <label className="block text-xs font-black text-amber-200 mb-1">Môn Học (GDPT 2018):</label>
                 <select
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 focus:outline-none focus:border-amber-500 shadow-inner"
+                  className="w-full px-3 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 focus:outline-none shadow-inner"
                 >
                   <option value="Toán Học">Toán Học</option>
                   <option value="Ngữ Văn">Ngữ Văn</option>
@@ -419,14 +419,14 @@ export const TeacherDashboard = () => {
 
             {gameType === 'iframe' ? (
               <div>
-                <label className="block text-xs font-black text-amber-950 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
+                <label className="block text-xs font-black text-amber-200 mb-1">URL Nhúng (Wordwall / Quizizz / Kahoot):</label>
                 <input
                   type="url"
                   required={gameType === 'iframe'}
                   value={gameUrl}
                   onChange={(e) => setGameUrl(e.target.value)}
                   placeholder="https://wordwall.net/embed/play/..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-black text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
                 />
               </div>
             ) : (
@@ -442,25 +442,20 @@ export const TeacherDashboard = () => {
             )}
 
             <div>
-              <label className="block text-xs font-black text-amber-950 mb-1">Mô tả trò chơi:</label>
+              <label className="block text-xs font-black text-amber-200 mb-1">Mô tả trò chơi:</label>
               <textarea
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Mô tả nội dung bài học và hướng dẫn học sinh..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-amber-300 text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-500 shadow-inner"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border-2 border-emerald-300 text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner"
               />
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              style={{
-                background: 'linear-gradient(135deg, #065F46 0%, #059669 100%)',
-                color: '#FFFFFF',
-                border: '2px solid #34D399',
-                boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.4)'
-              }}
+              style={{ background: '#FBBF24', color: '#451A03', border: '2px solid #FDE047' }}
               className="w-full py-3.5 rounded-xl font-black text-sm shadow-xl hover:opacity-95 transition-all transform hover:scale-[1.01] active:scale-[0.99]"
             >
               {submitting ? 'Đang Khởi Tạo Trò Chơi...' : '🚀 Đăng Trò Chơi Mới'}
@@ -469,29 +464,29 @@ export const TeacherDashboard = () => {
         </div>
       )}
 
-      {/* TAB 4: Manage & Delete Games - NỀN VÀNG NHẠT */}
+      {/* TAB 4: Manage & Delete Games - NỀN XANH LÁ CÂY */}
       {activeTab === 'manage_games' && (
         <div className="space-y-4">
           <div 
             style={{
-              background: '#FFFBEB',
-              border: '2px solid #FDE047',
-              boxShadow: '0 10px 20px -5px rgba(245, 158, 11, 0.15)'
+              background: 'linear-gradient(135deg, #065F46 0%, #059669 50%, #047857 100%)',
+              border: '2px solid #34D399',
+              boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.3)'
             }}
-            className="p-5 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-amber-950 shadow-md"
+            className="p-5 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-white shadow-xl"
           >
             <div>
-              <h3 className="text-base font-heading font-black text-amber-950 flex items-center gap-2">
-                <Trash2 className="w-5 h-5 text-rose-600" />
+              <h3 className="text-base font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
+                <Trash2 className="w-5 h-5 text-rose-300" />
                 Quản Lý & Xóa Bài Chơi Trong Kho ({games.length})
               </h3>
-              <p className="text-xs text-amber-900 mt-0.5 font-bold">
-                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-600 font-black">Thùng Rác</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
+              <p className="text-xs text-emerald-100 mt-0.5 font-bold">
+                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-300 font-black">Thùng Rác</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
               </p>
             </div>
             <span 
-              style={{ background: '#FEF9C3', color: '#78350F', border: '2px solid #FACC15' }}
-              className="px-3.5 py-1.5 rounded-xl text-xs font-black font-mono shadow-xs"
+              style={{ background: '#FEF08A', color: '#064E3B', border: '2px solid #FACC15' }}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-black font-mono shadow-sm"
             >
               Kho Game: {games.length} bài
             </span>
