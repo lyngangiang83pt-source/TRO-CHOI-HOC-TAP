@@ -104,6 +104,7 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
             fileName: file.name,
             entryFile: file.name,
             blobUrl,
+            htmlContent: textContent,
             rawFile: file
           });
         }
@@ -150,6 +151,7 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
             fileName: file.name,
             entryFile: result.entryKey,
             blobUrl,
+            htmlContent: result.content,
             rawZipFile: file
           });
         }
@@ -159,12 +161,44 @@ export const Html5ZipUploader = ({ onZipParsed }) => {
         setSuccess(true);
         soundFx.play('correct');
 
+        const pptHtmlContent = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide PowerPoint: ${file.name}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 2rem; background: #090d16; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .card { background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(99, 102, 241, 0.35); border-radius: 1.5rem; padding: 2.5rem; max-width: 650px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); }
+    .icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    h1 { font-size: 1.4rem; color: #a5b4fc; margin: 0 0 0.5rem 0; font-weight: 800; }
+    p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .badge { display: inline-block; padding: 0.4rem 1rem; background: rgba(99, 102, 241, 0.2); color: #818cf8; border-radius: 9999px; font-size: 0.85rem; font-weight: 700; border: 1px solid rgba(99, 102, 241, 0.3); margin-bottom: 1rem; }
+    .ppt-name { color: #f43f5e; font-weight: 700; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📊</div>
+    <div class="badge">Gói PowerPoint Slide Trình Chiếu</div>
+    <h1>${file.name}</h1>
+    <p>Slide PowerPoint: <span class="ppt-name">${result.pptFiles[0]}</span> đã sẵn sàng tương tác trên Kho Trò Chơi Học Tập!</p>
+  </div>
+</body>
+</html>`;
+
+        const blob = new Blob([pptHtmlContent], { type: 'text/html' });
+        const blobUrl = URL.createObjectURL(blob);
+
         if (typeof onZipParsed === 'function') {
           onZipParsed({
-            gameType: 'powerpoint',
+            gameType: 'html5',
             fileName: file.name,
             pptList: result.pptFiles,
             entryFile: result.pptFiles[0],
+            blobUrl,
+            htmlContent: pptHtmlContent,
             rawZipFile: file
           });
         }

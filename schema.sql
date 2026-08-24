@@ -185,17 +185,22 @@ CREATE POLICY "Admins can insert/update categories"
 ON public.categories FOR ALL TO authenticated 
 USING (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin'));
 
--- Policies cho Games
+-- Policies cho Games (Công khai đọc/ghi/xóa cho cả Giáo viên, Học sinh và Anon key để đồng bộ game tức thì trên mọi thiết bị)
+DROP POLICY IF EXISTS "Public games viewable by everyone" ON public.games;
 CREATE POLICY "Public games viewable by everyone" 
-ON public.games FOR SELECT TO authenticated USING (is_public = true OR author_id = auth.uid());
+ON public.games FOR SELECT USING (true);
 
-CREATE POLICY "Teachers and Admins can create games" 
-ON public.games FOR INSERT TO authenticated 
-WITH CHECK (EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('teacher', 'admin')));
+DROP POLICY IF EXISTS "Teachers and Admins can create games" ON public.games;
+CREATE POLICY "Everyone can create games" 
+ON public.games FOR INSERT WITH CHECK (true);
 
-CREATE POLICY "Authors and Admins can update games" 
-ON public.games FOR UPDATE TO authenticated 
-USING (author_id = auth.uid() OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin'));
+DROP POLICY IF EXISTS "Authors and Admins can update games" ON public.games;
+CREATE POLICY "Everyone can update games" 
+ON public.games FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Everyone can delete games" ON public.games;
+CREATE POLICY "Everyone can delete games" 
+ON public.games FOR DELETE USING (true);
 
 -- Policies cho Classes
 CREATE POLICY "Teachers can view created classes" 

@@ -2,33 +2,36 @@
 
 @layer base {
   :root {
-    /* 🌾 MÀU KEM TRẮNG SANG TRỌNG (WARM CREAM WHITE PALETTE) */
-    --bg-primary: #FAF7F2;
-    --bg-secondary: #F3ECE1;
-    --bg-card: #FFFFFF;
+    /* 🌾 MÀU KEM HƠI VÀNG SANG TRỌNG & DỊU MẮT (WARM YELLOWISH CREAM LIGHT PALETTE) */
+    --bg-primary: #FAF4E8;
+    --bg-secondary: #FFFDF7;
+    --bg-card: #FFFDF7;
     --text-main: #1C1917;
     --text-muted: #78716C;
-    --border-color: rgba(214, 201, 185, 0.65);
-    --accent-indigo: #4F46E5;
+    --border-color: #E5D9C3;
+    --accent-indigo: #1D4ED8;
     --accent-cyan: #0284C7;
-    --accent-emerald: #059669;
-    --accent-amber: #D97706;
+    --accent-emerald: #15803D;
+    --accent-amber: #C2410C;
+    color-scheme: light;
   }
 
   .dark {
+    /* 🌙 MÀU CHẾ ĐỘ TỐI ĐÊM ĐẲNG CẤP (DARK PALETTE) */
     --bg-primary: #0C0F17;
     --bg-secondary: #161D2E;
     --bg-card: #1F293D;
     --text-main: #F9FAFB;
     --text-muted: #9CA3AF;
     --border-color: rgba(255, 255, 255, 0.12);
+    color-scheme: dark;
   }
 }
 
-body {
+html, body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--bg-primary, #FAF7F2);
-  color: var(--text-main, #1C1917);
+  background-color: #FAF4E8 !important;
+  color: #1C1917 !important;
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
 }
@@ -37,13 +40,13 @@ h1, h2, h3, h4, .font-heading {
   font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Glassmorphism Kem Trắng Búp Bê & Sang Trọng */
+/* Glassmorphism Dynamic Panel */
 .glass-panel {
-  background: rgba(255, 253, 248, 0.92);
+  background: #FFFDF7;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 10px 30px -10px rgba(120, 113, 108, 0.08);
+  border: 1px solid var(--border-color, #E5D9C3);
+  box-shadow: 0 4px 20px -2px rgba(120, 113, 108, 0.08);
 }
 
 .dark .glass-panel {
@@ -52,36 +55,31 @@ h1, h2, h3, h4, .font-heading {
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* Warm Glow Effects */
-.glow-effect-indigo {
-  box-shadow: 0 0 25px -5px rgba(79, 70, 229, 0.25);
-}
-
-.glow-effect-amber {
-  box-shadow: 0 0 25px -5px rgba(217, 119, 6, 0.25);
-}
-
-.glow-effect-cyan {
-  box-shadow: 0 0 25px -5px rgba(2, 132, 199, 0.25);
-}
-
-/* Custom Warm Scrollbar */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F3ECE1;
+  background: #F5ECE0;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0F172A;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D6C9B9;
+  background: #D6C7B2;
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #A89A88;
+  background: #B8A790;
 }
 
 /* Skeleton Pulse Animation */
@@ -92,9 +90,171 @@ h1, h2, h3, h4, .font-heading {
 
 .skeleton-dark {
   animation: pulse-warm 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  background-color: rgba(214, 201, 185, 0.3);
+  background-color: rgba(229, 217, 195, 0.8);
 }
 
 .dark .skeleton-dark {
   background-color: rgba(255, 255, 255, 0.08);
+}
+
+
+/* ==================================================================== */
+/* 🌾 CHẾ ĐỘ SÁNG TÔNG MÀU KEM HƠI VÀNG (WARM YELLOWISH CREAM LIGHT MODE) */
+/* KHUNG CHỮ MÀU ĐỎ, XANH ĐẬM, ĐEN DỄ NHÌN TRÁNH LÓA MẮT */
+/* ==================================================================== */
+
+html:not(.dark),
+html.light {
+
+  /* THANH TIÊU ĐỀ NAVBAR CHUYỂN THÀNH MÀU NỀN XANH LÁ CÂY TƯƠI MÁT SANG TRỌNG */
+  header.sticky {
+    background: linear-gradient(135deg, #065f46 0%, #059669 50%, #047857 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 4px 20px -2px rgba(5, 150, 105, 0.3) !important;
+  }
+
+  /* ĐỔI NỀN TRANG THÀNH MÀU KEM HƠI VÀNG ẤM ÁP CHỐNG MỎI MẮT CỰC TỐT */
+  body {
+    background-color: #FAF4E8 !important;
+    color: #1C1917 !important;
+  }
+
+  /* 1. MÀU CHỮ NỔI BẬT: TRẮNG NÉT ĐẬM, MÀU ĐỎ, TÍM ĐẬM VÀ ĐEN NỔI NÉT */
+  header.sticky *,
+  .bg-gradient-to-r *,
+  .bg-emerald-800 *,
+  .bg-emerald-700 *,
+  .bg-purple-700 *,
+  .bg-blue-800 * {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+  }
+
+  /* Chữ Trắng Nét Đậm trên các ô nền đậm */
+  .text-white-bold {
+    color: #FFFFFF !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Chữ Màu Đỏ Nét Đậm */
+  .text-red-bold,
+  .text-red-600,
+  .text-red-700,
+  .text-rose-600 {
+    color: #DC2626 !important;
+    font-weight: 900 !important;
+  }
+
+  /* Chữ Màu Tím Đậm Nét Đậm */
+  .text-purple-bold,
+  .text-purple-800,
+  .text-purple-900,
+  .text-indigo-900 {
+    color: #581C87 !important;
+    font-weight: 900 !important;
+  }
+
+  /* Chữ Nền Thẻ Chính (Đen đậm/Xám đậm nét căng) */
+  .text-slate-900,
+  .text-slate-800 {
+    color: #0F172A !important;
+    font-weight: 800 !important;
+  }
+
+
+  /* 2. KHUNG NỀN THẺ VÀ THÀNH PHẦN (CREAM WHITE CARDS WITH WARM BORDERS) */
+  .bg-slate-950,
+  .bg-slate-900,
+  .bg-slate-950\/80,
+  .bg-slate-900\/80,
+  .bg-slate-900\/90,
+  .bg-slate-950\/90 {
+    background-color: #FFFDF7 !important;
+  }
+
+  .bg-slate-800,
+  .bg-slate-800\/80,
+  .bg-slate-800\/60,
+  .bg-slate-800\/50,
+  .bg-slate-800\/40,
+  .bg-slate-700 {
+    background-color: #F5EDE0 !important;
+  }
+
+
+  /* 3. HERO WELCOME BANNER (BANNER XANH HOÀNG GIA ĐẬM NỔI BẬT TRÊN NỀN KEM HƠI VÀNG) */
+  .bg-gradient-to-r.from-indigo-950\/60,
+  .bg-gradient-to-r.from-indigo-950\/80,
+  .bg-gradient-to-r.from-purple-950\/40 {
+    background: linear-gradient(135deg, #1E40AF 0%, #1D4ED8 50%, #1E3A8A 100%) !important;
+    border: 1px solid #1D4ED8 !important;
+    box-shadow: 0 10px 25px -5px rgba(29, 78, 216, 0.25) !important;
+  }
+
+  /* Giữ chữ trắng sắc nét nổi bật bên trong Banner Xanh Hoàng Gia */
+  .bg-gradient-to-r.from-indigo-950\/60 *,
+  .bg-gradient-to-r.from-indigo-950\/80 *,
+  .bg-gradient-to-r.from-purple-950\/40 * {
+    color: #FFFFFF !important;
+  }
+
+  .bg-gradient-to-r.from-indigo-950\/60 .bg-slate-900\/80,
+  .bg-gradient-to-r.from-indigo-950\/80 .bg-slate-900\/80 {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+
+
+  /* 4. ĐƯỜNG VIỀN KHUNG MÀU KEM SẪM SẮC NÉT (WARM BORDERS) */
+  .border-slate-800,
+  .border-slate-700,
+  .border-slate-800\/80,
+  .border-slate-700\/50,
+  .border-purple-900\/50,
+  .border-amber-900\/50 {
+    border-color: #E5D9C3 !important;
+  }
+
+
+  /* 5. FORM NHẬP THÔNG TIN (INPUTS, SELECTS, TEXTAREAS) */
+  input,
+  textarea,
+  select {
+    background-color: #FFFDF7 !important;
+    color: #1C1917 !important;
+    border-color: #E5D9C3 !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #78716C !important;
+  }
+
+
+  /* 6. GIỮ KHUNG NÚT BẤM VÀ THẺ CHỮ XANH ĐẬM / ĐỎ / ĐEN DỄ NHÌN */
+  .bg-indigo-600\/20,
+  .bg-indigo-500\/10 {
+    background-color: #EFF6FF !important;
+    border-color: #BFDBFE !important;
+  }
+
+  .bg-rose-500\/10,
+  .bg-rose-600\/20 {
+    background-color: #FEF2F2 !important;
+    border-color: #FECACA !important;
+  }
+
+  .bg-amber-500\/10,
+  .bg-amber-600\/20 {
+    background-color: #FFFBEB !important;
+    border-color: #FDE68A !important;
+  }
+
+  .bg-emerald-500\/10,
+  .bg-emerald-600\/20 {
+    background-color: #F0FDF4 !important;
+    border-color: #BBF7D0 !important;
+  }
+
 }

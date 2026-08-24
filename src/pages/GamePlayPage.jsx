@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, RotateCcw, Trophy, Star, ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Trophy, Star, ShieldCheck, Heart, Sparkles, ExternalLink, Maximize2 } from 'lucide-react';
 import { useGames } from '../hooks/useGames';
 import { useProgress } from '../hooks/useProgress';
 import { GameIframeSandbox } from '../components/game/GameIframeSandbox';
@@ -12,16 +12,17 @@ import { soundFx } from '../lib/soundFx';
 
 export const GamePlayPage = () => {
   const { gameId } = useParams();
-  const { games } = useGames();
+  const { games, loading } = useGames();
   const { saveProgress, submitFeedback } = useProgress();
 
   const [isPractice, setIsPractice] = useState(false);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [completedStats, setCompletedStats] = useState(null);
 
-  const currentGame = games.find(g => g.id === gameId) || games[0];
+  const currentGame = games.find(g => String(g.id) === String(gameId)) || (games.length > 0 ? games[0] : null);
 
   const handleGameCompletion = async ({ score, timeSeconds }) => {
+    if (!currentGame) return;
     soundFx.play('victory');
     const result = await saveProgress({
       gameId: currentGame.id,
@@ -35,14 +36,24 @@ export const GamePlayPage = () => {
   };
 
   const handleRatingSubmit = async ({ rating, comment }) => {
+    if (!currentGame) return;
     await submitFeedback(currentGame.id, rating, comment);
   };
 
+  if (loading && !currentGame) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-12 h-12 rounded-full border-4 border-indigo-500/30 border-t-indigo-500 animate-spin mb-4"></div>
+        <p className="text-sm font-bold text-slate-300">Đang nạp dữ liệu trò chơi học tập...</p>
+      </div>
+    );
+  }
+
   if (!currentGame) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6">
-        <p className="text-slate-400 mb-4">Không tìm thấy trò chơi học tập.</p>
-        <Link to="/" className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold">
+      <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center">
+        <p className="text-slate-400 mb-4 font-semibold">Không tìm thấy trò chơi học tập này.</p>
+        <Link to="/" className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30">
           Quay Lại Kho Game
         </Link>
       </div>
@@ -75,36 +86,67 @@ export const GamePlayPage = () => {
           </div>
         </div>
 
-        {/* Mode Selector Toggle (GAME-08) */}
-        <div className="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-bold w-full sm:w-auto">
+        {/* Mode Selector Toggle (GAME-08) & Standalone New Tab & Fullscreen Buttons */}
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <button
             onClick={() => {
               soundFx.play('click');
-              setIsPractice(false);
+              const elem = document.documentElement;
+              if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) elem.requestFullscreen();
+              } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+              }
             }}
-            className={`flex-1 sm:flex-initial px-4 py-1.5 rounded-lg transition-all ${
-              !isPractice
-                ? 'bg-indigo-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:brightness-110 text-white font-bold text-xs shadow-lg shadow-emerald-600/20 transition-all flex items-center gap-1.5"
+            title="Bật / Thoát chế độ Toàn Màn Hình"
           >
-            Chơi Tính Điểm Chính
+            <Maximize2 className="w-3.5 h-3.5 text-emerald-200" />
+            <span>🖥️ Full Màn Hình</span>
           </button>
 
-          <button
-            onClick={() => {
-              soundFx.play('click');
-              setIsPractice(true);
-            }}
-            className={`flex-1 sm:flex-initial px-4 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${
-              isPractice
-                ? 'bg-amber-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
+          <a
+            href={`/play/${currentGame.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => soundFx.play('click')}
+            className="px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600 text-purple-300 hover:text-white border border-purple-500/30 text-xs font-bold transition-all flex items-center gap-1.5"
+            title="Mở trò chơi trong cửa sổ độc lập mới"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Luyện Tập (GAME-08)</span>
-          </button>
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Mở Tab Độc Lập</span>
+          </a>
+
+          <div className="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-bold flex-1 sm:flex-initial">
+            <button
+              onClick={() => {
+                soundFx.play('click');
+                setIsPractice(false);
+              }}
+              className={`flex-1 sm:flex-initial px-4 py-1.5 rounded-lg transition-all ${
+                !isPractice
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Chơi Tính Điểm
+            </button>
+
+            <button
+              onClick={() => {
+                soundFx.play('click');
+                setIsPractice(true);
+              }}
+              className={`flex-1 sm:flex-initial px-4 py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 ${
+                isPractice
+                  ? 'bg-amber-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Luyện Tập</span>
+            </button>
+          </div>
         </div>
       </div>
 

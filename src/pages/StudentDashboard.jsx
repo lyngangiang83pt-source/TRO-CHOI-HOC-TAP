@@ -45,7 +45,7 @@ export const StudentDashboard = () => {
   const [selectedSubject, setSelectedSubject] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { games, loading } = useGames(selectedGrade, selectedSubject);
+  const { games, loading, deleteGame } = useGames(selectedGrade, selectedSubject);
 
   const filteredGames = games.filter(game =>
     game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -110,34 +110,54 @@ export const StudentDashboard = () => {
         </div>
       </div>
 
-      {/* Grade Level Selector Tabs (Lớp 6, 7, 8, 9) */}
+      {/* Grade Level Selector Tabs (Lớp 6, 7, 8, 9) - Nền Vàng Nhạt & Xanh Lá Cây */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-        <span className="text-xs font-bold uppercase text-slate-400 mr-2 flex items-center gap-1">
-          <Layers className="w-4 h-4 text-indigo-400" /> Khối Lớp:
+        <span className="text-xs font-bold uppercase text-slate-700 dark:text-slate-400 mr-2 flex items-center gap-1 shrink-0">
+          <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" /> Khối Lớp:
         </span>
-        {GRADE_OPTIONS.map((grade) => (
-          <button
-            key={grade.id}
-            onClick={() => {
-              soundFx.play('click');
-              setSelectedGrade(grade.id);
-            }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-              selectedGrade === grade.id
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30'
-                : 'bg-slate-900/80 hover:bg-slate-800 text-slate-400 border border-slate-800'
-            }`}
-          >
-            {grade.label}
-          </button>
-        ))}
+        {GRADE_OPTIONS.map((grade) => {
+          const isSelected = selectedGrade === grade.id;
+          let badgeColorClass = 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-700';
+          if (grade.id === '6') badgeColorClass = 'bg-emerald-100 text-emerald-950 border-emerald-400 hover:bg-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-700';
+          else if (grade.id === '7') badgeColorClass = 'bg-amber-100 text-amber-950 border-amber-400 hover:bg-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-700';
+          else if (grade.id === '8') badgeColorClass = 'bg-green-100 text-green-950 border-green-400 hover:bg-green-200 dark:bg-green-950/80 dark:text-green-300 dark:border-green-700';
+          else if (grade.id === '9') badgeColorClass = 'bg-yellow-100 text-yellow-950 border-yellow-400 hover:bg-yellow-200 dark:bg-yellow-950/80 dark:text-yellow-300 dark:border-yellow-700';
+
+          return (
+            <button
+              key={grade.id}
+              onClick={() => {
+                soundFx.play('click');
+                setSelectedGrade(grade.id);
+              }}
+              className={`px-4 py-2 rounded-xl text-xs font-black transition-all whitespace-nowrap border shadow-sm ${
+                isSelected
+                  ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 text-white border-transparent shadow-md shadow-emerald-600/30 ring-2 ring-emerald-400/50 scale-105'
+                  : badgeColorClass
+              }`}
+            >
+              {grade.label}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Subject Filter Bar (GDPT 2018 7 Môn) */}
+      {/* Subject Filter Bar (GDPT 2018 7 Môn) - Nền Xanh Lá Cây & Vàng Xen Kẽ Bắt Mắt */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
-        {SUBJECT_OPTIONS.map((subj) => {
+        {SUBJECT_OPTIONS.map((subj, idx) => {
           const Icon = subj.icon;
           const isSelected = selectedSubject === subj.id;
+          const isEven = idx % 2 === 0;
+
+          // Xen kẽ màu Xanh Lá Cây (isEven = true) và Màu Vàng Hoàng Gia (isEven = false)
+          const normalBg = isEven
+            ? 'bg-[#059669] hover:bg-emerald-700 text-white border-emerald-400'
+            : 'bg-amber-500 hover:bg-amber-600 text-white border-amber-300';
+
+          const selectedBg = isEven
+            ? 'bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 text-white border-white ring-2 ring-emerald-300 shadow-xl scale-105 font-black'
+            : 'bg-gradient-to-r from-amber-900 via-yellow-900 to-amber-950 text-white border-white ring-2 ring-amber-300 shadow-xl scale-105 font-black';
+
           return (
             <button
               key={subj.id}
@@ -145,32 +165,42 @@ export const StudentDashboard = () => {
                 soundFx.play('click');
                 setSelectedSubject(subj.id);
               }}
-              className={`p-3 rounded-2xl border text-left flex flex-col items-start gap-2 transition-all ${
-                isSelected
-                  ? 'bg-indigo-600/20 border-indigo-500 text-indigo-300 shadow-lg shadow-indigo-500/10'
-                  : 'bg-slate-900/60 hover:bg-slate-800/80 border-slate-800 text-slate-400'
+              className={`p-3 rounded-2xl border text-left flex flex-col items-start gap-2 transition-all shadow-md ${
+                isSelected ? selectedBg : normalBg
               }`}
             >
-              <Icon className={`w-5 h-5 ${isSelected ? 'text-indigo-400' : 'text-slate-400'}`} />
-              <span className="text-xs font-bold truncate w-full">{subj.label}</span>
+              <Icon className={`w-5 h-5 ${isSelected ? 'text-amber-300' : 'text-white'}`} />
+              <span className="text-xs font-black truncate w-full tracking-wide drop-shadow-xs">{subj.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Search & Header Title */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-800">
+      {/* Search & Header Title Container - Nền Vàng Hoàng Gia Xen Kẽ Với Navbar Xanh Lá Cây */}
+      <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-600 text-white p-5 rounded-2xl border border-amber-300 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-heading font-bold text-white flex items-center gap-2">
-            <Gamepad2 className="w-6 h-6 text-indigo-400" />
-            Kho Trò Chơi Học Tập ({filteredGames.length})
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Chọn trò chơi để bắt đầu làm bài và tích lũy điểm thưởng
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-heading font-black text-white flex items-center gap-2 drop-shadow-sm">
+              <Gamepad2 className="w-6 h-6 text-emerald-900" />
+              <span>Kho Trò Chơi Học Tập</span>
+            </h2>
+
+            <span className="px-3.5 py-1 rounded-xl bg-white/20 text-white font-mono text-xs font-black shadow-md border border-white/40 flex items-center gap-1.5 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-900" />
+              <span>
+                {filteredGames.length === games.length 
+                  ? `Tổng số: ${games.length} Bài Chơi` 
+                  : `Đang xem: ${filteredGames.length} / ${games.length} Bài Chơi`}
+              </span>
+            </span>
+          </div>
+
+          <p className="text-xs text-amber-100 mt-1 font-extrabold">
+            Chọn trò chơi để bắt đầu làm bài và tích lũy điểm thưởng EXP
           </p>
         </div>
 
-        {/* Search Bar */}
+        {/* Search Bar Input Trong Suốt / Trắng Sáng */}
         <div className="relative w-full sm:w-72">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
@@ -178,7 +208,7 @@ export const StudentDashboard = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Tìm tên game, từ khóa..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-white text-slate-900 placeholder-slate-400 border border-amber-200 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-inner"
           />
         </div>
       </div>
@@ -193,8 +223,8 @@ export const StudentDashboard = () => {
         </div>
       ) : filteredGames.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredGames.map((game) => (
-            <GameCard key={game.id} game={game} />
+          {filteredGames.map((game, idx) => (
+            <GameCard key={game.id} game={game} index={idx} onDelete={deleteGame} />
           ))}
         </div>
       ) : (

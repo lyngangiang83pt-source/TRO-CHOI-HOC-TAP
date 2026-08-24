@@ -40,7 +40,7 @@ export const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white border-b border-emerald-500/40 shadow-md backdrop-blur-md transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         {/* Brand Logo */}
@@ -54,7 +54,7 @@ export const Navbar = () => {
             <img 
               src="/logo2.png" 
               alt="Logo 2" 
-              className="h-12 sm:h-14 w-auto max-w-none object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-300"
+              className="h-12 sm:h-14 w-auto max-w-none object-contain filter drop-shadow-[0_4px_12px_rgba(255,255,255,0.4)] group-hover:scale-110 transition-transform duration-300"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
                 if (e.currentTarget.nextElementSibling) {
@@ -62,27 +62,27 @@ export const Navbar = () => {
                 }
               }}
             />
-            <Gamepad2 className="w-8 h-8 text-indigo-400 hidden group-hover:rotate-12 transition-transform duration-300" />
+            <Gamepad2 className="w-8 h-8 text-amber-300 hidden group-hover:rotate-12 transition-transform duration-300" />
           </picture>
           <div>
-            <span className="font-heading font-bold text-lg bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+            <span className="font-heading font-black text-lg text-white drop-shadow-sm tracking-wide">
               HỌC VUI CẤP 2
             </span>
-            <span className="hidden sm:inline-block text-[10px] font-semibold tracking-wider text-indigo-400 block -mt-1 uppercase">
+            <span className="hidden sm:inline-block text-[10px] font-bold tracking-wider text-emerald-100 block -mt-1 uppercase">
               THCS GDPT 2018
             </span>
           </div>
         </Link>
 
-        {/* Navigation Links */}
+        {/* Navigation Links - Nền Xanh Lá Cây */}
         <nav className="hidden md:flex items-center gap-1">
           <Link
             to="/"
             onClick={() => soundFx.play('click')}
-            className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
-              location.pathname === '/' 
-                ? 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+            className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all duration-200 ${
+              location.pathname === '/' || location.pathname === '/dashboard'
+                ? 'bg-white/25 text-white border border-white/40 shadow-sm' 
+                : 'text-emerald-100 hover:text-white hover:bg-white/15'
             }`}
           >
             Kho Game
@@ -91,13 +91,13 @@ export const Navbar = () => {
           <Link
             to="/leaderboard"
             onClick={() => soundFx.play('click')}
-            className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+            className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-1.5 ${
               location.pathname === '/leaderboard' 
-                ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                ? 'bg-white/25 text-white border border-white/40 shadow-sm' 
+                : 'text-emerald-100 hover:text-white hover:bg-white/15'
             }`}
           >
-            <Trophy className="w-4 h-4 text-amber-400" />
+            <Trophy className="w-4 h-4 text-amber-300" />
             Bảng Xếp Hạng
           </Link>
 
@@ -105,28 +105,28 @@ export const Navbar = () => {
             <Link
               to="/teacher"
               onClick={() => soundFx.play('click')}
-              className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-1.5 ${
                 location.pathname === '/teacher' 
-                  ? 'bg-emerald-600/20 text-emerald-400 border border-emerald-500/30' 
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  ? 'bg-white/25 text-white border border-white/40 shadow-sm' 
+                  : 'text-emerald-100 hover:text-white hover:bg-white/15'
               }`}
             >
-              <GraduationCap className="w-4 h-4 text-emerald-400" />
+              <GraduationCap className="w-4 h-4 text-amber-300" />
               Góc Giáo Viên
             </Link>
           )}
 
-          {profile?.email?.toLowerCase() === 'lyngangiang83pt@gmail.com' && (
+          {(profile?.email?.toLowerCase() === 'lyngangiang83pt@gmail.com' || profile?.username?.toLowerCase() === 'lyngangiang83pt') && (
             <Link
               to="/admin"
               onClick={() => soundFx.play('click')}
-              className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 rounded-lg text-sm font-bold transition-all duration-200 flex items-center gap-1.5 ${
                 location.pathname === '/admin' 
-                  ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30' 
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  ? 'bg-white/25 text-white border border-white/40 shadow-sm' 
+                  : 'text-emerald-100 hover:text-white hover:bg-white/15'
               }`}
             >
-              <ShieldCheck className="w-4 h-4 text-purple-400" />
+              <ShieldCheck className="w-4 h-4 text-amber-300" />
               Quản Trị Admin
             </Link>
           )}
@@ -138,18 +138,18 @@ export const Navbar = () => {
           {/* Rank & EXP Badge */}
           {profile && (
             <div className="hidden sm:flex items-center gap-2">
-              <div className={`px-2.5 py-1 rounded-full text-xs font-bold border bg-slate-900/80 flex items-center gap-1.5 ${getRankColor(profile.rank_tier)}`}>
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className={`px-2.5 py-1 rounded-full text-xs font-bold border bg-white/15 text-white border-white/30 flex items-center gap-1.5`}>
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                 <span>{profile.rank_tier}</span>
               </div>
 
-              <div className="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-950/80 text-indigo-300 border border-indigo-800/50 flex items-center gap-1">
-                <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400" />
+              <div className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 flex items-center gap-1">
+                <Flame className="w-3.5 h-3.5 text-orange-300 fill-orange-300" />
                 <span>{profile.total_exp || 0} EXP</span>
               </div>
 
-              <div className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-950/80 text-amber-300 border border-amber-800/50 flex items-center gap-1">
-                <Coins className="w-3.5 h-3.5 text-amber-400" />
+              <div className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white/15 text-white border border-white/30 flex items-center gap-1">
+                <Coins className="w-3.5 h-3.5 text-amber-300" />
                 <span>{profile.coins || 0}</span>
               </div>
             </div>
@@ -158,25 +158,25 @@ export const Navbar = () => {
           {/* Audio Toggle */}
           <button
             onClick={handleAudioToggle}
-            className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-700/80 text-slate-300 hover:text-white transition-colors focus:outline-none"
+            className="p-2 rounded-lg bg-white/15 hover:bg-white/25 text-white transition-colors focus:outline-none border border-white/20"
             title={muted ? 'Bật âm thanh' : 'Tắt âm thanh'}
           >
-            {muted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+            {muted ? <VolumeX className="w-4 h-4 text-rose-300" /> : <Volume2 className="w-4 h-4 text-emerald-300" />}
           </button>
 
           {/* Dark / Light Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg bg-slate-800/60 hover:bg-slate-700/80 text-slate-300 hover:text-white transition-colors focus:outline-none"
+            className="p-2 rounded-lg bg-white/15 hover:bg-white/25 text-white transition-colors focus:outline-none border border-white/20"
             title="Đổi giao diện Sáng / Tối"
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-emerald-100" />}
           </button>
 
           {/* Quick Demo Role Switcher Dropdown */}
           <div className="relative group">
-            <button className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-xs font-medium text-slate-300 flex items-center gap-1.5 hover:bg-slate-700">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <button className="px-2.5 py-1.5 rounded-lg bg-white/15 border border-white/30 text-xs font-bold text-white flex items-center gap-1.5 hover:bg-white/25">
+              <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
               <span className="capitalize">{profile?.role || 'student'}</span>
             </button>
             <div className="absolute right-0 top-full mt-1 w-40 glass-panel rounded-xl shadow-xl py-1 hidden group-hover:block border border-slate-700/80 text-xs z-50">
@@ -185,21 +185,21 @@ export const Navbar = () => {
               </div>
               <button 
                 onClick={() => switchDemoRole('student')}
-                className="w-full px-3 py-2 text-left hover:bg-indigo-600/20 text-slate-200 flex items-center justify-between"
+                className="w-full px-3 py-2 text-left hover:bg-emerald-600/20 text-slate-200 flex items-center justify-between font-bold"
               >
                 <span>Học sinh (Lớp 7)</span>
                 {profile?.role === 'student' && <span className="text-emerald-400 font-bold">✓</span>}
               </button>
               <button 
                 onClick={() => switchDemoRole('teacher')}
-                className="w-full px-3 py-2 text-left hover:bg-indigo-600/20 text-slate-200 flex items-center justify-between"
+                className="w-full px-3 py-2 text-left hover:bg-emerald-600/20 text-slate-200 flex items-center justify-between font-bold"
               >
                 <span>Giáo viên THCS</span>
                 {profile?.role === 'teacher' && <span className="text-emerald-400 font-bold">✓</span>}
               </button>
               <button 
                 onClick={() => switchDemoRole('admin')}
-                className="w-full px-3 py-2 text-left hover:bg-indigo-600/20 text-slate-200 flex items-center justify-between"
+                className="w-full px-3 py-2 text-left hover:bg-emerald-600/20 text-slate-200 flex items-center justify-between font-bold"
               >
                 <span>Quản trị Admin</span>
                 {profile?.role === 'admin' && <span className="text-emerald-400 font-bold">✓</span>}
@@ -207,28 +207,31 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* User Profile Button */}
-          {profile ? (
+          {/* NÚT ĐĂNG NHẬP HIỆN TÊN NGƯỜI DÙNG KHI ĐÃ ĐĂNG NHẬP THÀNH CÔNG */}
+          {user ? (
             <div className="flex items-center gap-2">
               <Link 
                 to="/profile" 
                 onClick={() => soundFx.play('click')}
-                className="flex items-center gap-2 p-1 pl-2 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 transition-colors"
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 text-xs font-black shadow-md border border-amber-300 transition-all transform hover:scale-105"
+                title="Trang cá nhân thành viên"
               >
                 <img 
-                  src={profile.avatar_url} 
-                  alt={profile.full_name} 
-                  className="w-7 h-7 rounded-lg object-cover ring-2 ring-indigo-500/30"
+                  src={profile?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'} 
+                  alt={profile?.full_name || 'Avatar'} 
+                  className="w-6 h-6 rounded-full object-cover border border-amber-950/30 shrink-0"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
-                <span className="hidden lg:inline-block text-xs font-semibold max-w-[100px] truncate text-slate-200">
-                  {profile.full_name}
+                <User className="w-4 h-4 fill-amber-950 text-amber-950 shrink-0" />
+                <span className="max-w-[130px] sm:max-w-[160px] truncate font-black">
+                  {profile?.full_name || profile?.username || user?.email?.split('@')[0] || 'Thành Viên'}
                 </span>
               </Link>
 
               <button
                 onClick={signOut}
-                className="p-2 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 transition-colors"
-                title="Đăng xuất"
+                className="p-2 rounded-xl bg-rose-600/80 hover:bg-rose-600 text-white transition-colors border border-rose-400/50 shadow-xs"
+                title="Đăng xuất khỏi hệ thống"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -237,9 +240,11 @@ export const Navbar = () => {
             <Link
               to="/auth"
               onClick={() => soundFx.play('click')}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-200"
+              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 text-xs font-black shadow-md flex items-center gap-1.5 transition-all transform hover:scale-105 active:scale-95 border border-amber-300"
+              title="Bấm để Đăng Ký / Đăng Nhập vào hệ thống"
             >
-              Đăng Nhập
+              <User className="w-4 h-4 fill-amber-950 text-amber-950" />
+              <span>Đăng Ký / Đăng Nhập</span>
             </Link>
           )}
 

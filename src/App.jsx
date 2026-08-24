@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Navbar } from './components/common/Navbar';
 import { StudentDashboard } from './pages/StudentDashboard';
 import { GamePlayPage } from './pages/GamePlayPage';
@@ -11,27 +12,51 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { ProfilePage } from './pages/ProfilePage';
 import { AuthPage } from './pages/AuthPage';
 
+// Component phân quyền nghiêm ngặt: Chỉ duy nhất user "lyngangiang83pt@gmail.com" hoặc username "lyngangiang83pt" mới được truy cập Admin
+const RequireAdmin = ({ children }) => {
+  const { profile, user } = useAuth();
+  const isAdmin = 
+    profile?.email?.toLowerCase() === 'lyngangiang83pt@gmail.com' ||
+    profile?.username?.toLowerCase() === 'lyngangiang83pt' ||
+    user?.email?.toLowerCase() === 'lyngangiang83pt@gmail.com';
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+function AppContent() {
+  return (
+    <div className="min-h-screen flex flex-col bg-[#FAF4E8] text-[#1C1917] transition-colors duration-300">
+      <Navbar />
+      <main className="flex-1 pb-12">
+        <Routes>
+          <Route path="/" element={<StudentDashboard />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/dashboard" element={<StudentDashboard />} />
+          <Route path="/play/:gameId" element={<GamePlayPage />} />
+          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/teacher" element={<TeacherDashboard />} />
+          <Route path="/admin" element={<RequireAdmin><AdminDashboard /></RequireAdmin>} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <div className="min-h-screen flex flex-col bg-[var(--bg-primary)] text-[var(--text-main)] transition-colors duration-300">
-            <Navbar />
-            <main className="flex-1 pb-12">
-              <Routes>
-                <Route path="/" element={<StudentDashboard />} />
-                <Route path="/play/:gameId" element={<GamePlayPage />} />
-                <Route path="/leaderboard" element={<LeaderboardPage />} />
-                <Route path="/teacher" element={<TeacherDashboard />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/auth" element={<AuthPage />} />
-              </Routes>
-            </main>
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }

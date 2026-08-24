@@ -6,7 +6,9 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'mock-anon-key
 export const isSupabaseConfigured = Boolean(
   import.meta.env.VITE_SUPABASE_URL && 
   import.meta.env.VITE_SUPABASE_ANON_KEY &&
-  !import.meta.env.VITE_SUPABASE_URL.includes('your-supabase-project')
+  !import.meta.env.VITE_SUPABASE_URL.includes('your-supabase-project') &&
+  !import.meta.env.VITE_SUPABASE_URL.includes('mock-project-cap2') &&
+  import.meta.env.VITE_SUPABASE_URL.startsWith('https://')
 );
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {

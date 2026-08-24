@@ -10,18 +10,23 @@ import {
   CheckCircle2, 
   Send,
   FileArchive,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Trash2,
+  Bot,
+  Sparkles
 } from 'lucide-react';
 import { useGames } from '../hooks/useGames';
 import { RadarSkillChart } from '../components/dashboard/RadarSkillChart';
 import { ClassManager } from '../components/dashboard/ClassManager';
 import { AssignmentModal } from '../components/dashboard/AssignmentModal';
 import { Html5ZipUploader } from '../components/game/Html5ZipUploader';
+import { GameCard } from '../components/game/GameCard';
+import { AiQuestionGenerator } from '../components/dashboard/AiQuestionGenerator';
 import { soundFx } from '../lib/soundFx';
 
 export const TeacherDashboard = () => {
-  const { games, addGame } = useGames();
-  const [activeTab, setActiveTab] = useState('analytics'); // 'analytics' | 'classes' | 'create_game'
+  const { games, addGame, deleteGame } = useGames();
+  const [activeTab, setActiveTab] = useState('analytics'); // 'analytics' | 'classes' | 'create_game' | 'manage_games' | 'ai_generator'
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
 
   // New Game Form State
@@ -32,6 +37,7 @@ export const TeacherDashboard = () => {
   const [gradeLevel, setGradeLevel] = useState('7');
   const [subject, setSubject] = useState('Khoa Học Tự Nhiên');
   const [zipBlobUrl, setZipBlobUrl] = useState('');
+  const [zipHtmlContent, setZipHtmlContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -40,22 +46,35 @@ export const TeacherDashboard = () => {
     e.preventDefault();
     soundFx.play('click');
 
-    if (!title || !title.trim()) {
+    let gameTitle = title ? title.trim() : '';
+    if (!gameTitle && (zipHtmlContent || zipBlobUrl)) {
+      gameTitle = 'Trò Chơi HTML5 Tương Tác';
+    }
+
+    if (!gameTitle) {
       soundFx.play('wrong');
       setSuccessMsg(null);
       setErrorMsg('⚠️ Vui lòng nhập Tên Trò Chơi!');
       return;
     }
 
-    const finalUrl = gameType === 'html5_zip' ? zipBlobUrl : gameUrl;
+    // Tự động nhận diện gameType nếu giáo viên chọn Upload File hoặc dán URL
+    let detectedType = gameType;
+    let finalUrl = gameUrl;
 
-    if (!finalUrl) {
+    if (zipHtmlContent || zipBlobUrl) {
+      detectedType = 'html5_zip';
+      finalUrl = zipBlobUrl || 'html5-embedded-content';
+    } else if (gameUrl && gameUrl.trim()) {
+      detectedType = 'iframe';
+      finalUrl = gameUrl.trim();
+    }
+
+    if (!finalUrl && !zipHtmlContent) {
       soundFx.play('wrong');
       setSuccessMsg(null);
       setErrorMsg(
-        gameType === 'html5_zip' 
-          ? '⚠️ Vui lòng chọn File nén HTML5 ZIP / PowerPoint (.zip, .html) trước khi tạo bài chơi!' 
-          : '⚠️ Vui lòng nhập đường dẫn URL nhúng (Wordwall/Quizizz/Canva)!'
+        '⚠️ Vui lòng dán Link Nhúng (Wordwall/Quizizz/Canva) HOẶC nhấp Chọn File HTML5 ZIP/PowerPoint từ máy tính!'
       );
       return;
     }
@@ -65,26 +84,35 @@ export const TeacherDashboard = () => {
     setErrorMsg(null);
 
     const gameData = {
-      title,
-      description,
-      game_type: gameType,
-      game_url: finalUrl,
+      title: gameTitle,
+      description: description.trim() || 'Trò chơi học tập tương tác nâng cao kiến thức.',
+      game_type: detectedType,
+      game_url: finalUrl || 'https://wordwall.net/embed/play/123456/789',
       grade_level: gradeLevel,
       subject,
       thumbnail_url: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&auto=format&fit=crop&q=80',
-      is_public: true
+      is_public: true,
+      config: {
+        htmlContent: zipHtmlContent || ''
+      }
     };
 
     const { error } = await addGame(gameData);
     setSubmitting(false);
 
     if (!error) {
-      soundFx.play('correct');
-      setSuccessMsg('🎉 Đã tạo trò chơi học tập mới thành công! Bài chơi đã hiển thị tức thì trên Kho Game.');
+      soundFx.play('victory');
+      setSuccessMsg(`🎉 Đã đăng bài chơi "${title}" thành công vào Kho Trò Chơi Học Tập!`);
       setTitle('');
       setDescription('');
       setGameUrl('');
       setZipBlobUrl('');
+      setZipHtmlContent('');
+      
+      // Tự động chuyển sang tab Quản Lý Bài Chơi để Thầy Cô thấy ngay kết quả
+      setTimeout(() => {
+        setActiveTab('manage_games');
+      }, 1000);
     }
   };
 
@@ -151,6 +179,30 @@ export const TeacherDashboard = () => {
         >
           <Plus className="w-4 h-4" />
           <span>Tạo / Upload Trò Chơi Mới</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('manage_games')}
+          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+            activeTab === 'manage_games'
+              ? 'border-rose-400 text-rose-400'
+              : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Trash2 className="w-4 h-4 text-rose-400" />
+          <span>Quản Lý & Xóa Bài Chơi ({games.length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('ai_generator')}
+          className={`pb-3 px-4 border-b-2 transition-colors flex items-center gap-2 ${
+            activeTab === 'ai_generator'
+              ? 'border-purple-400 text-purple-400'
+              : 'border-transparent text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Bot className="w-4 h-4 text-purple-400" />
+          <span>🤖 AI Tạo Câu Hỏi & Kho Câu Hỏi</span>
         </button>
       </div>
 
@@ -304,7 +356,15 @@ export const TeacherDashboard = () => {
                 />
               </div>
             ) : (
-              <Html5ZipUploader onZipParsed={({ blobUrl }) => setZipBlobUrl(blobUrl)} />
+              <Html5ZipUploader onZipParsed={({ fileName, blobUrl, htmlContent }) => {
+                setGameType('html5_zip');
+                setZipBlobUrl(blobUrl);
+                if (htmlContent) setZipHtmlContent(htmlContent);
+                if (fileName && !title) {
+                  const cleanName = fileName.replace(/\.(html|htm|zip|ppt|pptx)$/i, '').replace(/[-_]/g, ' ');
+                  setTitle(cleanName);
+                }
+              }} />
             )}
 
             <div>
@@ -327,6 +387,42 @@ export const TeacherDashboard = () => {
             </button>
           </form>
         </div>
+      )}
+
+      {/* TAB 4: Manage & Delete Games */}
+      {activeTab === 'manage_games' && (
+        <div className="space-y-4">
+          <div className="glass-panel p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-heading font-bold text-white flex items-center gap-2">
+                <Trash2 className="w-5 h-5 text-rose-500" />
+                Quản Lý & Xóa Bài Chơi Trong Kho ({games.length})
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Thầy Cô chỉ cần nhấp vào nút <span className="text-rose-400 font-bold">Thùng Rác Đỏ</span> trên mỗi thẻ bài để xóa các bài chơi không dùng nữa.
+              </p>
+            </div>
+            <span className="px-3.5 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold font-mono">
+              Kho Game Hiện Tại: {games.length} bài
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {games.map((game) => (
+              <GameCard key={game.id} game={game} onDelete={deleteGame} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: AI Auto Question Generator & Question Bank */}
+      {activeTab === 'ai_generator' && (
+        <AiQuestionGenerator 
+          onGameCreated={async (gameData) => {
+            await addGame(gameData);
+            setActiveTab('manage_games');
+          }} 
+        />
       )}
 
       {/* Assignment Modal */}
