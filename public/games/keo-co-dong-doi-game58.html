@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Game #58: Kéo Co Đồng Đội - THCS GDPT 2018</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #065F46;
+      --emerald-accent: #059669;
+      --mint-glow: #34D399;
+      --gold-yellow: #FBBF24;
+      --bright-yellow: #FEF08A;
+      --dark-amber: #451A03;
+      --deep-bg: #022C22;
+      --card-bg: rgba(6, 78, 59, 0.88);
+      --glass-border: rgba(52, 211, 153, 0.45);
+      --danger-red: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at top center, #047857 0%, #064E3B 40%, var(--deep-bg) 100%);
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(52, 211, 153, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 860px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid var(--mint-glow);
+      border-radius: 28px;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.65), 0 0 35px rgba(5, 150, 105, 0.35);
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .shake-animation {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+    .title-gradient {
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--bright-yellow) 40%, var(--gold-yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+    }
+
+    .glass-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--gold-yellow) 50%, #F59E0B 100%);
+      color: var(--dark-amber);
+      border: 2px solid #FDE047;
+      font-weight: 900;
+      border-radius: 16px;
+      padding: 14px 28px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.5);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 28px -4px rgba(245, 158, 11, 0.65);
+    }
+
+    .btn-gold:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      font-weight: 800;
+      border-radius: 14px;
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #FFFFFF;
+    }
+
+    /* Avatar Grid */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .avatar-option {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .avatar-option .emoji {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 4px;
+      transition: transform 0.2s;
+    }
+
+    .avatar-option .name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--bright-yellow);
+    }
+
+    .avatar-option.selected {
+      background: rgba(5, 150, 105, 0.45);
+      border-color: var(--gold-yellow);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+      transform: scale(1.05);
+    }
+
+    .avatar-option.selected .emoji {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    /* ĐẤU TRƯỜNG KÉO CO (TUG OF WAR ARENA) */
+    .tug-arena {
+      background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(6,78,59,0.5) 100%);
+      border: 2px solid var(--mint-glow);
+      border-radius: 24px;
+      padding: 16px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tug-track {
+      position: relative;
+      height: 70px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 16px;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    /* Vạch Đích Ở Giữa */
+    .center-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #EF4444;
+      transform: translateX(-50%);
+      z-index: 5;
+      box-shadow: 0 0 10px #EF4444;
+    }
+
+    .center-line::after {
+      content: 'VẠCH THẮNG';
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      font-weight: 900;
+      color: #FEE2E2;
+      background: #B91C1C;
+      padding: 1px 4px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* Dây Kéo Co & Nơ Đỏ */
+    .tug-rope-group {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      width: 100%;
+      transition: left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .rope-line {
+      height: 8px;
+      background: repeating-linear-gradient(45deg, #FDE047, #FDE047 10px, #D97706 10px, #D97706 20px);
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      flex: 1;
+    }
+
+    .rope-ribbon {
+      width: 24px;
+      height: 32px;
+      background: #DC2626;
+      border: 2px solid #FFFFFF;
+      border-radius: 6px;
+      box-shadow: 0 0 15px #DC2626;
+      z-index: 10;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      animation: ribbonWiggle 0.6s infinite alternate;
+    }
+
+    @keyframes ribbonWiggle {
+      0% { transform: rotate(-5deg) scale(0.95); }
+      100% { transform: rotate(5deg) scale(1.05); }
+    }
+
+    .team-avatar-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 26px;
+      z-index: 8;
+    }
+
+    /* Choice Grid */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      .avatar-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .choice-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 13px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .choice-card:hover {
+      background: rgba(5, 150, 105, 0.5);
+      border-color: var(--mint-glow);
+      transform: translateX(4px);
+    }
+
+    .choice-card.correct {
+      background: rgba(16, 185, 129, 0.85) !important;
+      border-color: #A7F3D0 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+
+    .choice-card.wrong {
+      background: rgba(239, 68, 68, 0.85) !important;
+      border-color: #FECACA !important;
+      color: #FFFFFF !important;
+    }
+
+    .powerup-btn {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1.5px solid var(--mint-glow);
+      color: #FFFFFF;
+      border-radius: 14px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .powerup-btn:not(:disabled):hover {
+      background: var(--emerald-accent);
+      transform: scale(1.05);
+      border-color: #FFFFFF;
+    }
+
+    .powerup-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .combo-badge {
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 11px;
+      border: 1px solid #F472B6;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+      animation: comboPulse 0.8s infinite alternate;
+    }
+
+    @keyframes comboPulse {
+      0% { transform: scale(0.95); }
+      100% { transform: scale(1.1); }
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="game-container" id="gameContainer">
+    
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 1: BẮT ĐẦU (START SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="startScreen" class="space-y-5">
+      <div style="text-align: center; margin-bottom: 18px;">
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--mint-glow); margin-bottom: 8px;">
+          <span style="font-size: 16px;">🪢</span>
+          <span style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); text-transform: uppercase;">Game #58 • GDPT 2018 THCS</span>
+          <span style="font-size: 16px;">💪</span>
+        </div>
+        <h1 class="font-orbitron title-gradient" style="font-size: 28px; font-weight: 900; letter-spacing: 1px; margin-bottom: 6px;">
+          KÉO CO ĐỒNG ĐỘI
+        </h1>
+        <p style="font-size: 13px; color: #D1FAE5; font-weight: 600;">
+          Trả lời đúng và tốc độ để kéo ruy băng vượt qua vạch chiến thắng của đội nhà!
+        </p>
+      </div>
+
+      <!-- Form Nhập Thông Tin -->
+      <div class="glass-card" style="margin-bottom: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">TÊN THỦ LĨNH:</label>
+            <input type="text" id="playerNameInput" placeholder="Ví dụ: Đỗ Quốc Huy" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--mint-glow); background: #FFFFFF; color: #0F172A; font-weight: 800; font-size: 13px; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">KHỐI LỚP:</label>
+            <select id="playerClassSelect" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--mint-glow); background: #FFFFFF; color: #0F172A; font-weight: 800; font-size: 13px; outline: none;">
+              <option value="Lớp 6A1">Lớp 6A1 (Khối 6)</option>
+              <option value="Lớp 7A1" selected>Lớp 7A1 (Khối 7)</option>
+              <option value="Lớp 8A2">Lớp 8A2 (Khối 8)</option>
+              <option value="Lớp 9A1">Lớp 9A1 (Khối 9)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Chọn Đội Đại Diện -->
+        <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">CHỌN CHIẾN HỘI KÉO CO ĐẠI DIỆN:</label>
+        <div class="avatar-grid" id="avatarGrid">
+          <div class="avatar-option selected" data-avatar="🐉" data-role="Đội Rồng Vàng">
+            <span class="emoji">🐉</span>
+            <span class="name">Rồng Vàng</span>
+          </div>
+          <div class="avatar-option" data-avatar="🐯" data-role="Đội Hổ Dũng Mãnh">
+            <span class="emoji">🐯</span>
+            <span class="name">Hổ Mãnh</span>
+          </div>
+          <div class="avatar-option" data-avatar="🔥" data-role="Phượng Hoàng Lửa">
+            <span class="emoji">🔥</span>
+            <span class="name">Phượng Hoàng</span>
+          </div>
+          <div class="avatar-option" data-avatar="🦅" data-role="Đại Bàng Sấm Sét">
+            <span class="emoji">🦅</span>
+            <span class="name">Đại Bàng</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tóm Tắt Luật Chơi Ngắn Gọn -->
+      <div class="glass-card" style="font-size: 12px; line-height: 1.6; color: #ECFDF5; margin-bottom: 20px;">
+        <div style="font-weight: 900; color: var(--gold-yellow); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>📜</span> LUẬT THI ĐẤU KÉO CO:
+        </div>
+        <p>1. 🪢 <b>Đua lực kéo dây:</b> Trả lời đúng và bấm càng nhanh, đội của bạn sẽ kéo mạnh dây thừng về phía bên trái (+1 nấc kéo).</p>
+        <p>2. ⚠️ <b>Cảnh giác đối thủ:</b> Trả lời sai hoặc hết 20s, đội đối thủ sẽ kéo ngược dây về phía bên phải.</p>
+        <p>3. 🏆 <b>Chiến thắng chung cuộc:</b> Kéo ruy băng đỏ vượt hẳn vạch thắng hoặc dẫn trước sau 6 câu hỏi!</p>
+      </div>
+
+      <div style="text-align: center;">
+        <button class="btn-gold" id="btnStartGame" style="width: 100%; max-width: 340px;">
+          <span>💪 VÀO TRẬN KÉO CO</span>
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 2: CHƠI GAMEPLAY (GAMEPLAY SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="gameplayScreen" style="display: none;">
+      
+      <!-- Top Status Header Bar -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--glass-border);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="playerBadge" style="background: rgba(0,0,0,0.35); border: 1.5px solid var(--mint-glow); padding: 4px 10px; border-radius: 14px; font-size: 12px; font-weight: 800; color: var(--bright-yellow);">
+            🐉 Đỗ Quốc Huy (Lớp 7A1)
+          </div>
+          <div id="comboContainer" style="display: none;">
+            <span class="combo-badge" id="comboText">🔥 Combo x2</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <!-- Lives Hearts -->
+          <div id="livesContainer" style="font-size: 16px; letter-spacing: 2px;">
+            ❤️❤️❤️
+          </div>
+
+          <!-- Score -->
+          <div style="background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--gold-yellow) 100%); color: #451A03; padding: 4px 12px; border-radius: 12px; font-weight: 900; font-size: 13px; border: 1.5px solid #FFFFFF;">
+            🏆 <span id="scoreDisplay">0</span> Đ
+          </div>
+        </div>
+      </div>
+
+      <!-- ĐẤU TRƯỜNG KÉO CO HOẠT CẢNH 2 ĐỘI -->
+      <div class="tug-arena">
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 900; margin-bottom: 4px;">
+          <span style="color: var(--bright-yellow);">🔵 ĐỘI NHÀ (<span id="arenaPlayerName">Rồng Vàng</span>)</span>
+          <span style="color: #F87171;">🔴 ĐỘI ĐỐI THỦ (Thần Bão)</span>
+        </div>
+
+        <div class="tug-track">
+          <div class="center-line"></div>
+          
+          <div id="ropeGroup" class="tug-rope-group" style="left: 0%;">
+            <!-- Đội Nhà (Trái) -->
+            <div class="team-avatar-box" style="margin-right: 8px;">
+              <span id="playerTeamEmoji">🐉</span>
+              <span style="font-size: 20px;">🏃‍♂️</span>
+            </div>
+
+            <!-- Dây Thừng & Nơ Ruy Băng Đỏ -->
+            <div class="rope-line"></div>
+            <div class="rope-ribbon" id="ropeRibbon">🎀</div>
+            <div class="rope-line"></div>
+
+            <!-- Đội Đối Thủ (Phải) -->
+            <div class="team-avatar-box" style="margin-left: 8px;">
+              <span style="font-size: 20px;">🏃‍♂️</span>
+              <span>🤖</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #D1FAE5;">
+          <span>Lực Kéo Đội Nhà: <b id="pullPowerText" style="color:var(--gold-yellow);">Cân bằng (0)</b></span>
+          <span id="qRoundCounter">Hiệp: 1 / 6</span>
+        </div>
+      </div>
+
+      <!-- KHUNG CÂU HỎI TRẮC NGHIỆM BẤM NHANH -->
+      <div class="glass-card">
+        
+        <!-- Timer Bar & Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 800; margin-bottom: 4px; color: var(--bright-yellow);">
+          <span>Môn Học: <b id="qSubjectTag" style="background:#047857; padding: 2px 8px; border-radius: 8px; border: 1px solid var(--mint-glow); color:#FFFFFF;">Toán Học</b></span>
+          <span>⚡ Điểm Tốc Độ: <b style="color:var(--gold-yellow);">+100 Đ</b></span>
+          <span>⏱️ <span id="timerSeconds">20</span>s</span>
+        </div>
+
+        <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.15);">
+          <div id="timerBar" style="width: 100%; height: 100%; background: linear-gradient(to right, #10B981, #FBBF24, #EF4444); transition: width 1s linear;"></div>
+        </div>
+
+        <h4 id="questionTitle" style="font-size: 15px; font-weight: 800; color: #FFFFFF; line-height: 1.5; margin-bottom: 10px;">
+          Nội dung câu hỏi...
+        </h4>
+
+        <div class="choice-grid" id="choiceGrid">
+          <!-- Choices injected by JS -->
+        </div>
+
+        <!-- Power-ups 3 Trợ Giúp -->
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.15);">
+          <div style="display: flex; gap: 6px;">
+            <button class="powerup-btn" id="btn5050" style="padding: 6px 10px; font-size: 11px;">
+              <span>🌓</span> 50:50 (<span id="count5050">1</span>)
+            </button>
+            <button class="powerup-btn" id="btnExtraTime" style="padding: 6px 10px; font-size: 11px;">
+              <span>⏱️</span> +10s (<span id="countTime">1</span>)
+            </button>
+            <button class="powerup-btn" id="btnHint" style="padding: 6px 10px; font-size: 11px;">
+              <span>💡</span> Gợi Ý (<span id="countHint">1</span>)
+            </button>
+          </div>
+
+          <div id="hintBox" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--gold-yellow); color: var(--bright-yellow); font-size: 10px; padding: 4px 8px; border-radius: 8px; font-weight: bold;">
+            Gợi ý: ...
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Explanation Modal -->
+      <div id="feedbackModal" style="display: none; margin-top: 12px;" class="glass-card">
+        <div id="feedbackTitle" style="font-weight: 900; font-size: 14px; margin-bottom: 4px;"></div>
+        <p id="feedbackExplanation" style="font-size: 12px; color: #D1FAE5; line-height: 1.5; margin-bottom: 10px;"></p>
+        <button class="btn-gold" id="btnNextRound" style="padding: 8px 20px; font-size: 12px;">
+          <span>HIỆP TIẾP THEO →</span>
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 3: KẾT THÚC & VINH DANH (RESULT SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="endScreen" style="display: none; text-align: center;" class="space-y-5">
+      <div style="margin-bottom: 16px;">
+        <span id="starRating" style="font-size: 38px; display: block; margin-bottom: 6px;">⭐⭐⭐</span>
+        <h2 class="font-orbitron title-gradient" id="resultTitle" style="font-size: 24px; font-weight: 900;">
+          QUÁN QUÂN KÉO CO ĐỒNG ĐỘI!
+        </h2>
+        <p id="resultSubtitle" style="font-size: 13px; color: #D1FAE5; font-weight: 700; margin-top: 4px;">
+          Đội của bạn đã thể hiện tinh thần đoàn kết và phản xạ tri thức vô địch!
+        </p>
+      </div>
+
+      <!-- Certificate Summary Card -->
+      <div class="glass-card" style="text-align: left; max-width: 480px; margin: 0 auto 16px; background: rgba(0,0,0,0.35);">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Thủ lĩnh kéo co:</span>
+          <span id="resPlayerName" style="font-weight: 900; color: #FFFFFF;">Đỗ Quốc Huy</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Khối Lớp & Chiến Đội:</span>
+          <span id="resPlayerClass" style="font-weight: 900; color: #FFFFFF;">Lớp 7A1 - Đội Rồng Vàng</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Tổng Điểm Lực Kéo:</span>
+          <span id="resFinalScore" style="font-weight: 900; color: var(--gold-yellow); font-size: 16px;">600 Đ</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Số Hiệp Chiến Thắng:</span>
+          <span id="resCorrectCount" style="font-weight: 900; color: #34D399;">6 / 6 Hiệp</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Chuỗi Combo Tốc Độ:</span>
+          <span id="resMaxCombo" style="font-weight: 900; color: #EC4899;">🔥 Combo x6</span>
+        </div>
+      </div>
+
+      <!-- Bảng Xếp Hạng LocalStorage Top 5 -->
+      <div class="glass-card" style="text-align: left; max-width: 480px; margin: 0 auto 20px;">
+        <div style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <span>🪢 BẢNG VÀNG QUÁN QUÂN KÉO CO (TOP ĐIỂM CAO):</span>
+          <span style="font-size: 10px; color: #A7F3D0;">(Lưu trên máy)</span>
+        </div>
+        <div id="leaderboardList" style="font-size: 12px; space-y: 6px;">
+          <!-- Top scores injected by JS -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
+        <button class="btn-gold" id="btnDownloadReport">
+          <span>📜 TẢI CHỨNG NHẬN QUÁN QUÂN (ẢNH)</span>
+        </button>
+        <button class="btn-secondary" id="btnPlayAgain">
+          <span>🔄 ĐẤU LẠI VÁN MỚI</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================================== -->
+  <!-- JAVASCRIPT: LOGIC KÉO CO, WEB AUDIO API & CÂU HỎI -->
+  <!-- ==================================================================== -->
+  <script>
+    /* =======================================================================
+       BỘ DỮ LIỆU CÂU HỎI GDPT 2018 THCS (DỄ DÀNG CHỈNH SỬA Ở ĐÂY)
+       ======================================================================= */
+    const QUIZ_DATA = [
+      {
+        subject: "Khoa Học Tự Nhiên 7 (Vật Lý)",
+        question: "Trong trò chơi kéo co, hai đội tác dụng vào sợi dây hai lực như thế nào khi dây đứng yên cân bằng?",
+        options: [
+          "Hai lực cùng phương, ngược chiều, cùng độ lớn (Lực cân bằng)",
+          "Hai lực cùng phương, cùng chiều",
+          "Hai lực vuông góc với nhau",
+          "Hai lực có độ lớn khác nhau"
+        ],
+        correctIndex: 0,
+        hint: "Khi vật đứng yên cân bằng, hai lực tác dụng lên vật có cùng phương, ngược chiều và cùng độ lớn.",
+        explanation: "Hai lực cân bằng là hai lực cùng tác dụng lên một vật, có cùng độ lớn, cùng phương nhưng ngược chiều nhau."
+      },
+      {
+        subject: "Toán Học 7",
+        question: "Tìm x biết: 2x + 15 = 35",
+        options: ["x = 10", "x = 20", "x = 5", "x = 25"],
+        correctIndex: 0,
+        hint: "Chuyển vế: 2x = 35 - 15 = 20 ⇒ x = 20 / 2 = 10.",
+        explanation: "2x = 35 - 15 ⇒ 2x = 20 ⇒ x = 10."
+      },
+      {
+        subject: "Lịch Sử & Địa Lý 7",
+        question: "Kinh đô của nước Đại Cồ Việt dưới thời vua Đinh Tiên Hoàng đóng tại đâu?",
+        options: ["Hoa Lư (Ninh Bình)", "Thăng Long (Hà Nội)", "Phú Xuân (Huế)", "Cổ Loa (Đông Anh)"],
+        correctIndex: 0,
+        hint: "Vùng đất cố đô non nước hữu tình thuộc tỉnh Ninh Bình ngày nay.",
+        explanation: "Năm 968 sau khi dẹp loạn 12 sứ quân, Đinh Bộ Lĩnh lên ngôi Hoàng đế (Đinh Tiên Hoàng), đặt tên nước là Đại Cồ Việt, đóng đô ở Hoa Lư (Ninh Bình)."
+      },
+      {
+        subject: "Tiếng Anh THCS",
+        question: "Chọn từ điền vào chỗ trống: 'Teamwork is the key to ________ this tug of war competition.'",
+        options: ["winning", "win", "won", "wins"],
+        correctIndex: 0,
+        hint: "Sau giới từ 'to' trong cấu trúc 'key to doing something' ta dùng V-ing.",
+        explanation: "Cụm từ 'the key to doing something' (chìa khóa để đạt được điều gì): key to winning."
+      },
+      {
+        subject: "Tin Học 7",
+        question: "Trong phần mềm bảng tính Excel, hàm nào dùng để tính tổng dãy số?",
+        options: ["=SUM(A1:A10)", "=AVERAGE(A1:A10)", "=MAX(A1:A10)", "=COUNT(A1:A10)"],
+        correctIndex: 0,
+        hint: "SUM viết tắt của Summary (Tổng cộng).",
+        explanation: "Hàm =SUM() được dùng để tính tổng các giá trị trong một khối ô được chọn."
+      },
+      {
+        subject: "GDCD 7",
+        question: "Truyền thống quý báu nào của dân tộc Việt Nam được thể hiện sâu sắc qua tinh thần 'Đồng đội đoàn kết'?",
+        options: [
+          "Tinh thần đại đoàn kết và tương thân tương ái",
+          "Thói quen ỷ lại vào người khác",
+          "Tính phân biệt đối xử",
+          "Chỉ quan tâm lợi ích cá nhân"
+        ],
+        correctIndex: 0,
+        hint: "Tục ngữ có câu: 'Một cây làm chẳng nên non, ba cây chụm lại nên hòn núi cao'.",
+        explanation: "Đoàn kết là truyền thống quý báu của dân tộc ta, giúp vượt qua mọi thử thách khó khăn và tạo nên sức mạnh vô địch."
+      }
+    ];
+
+    /* =======================================================================
+       HỆ THỐNG ÂM THANH WEB AUDIO API
+       ======================================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
+        if (!this.ctx) this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) { console.warn(e); }
+      }
+      click() {
+        this.playTone(600, 'triangle', 0.08, 0.1);
+      }
+      pull() {
+        // Tiếng dây thừng kéo căng
+        this.playTone(350, 'sawtooth', 0.12, 0.15);
+        setTimeout(() => this.playTone(450, 'sine', 0.15, 0.15), 60);
+      }
+      correct() {
+        this.playTone(523.25, 'sine', 0.15, 0.15);
+        setTimeout(() => this.playTone(659.25, 'sine', 0.18, 0.15), 100);
+        setTimeout(() => this.playTone(783.99, 'sine', 0.35, 0.2), 200);
+      }
+      wrong() {
+        this.playTone(220, 'sawtooth', 0.25, 0.2);
+        setTimeout(() => this.playTone(180, 'sawtooth', 0.35, 0.2), 120);
+      }
+      victory() {
+        [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, i) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.35, 0.2), i * 140);
+        });
+      }
+    }
+    const audio = new SoundEngine();
+
+    /* =======================================================================
+       STATE TIẾN TRÌNH GAME KÉO CO
+       ======================================================================= */
+    let currentQIndex = 0;
+    let score = 0;
+    let lives = 3;
+    let combo = 0;
+    let maxCombo = 0;
+    let correctCount = 0;
+    let pullPosition = 0; // Vị trí lực kéo (-3 đến +3)
+    let timerInterval = null;
+    let remainingTime = 20;
+
+    let selectedPlayerName = "Đỗ Quốc Huy";
+    let selectedPlayerClass = "Lớp 7A1";
+    let selectedAvatar = "🐉";
+    let selectedRole = "Đội Rồng Vàng";
+
+    let powerups = { fiftyFifty: 1, extraTime: 1, hint: 1 };
+
+    const startScreen = document.getElementById('startScreen');
+    const gameplayScreen = document.getElementById('gameplayScreen');
+    const endScreen = document.getElementById('endScreen');
+    const gameContainer = document.getElementById('gameContainer');
+
+    /* CHỌN ĐỘI */
+    document.querySelectorAll('.avatar-option').forEach(el => {
+      el.addEventListener('click', () => {
+        audio.click();
+        document.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedAvatar = el.dataset.avatar;
+        selectedRole = el.dataset.role;
+      });
+    });
+
+    /* BẮT ĐẦU GAME */
+    document.getElementById('btnStartGame').addEventListener('click', () => {
+      audio.init();
+      audio.click();
+      const nameInp = document.getElementById('playerNameInput').value.trim();
+      if (nameInp) selectedPlayerName = nameInp;
+      selectedPlayerClass = document.getElementById('playerClassSelect').value;
+
+      document.getElementById('playerBadge').innerHTML = `${selectedAvatar} ${selectedPlayerName} (${selectedPlayerClass})`;
+      document.getElementById('arenaPlayerName').innerText = selectedRole;
+      document.getElementById('playerTeamEmoji').innerText = selectedAvatar;
+      
+      startScreen.style.display = 'none';
+      gameplayScreen.style.display = 'block';
+      endScreen.style.display = 'none';
+
+      // Reset
+      currentQIndex = 0;
+      score = 0;
+      lives = 3;
+      combo = 0;
+      maxCombo = 0;
+      correctCount = 0;
+      pullPosition = 0;
+      powerups = { fiftyFifty: 1, extraTime: 1, hint: 1 };
+
+      updateStatsDisplay();
+      updateTugArenaVisual();
+      loadQuestion(currentQIndex);
+    });
+
+    function updateStatsDisplay() {
+      document.getElementById('scoreDisplay').innerText = score;
+      document.getElementById('livesContainer').innerText = '❤️'.repeat(Math.max(0, lives)) || '💔';
+      
+      const comboCont = document.getElementById('comboContainer');
+      if (combo >= 2) {
+        comboCont.style.display = 'block';
+        document.getElementById('comboText').innerText = `🔥 Combo x${combo}`;
+      } else {
+        comboCont.style.display = 'none';
+      }
+
+      document.getElementById('qRoundCounter').innerText = `Hiệp: ${currentQIndex + 1} / ${QUIZ_DATA.length}`;
+      document.getElementById('count5050').innerText = powerups.fiftyFifty;
+      document.getElementById('countTime').innerText = powerups.extraTime;
+      document.getElementById('countHint').innerText = powerups.hint;
+      document.getElementById('btn5050').disabled = powerups.fiftyFifty <= 0;
+      document.getElementById('btnExtraTime').disabled = powerups.extraTime <= 0;
+      document.getElementById('btnHint').disabled = powerups.hint <= 0;
+    }
+
+    /* CẬP NHẬT VỊ TRÍ DÂY KÉO CO HOẠT CẢNH */
+    function updateTugArenaVisual() {
+      const ropeGroup = document.getElementById('ropeGroup');
+      // Mỗi nấc kéo dịch chuyển 8% (-24% đến +24%)
+      // pullPosition > 0: Kéo về phía Đội Nhà (Bên trái: left âm)
+      // pullPosition < 0: Bị đối thủ kéo (Bên phải: left dương)
+      const offsetPct = -pullPosition * 8;
+      ropeGroup.style.left = `${offsetPct}%`;
+
+      const powerText = document.getElementById('pullPowerText');
+      if (pullPosition > 0) {
+        powerText.innerText = `Đội Nhà Dẫn Trước (+${pullPosition} nấc)`;
+        powerText.style.color = '#34D399';
+      } else if (pullPosition < 0) {
+        powerText.innerText = `Bị Đối Thủ Ép Sân (${pullPosition} nấc)`;
+        powerText.style.color = '#F87171';
+      } else {
+        powerText.innerText = 'Cân bằng (0)';
+        powerText.style.color = 'var(--gold-yellow)';
+      }
+    }
+
+    /* LOAD CÂU HỎI TRẮC NGHIỆM */
+    function loadQuestion(index) {
+      if (index >= QUIZ_DATA.length || lives <= 0) {
+        finishGame();
+        return;
+      }
+
+      clearInterval(timerInterval);
+      document.getElementById('feedbackModal').style.display = 'none';
+      document.getElementById('hintBox').style.display = 'none';
+
+      const q = QUIZ_DATA[index];
+      document.getElementById('qSubjectTag').innerText = q.subject;
+      document.getElementById('questionTitle').innerText = q.question;
+
+      // Timer 20s
+      remainingTime = 20;
+      document.getElementById('timerSeconds').innerText = remainingTime;
+      document.getElementById('timerBar').style.width = '100%';
+
+      timerInterval = setInterval(() => {
+        remainingTime--;
+        document.getElementById('timerSeconds').innerText = remainingTime;
+        const pct = (remainingTime / 20) * 100;
+        document.getElementById('timerBar').style.width = `${pct}%`;
+
+        if (remainingTime <= 5) audio.click();
+
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          handleTimeOut();
+        }
+      }, 1000);
+
+      // Render choices
+      const choiceGrid = document.getElementById('choiceGrid');
+      choiceGrid.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-card';
+        btn.innerHTML = `<span style="width:22px; height:22px; border-radius:6px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-weight:900;">${String.fromCharCode(65 + idx)}</span> <span>${opt}</span>`;
+        btn.onclick = () => {
+          clearInterval(timerInterval);
+          const isCorrect = idx === q.correctIndex;
+          btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+          if (!isCorrect) {
+            const cards = choiceGrid.querySelectorAll('.choice-card');
+            if (cards[q.correctIndex]) cards[q.correctIndex].classList.add('correct');
+          }
+
+          processAnswerResult(isCorrect, q);
+        };
+        choiceGrid.appendChild(btn);
+      });
+    }
+
+    /* XỬ LÝ KẾT QUẢ CÂU TRẢ LỜI */
+    function processAnswerResult(isCorrect, q) {
+      const feedbackModal = document.getElementById('feedbackModal');
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      const feedbackExplanation = document.getElementById('feedbackExplanation');
+
+      if (isCorrect) {
+        audio.correct();
+        audio.pull();
+        triggerConfetti();
+        combo++;
+        if (combo > maxCombo) maxCombo = combo;
+        correctCount++;
+        
+        // Thưởng điểm tốc độ (trả lời càng nhanh điểm càng cao)
+        const speedBonus = remainingTime * 5;
+        const earned = 100 + speedBonus + (combo > 1 ? (combo - 1) * 50 : 0);
+        score += earned;
+
+        // Kéo dây về phía đội nhà
+        pullPosition += 1;
+        updateTugArenaVisual();
+
+        feedbackTitle.innerHTML = `🎉 <span style="color:#34D399;">KÉO MẠNH DÂY THỪNG THÀNH CÔNG! (+${earned} Điểm)</span>`;
+      } else {
+        audio.wrong();
+        audio.pull();
+        lives--;
+        combo = 0;
+        
+        // Đội đối thủ kéo ngược lại
+        pullPosition -= 1;
+        updateTugArenaVisual();
+
+        gameContainer.classList.add('shake-animation');
+        setTimeout(() => gameContainer.classList.remove('shake-animation'), 500);
+
+        feedbackTitle.innerHTML = `❌ <span style="color:#EF4444;">BỊ ĐỐI THỦ KÉO ÉP SÂN! (Mất 1 Tim)</span>`;
+      }
+
+      feedbackExplanation.innerHTML = `<b>Lời giải chi tiết:</b> ${q.explanation}`;
+      feedbackModal.style.display = 'block';
+      updateStatsDisplay();
+    }
+
+    function handleTimeOut() {
+      audio.wrong();
+      audio.pull();
+      lives--;
+      combo = 0;
+      pullPosition -= 1;
+      updateTugArenaVisual();
+
+      gameContainer.classList.add('shake-animation');
+      setTimeout(() => gameContainer.classList.remove('shake-animation'), 500);
+
+      const q = QUIZ_DATA[currentQIndex];
+      const feedbackModal = document.getElementById('feedbackModal');
+      document.getElementById('feedbackTitle').innerHTML = `⏱️ <span style="color:#EF4444;">HẾT THỜI GIAN! BỊ ĐỐI THỦ KÉO DÂY</span>`;
+      document.getElementById('feedbackExplanation').innerHTML = `<b>Lời giải chi tiết:</b> ${q.explanation}`;
+      feedbackModal.style.display = 'block';
+      updateStatsDisplay();
+    }
+
+    document.getElementById('btnNextRound').onclick = () => {
+      audio.click();
+      currentQIndex++;
+      loadQuestion(currentQIndex);
+    };
+
+    /* 3 TRỢ GIÚP */
+    document.getElementById('btn5050').onclick = () => {
+      if (powerups.fiftyFifty <= 0 || currentQIndex >= QUIZ_DATA.length) return;
+      audio.click();
+      powerups.fiftyFifty--;
+      updateStatsDisplay();
+
+      const q = QUIZ_DATA[currentQIndex];
+      const cards = document.querySelectorAll('.choice-card');
+      let removed = 0;
+      cards.forEach((card, idx) => {
+        if (idx !== q.correctIndex && removed < 2) {
+          card.style.opacity = '0.2';
+          card.style.pointerEvents = 'none';
+          removed++;
+        }
+      });
+    };
+
+    document.getElementById('btnExtraTime').onclick = () => {
+      if (powerups.extraTime <= 0) return;
+      audio.click();
+      powerups.extraTime--;
+      remainingTime += 10;
+      updateStatsDisplay();
+    };
+
+    document.getElementById('btnHint').onclick = () => {
+      if (powerups.hint <= 0 || currentQIndex >= QUIZ_DATA.length) return;
+      audio.click();
+      powerups.hint--;
+      updateStatsDisplay();
+      const q = QUIZ_DATA[currentQIndex];
+      const hintBox = document.getElementById('hintBox');
+      hintBox.innerText = "💡 " + q.hint;
+      hintBox.style.display = 'block';
+    };
+
+    /* =======================================================================
+       MÀN HÌNH KẾT THÚC & VINH DANH (FINISH & LEADERBOARD)
+       ======================================================================= */
+    function finishGame() {
+      clearInterval(timerInterval);
+      audio.victory();
+      triggerConfetti();
+
+      gameplayScreen.style.display = 'none';
+      endScreen.style.display = 'block';
+
+      document.getElementById('resPlayerName').innerText = selectedPlayerName;
+      document.getElementById('resPlayerClass').innerText = `${selectedPlayerClass} - ${selectedRole}`;
+      document.getElementById('resFinalScore').innerText = `${score} Đ`;
+      document.getElementById('resCorrectCount').innerText = `${correctCount} / ${QUIZ_DATA.length} Hiệp`;
+      document.getElementById('resMaxCombo').innerText = `🔥 Combo x${maxCombo}`;
+
+      const starRating = document.getElementById('starRating');
+      const resultTitle = document.getElementById('resultTitle');
+      if (pullPosition >= 2 && lives > 0) {
+        starRating.innerText = '⭐⭐⭐';
+        resultTitle.innerText = 'QUÁN QUÂN KÉO CO TOÀN THẮNG!';
+      } else if (score >= 350) {
+        starRating.innerText = '⭐⭐';
+        resultTitle.innerText = 'ĐỒNG ĐỘI XUẤT SẮC!';
+      } else {
+        starRating.innerText = '⭐';
+        resultTitle.innerText = 'CẦN TẬP LUYỆN THÊM NHÉ!';
+      }
+
+      saveToLeaderboard(selectedPlayerName, selectedPlayerClass, score);
+      renderLeaderboard();
+    }
+
+    function saveToLeaderboard(name, className, scoreVal) {
+      try {
+        let board = JSON.parse(localStorage.getItem('hocvui_game58_leaderboard') || '[]');
+        board.push({ name, className, score: scoreVal, date: new Date().toLocaleDateString('vi-VN') });
+        board.sort((a, b) => b.score - a.score);
+        board = board.slice(0, 5);
+        localStorage.setItem('hocvui_game58_leaderboard', JSON.stringify(board));
+      } catch (e) { console.warn(e); }
+    }
+
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = '';
+      try {
+        const board = JSON.parse(localStorage.getItem('hocvui_game58_leaderboard') || '[]');
+        if (board.length === 0) {
+          list.innerHTML = '<p style="color:#A7F3D0; text-align:center;">Chưa có dữ liệu người chơi.</p>';
+          return;
+        }
+        board.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.padding = '4px 0';
+          row.style.borderBottom = '1px dashed rgba(255,255,255,0.1)';
+          row.innerHTML = `
+            <span><b>#${idx + 1}</b> ${item.name} <span style="font-size:10px; color:#A7F3D0;">(${item.className})</span></span>
+            <span style="color:var(--gold-yellow); font-weight:900;">${item.score} Đ</span>
+          `;
+          list.appendChild(row);
+        });
+      } catch (e) { console.warn(e); }
+    }
+
+    document.getElementById('btnPlayAgain').onclick = () => {
+      audio.click();
+      endScreen.style.display = 'none';
+      startScreen.style.display = 'block';
+    };
+
+    // Xuất báo cáo chứng nhận dạng Ảnh Canvas
+    document.getElementById('btnDownloadReport').onclick = () => {
+      audio.click();
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 500;
+      const ctx = canvas.getContext('2d');
+
+      // Background Gradient
+      const grad = ctx.createLinearGradient(0, 0, 800, 500);
+      grad.addColorStop(0, '#064E3B');
+      grad.addColorStop(0.5, '#065F46');
+      grad.addColorStop(1, '#022C22');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 800, 500);
+
+      // Gold Border
+      ctx.strokeStyle = '#FBBF24';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(20, 20, 760, 460);
+
+      // Content
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FEF08A';
+      ctx.font = 'bold 18px Nunito, sans-serif';
+      ctx.fillText('HỆ THỐNG TRÒ CHƠI HỌC VUI CẤP 2 - THCS GDPT 2018', 400, 70);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 30px Orbitron, sans-serif';
+      ctx.fillText('CHỨNG NHẬN QUÁN QUÂN KÉO CO', 400, 120);
+
+      ctx.fillStyle = '#34D399';
+      ctx.font = 'bold 18px Nunito, sans-serif';
+      ctx.fillText('Vinh danh thủ lĩnh xuất sắc hoàn thành Game #58: Kéo Co Đồng Đội', 400, 160);
+
+      ctx.fillStyle = '#FEF08A';
+      ctx.font = 'bold 26px Nunito, sans-serif';
+      ctx.fillText(selectedPlayerName, 400, 225);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 16px Nunito, sans-serif';
+      ctx.fillText(`Khối Lớp: ${selectedPlayerClass}   |   Chiến Đội: ${selectedRole}`, 400, 260);
+
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = 'bold 28px Orbitron, sans-serif';
+      ctx.fillText(`ĐIỂM SỐ: ${score} ĐIỂM   (Thắng: ${correctCount}/${QUIZ_DATA.length} Hiệp)`, 400, 320);
+
+      ctx.fillStyle = '#A7F3D0';
+      ctx.font = 'italic 14px Nunito, sans-serif';
+      ctx.fillText(`Ngày cấp: ${new Date().toLocaleDateString('vi-VN')} - Xác thực hệ thống Học Vui Cấp 2`, 400, 420);
+
+      const link = document.createElement('a');
+      link.download = `ChungNhan_KeoCoDongDoi_${selectedPlayerName.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+
+    /* PHÁO HOA CONFETTI */
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      const colors = ['#FEF08A', '#FBBF24', '#34D399', '#60A5FA', '#F472B6', '#FFFFFF'];
+      for (let i = 0; i < 80; i++) {
+        pieces.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          r: Math.random() * 6 + 4,
+          dx: (Math.random() - 0.5) * 14,
+          dy: (Math.random() - 0.5) * 14 - 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10,
+          alpha: 1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        pieces.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.25;
+          p.alpha -= 0.015;
+          if (p.alpha > 0) {
+            active = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+  </script>
+</body>
+</html>
