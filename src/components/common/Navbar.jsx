@@ -13,17 +13,20 @@ import {
   Coins, 
   GraduationCap, 
   ShieldCheck, 
-  Sparkles 
+  Sparkles,
+  Bot 
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { soundFx } from '../../lib/soundFx';
+import { AiChatModal } from './AiChatModal';
 
 export const Navbar = () => {
   const { user, profile, signOut, switchDemoRole } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [muted, setMuted] = React.useState(false);
+  const [isAiChatOpen, setIsAiChatOpen] = React.useState(false);
 
   const handleAudioToggle = () => {
     const isMuted = soundFx.toggleMute();
@@ -157,10 +160,50 @@ export const Navbar = () => {
               <span>Quản Trị Admin</span>
             </Link>
           )}
+
+          {/* Nút Chatbox AI Trên Thanh Menu */}
+          <button
+            onClick={() => {
+              soundFx.play('click');
+              setIsAiChatOpen(true);
+            }}
+            style={{
+              background: 'linear-gradient(135deg, #FEF08A 0%, #FBBF24 100%)',
+              color: '#451A03',
+              border: '2px solid #FDE047',
+              boxShadow: '0 4px 14px rgba(251, 191, 36, 0.4)'
+            }}
+            className="px-3.5 py-1.5 rounded-xl text-sm font-black transition-all flex items-center gap-1.5 hover:scale-105 shadow-md ml-1"
+            title="Mở Trợ Lý AI Chatbox Giải Đáp 7 Môn GDPT 2018 & Hướng Dẫn Chơi Game"
+          >
+            <Bot className="w-4 h-4 text-emerald-950 animate-bounce" />
+            <span>Chatbox AI</span>
+            <span className="px-1.5 py-0.2 rounded-full bg-emerald-700 text-white text-[9px] font-black uppercase">
+              AI
+            </span>
+          </button>
         </nav>
 
         {/* Right Stats & Profile Controls */}
         <div className="flex items-center gap-3">
+          
+          {/* Mobile AI Chatbox Button */}
+          <button
+            onClick={() => {
+              soundFx.play('click');
+              setIsAiChatOpen(true);
+            }}
+            style={{
+              background: '#FEF08A',
+              color: '#451A03',
+              border: '1.5px solid #FACC15'
+            }}
+            className="md:hidden p-2 rounded-xl text-xs font-black shadow-md flex items-center gap-1 hover:scale-105 transition-transform"
+            title="Mở Trợ Lý AI Chatbox"
+          >
+            <Bot className="w-4 h-4 text-emerald-950 animate-pulse" />
+            <span className="text-[10px] font-black">AI</span>
+          </button>
           
           {/* Rank & EXP Badge */}
           {profile && (
@@ -307,6 +350,12 @@ export const Navbar = () => {
 
         </div>
       </div>
+
+      {/* AI Chatbox Modal */}
+      <AiChatModal 
+        isOpen={isAiChatOpen} 
+        onClose={() => setIsAiChatOpen(false)} 
+      />
     </header>
   );
 };
