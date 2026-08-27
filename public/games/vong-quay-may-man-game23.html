@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Game #23: Vòng Quay May Mắn - THCS GDPT 2018</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #065F46;
+      --emerald-accent: #059669;
+      --mint-glow: #34D399;
+      --gold-yellow: #FBBF24;
+      --bright-yellow: #FEF08A;
+      --dark-amber: #451A03;
+      --deep-bg: #022C22;
+      --card-bg: rgba(6, 78, 59, 0.88);
+      --glass-border: rgba(52, 211, 153, 0.45);
+      --danger-red: #EF4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at top center, #047857 0%, #064E3B 40%, var(--deep-bg) 100%);
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(52, 211, 153, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 860px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid var(--mint-glow);
+      border-radius: 28px;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.65), 0 0 35px rgba(5, 150, 105, 0.35);
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .shake-animation {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+    .title-gradient {
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--bright-yellow) 40%, var(--gold-yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+    }
+
+    .glass-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--gold-yellow) 50%, #F59E0B 100%);
+      color: var(--dark-amber);
+      border: 2px solid #FDE047;
+      font-weight: 900;
+      border-radius: 16px;
+      padding: 14px 28px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.5);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 28px -4px rgba(245, 158, 11, 0.65);
+    }
+
+    .btn-gold:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      font-weight: 800;
+      border-radius: 14px;
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #FFFFFF;
+    }
+
+    /* Avatar Grid */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .avatar-option {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .avatar-option .emoji {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 4px;
+      transition: transform 0.2s;
+    }
+
+    .avatar-option .name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--bright-yellow);
+    }
+
+    .avatar-option.selected {
+      background: rgba(5, 150, 105, 0.45);
+      border-color: var(--gold-yellow);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+      transform: scale(1.05);
+    }
+
+    .avatar-option.selected .emoji {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    /* Vòng Quay May Mắn Canvas Container */
+    .wheel-container {
+      position: relative;
+      width: 290px;
+      height: 290px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (min-width: 640px) {
+      .wheel-container {
+        width: 320px;
+        height: 320px;
+      }
+    }
+
+    /* Kim chỉ đỉnh vòng quay (Pointer) */
+    .wheel-pointer {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 32px;
+      background: linear-gradient(to bottom, #EF4444 0%, #DC2626 100%);
+      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+      border: 2px solid #FFFFFF;
+      z-index: 20;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    }
+
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(5, 150, 105, 0.6), inset 0 0 15px rgba(0,0,0,0.4);
+      cursor: pointer;
+      transition: transform 3.8s cubic-bezier(0.15, 0.9, 0.3, 1);
+    }
+
+    /* Choice Grid */
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .choice-grid { grid-template-columns: 1fr; }
+      .avatar-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .choice-card {
+      background: rgba(0, 0, 0, 0.35);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 13px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .choice-card:hover {
+      background: rgba(5, 150, 105, 0.5);
+      border-color: var(--mint-glow);
+      transform: translateX(4px);
+    }
+
+    .choice-card.correct {
+      background: rgba(16, 185, 129, 0.85) !important;
+      border-color: #A7F3D0 !important;
+      color: #FFFFFF !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+    }
+
+    .choice-card.wrong {
+      background: rgba(239, 68, 68, 0.85) !important;
+      border-color: #FECACA !important;
+      color: #FFFFFF !important;
+    }
+
+    .powerup-btn {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1.5px solid var(--mint-glow);
+      color: #FFFFFF;
+      border-radius: 14px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .powerup-btn:not(:disabled):hover {
+      background: var(--emerald-accent);
+      transform: scale(1.05);
+      border-color: #FFFFFF;
+    }
+
+    .powerup-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .combo-badge {
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 11px;
+      border: 1px solid #F472B6;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+      animation: comboPulse 0.8s infinite alternate;
+    }
+
+    @keyframes comboPulse {
+      0% { transform: scale(0.95); }
+      100% { transform: scale(1.1); }
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="game-container" id="gameContainer">
+    
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 1: BẮT ĐẦU (START SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="startScreen" class="space-y-5">
+      <div style="text-align: center; margin-bottom: 18px;">
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--mint-glow); margin-bottom: 8px;">
+          <span style="font-size: 16px;">🎡</span>
+          <span style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); text-transform: uppercase;">Game #23 • GDPT 2018 THCS</span>
+          <span style="font-size: 16px;">⭐</span>
+        </div>
+        <h1 class="font-orbitron title-gradient" style="font-size: 28px; font-weight: 900; letter-spacing: 1px; margin-bottom: 6px;">
+          VÒNG QUAY MAY MẮN
+        </h1>
+        <p style="font-size: 13px; color: #D1FAE5; font-weight: 600;">
+          Quay bánh xe nhận điểm thưởng bất ngờ & Trả lời câu hỏi thử thách tri thức!
+        </p>
+      </div>
+
+      <!-- Form Nhập Thông Tin -->
+      <div class="glass-card" style="margin-bottom: 16px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">TÊN HỌC SINH:</label>
+            <input type="text" id="playerNameInput" placeholder="Ví dụ: Lê Bảo Ngọc" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--mint-glow); background: #FFFFFF; color: #0F172A; font-weight: 800; font-size: 13px; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">KHỐI LỚP:</label>
+            <select id="playerClassSelect" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--mint-glow); background: #FFFFFF; color: #0F172A; font-weight: 800; font-size: 13px; outline: none;">
+              <option value="Lớp 6A1">Lớp 6A1 (Khối 6)</option>
+              <option value="Lớp 7A1" selected>Lớp 7A1 (Khối 7)</option>
+              <option value="Lớp 8A2">Lớp 8A2 (Khối 8)</option>
+              <option value="Lớp 9A1">Lớp 9A1 (Khối 9)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Chọn Nhân Vật Đại Diện -->
+        <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">CHỌN DANH HIỆU & AVATAR ĐẠI DIỆN:</label>
+        <div class="avatar-grid" id="avatarGrid">
+          <div class="avatar-option selected" data-avatar="🧙‍♂️" data-role="Chiến Binh Tri Thức">
+            <span class="emoji">🧙‍♂️</span>
+            <span class="name">Chiến Binh</span>
+          </div>
+          <div class="avatar-option" data-avatar="⚡" data-role="Thần Đồng Số Học">
+            <span class="emoji">⚡</span>
+            <span class="name">Thần Đồng</span>
+          </div>
+          <div class="avatar-option" data-avatar="🚀" data-role="Nhà Thám Hiểm">
+            <span class="emoji">🚀</span>
+            <span class="name">Thám Hiểm</span>
+          </div>
+          <div class="avatar-option" data-avatar="👑" data-role="Quán Quân Tri Thức">
+            <span class="emoji">👑</span>
+            <span class="name">Quán Quân</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tóm Tắt Luật Chơi Ngắn Gọn -->
+      <div class="glass-card" style="font-size: 12px; line-height: 1.6; color: #ECFDF5; margin-bottom: 20px;">
+        <div style="font-weight: 900; color: var(--gold-yellow); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>📜</span> QUY TẮC VÒNG QUAY MAY MẮN:
+        </div>
+        <p>1. 🎡 <b>Quay lấy điểm thưởng:</b> Bấm <b>"QUAY VÒNG MAY MẮN"</b> để chọn ngẫu nhiên mức điểm (+50, +100, +150, +200...).</p>
+        <p>2. ✍️ <b>Trả lời câu hỏi trắc nghiệm:</b> Vòng quay dừng lại sẽ mở câu hỏi tương ứng. Trả lời đúng trong 20s để nhận trọn điểm thưởng!</p>
+        <p>3. ❤️ <b>3 Trái tim mạng sống:</b> Sai 1 câu mất 1 tim. Đúng liên tiếp kích hoạt <b>Combo x2, x3</b> phát sáng rực rỡ!</p>
+      </div>
+
+      <div style="text-align: center;">
+        <button class="btn-gold" id="btnStartGame" style="width: 100%; max-width: 340px;">
+          <span>🎡 BẮT ĐẦU VÒNG QUAY</span>
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 2: CHƠI GAMEPLAY (GAMEPLAY SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="gameplayScreen" style="display: none;">
+      
+      <!-- Top Status Header Bar -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid var(--glass-border);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="playerBadge" style="background: rgba(0,0,0,0.35); border: 1.5px solid var(--mint-glow); padding: 4px 10px; border-radius: 14px; font-size: 12px; font-weight: 800; color: var(--bright-yellow);">
+            🧙‍♂️ Lê Bảo Ngọc (Lớp 7A1)
+          </div>
+          <div id="comboContainer" style="display: none;">
+            <span class="combo-badge" id="comboText">🔥 Combo x2</span>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <!-- Lives Hearts -->
+          <div id="livesContainer" style="font-size: 16px; letter-spacing: 2px;">
+            ❤️❤️❤️
+          </div>
+
+          <!-- Score -->
+          <div style="background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--gold-yellow) 100%); color: #451A03; padding: 4px 12px; border-radius: 12px; font-weight: 900; font-size: 13px; border: 1.5px solid #FFFFFF;">
+            🏆 <span id="scoreDisplay">0</span> Đ
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Layout 2 Cột: Bánh Xe Vòng Quay (Trái) & Câu Hỏi Trắc Nghiệm (Phải) -->
+      <div style="display: grid; grid-template-columns: 1fr 1.25fr; gap: 16px; align-items: center;">
+        
+        <!-- CỘT 1: KHUNG BÁNH XE VÒNG QUAY -->
+        <div class="glass-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px;">
+          <div style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); margin-bottom: 8px; text-transform: uppercase;">
+            BÁNH XE TRI THỨC (<span id="wheelRoundCounter">1 / 6</span>)
+          </div>
+
+          <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <canvas id="wheelCanvas" width="340" height="340"></canvas>
+          </div>
+
+          <button class="btn-gold" id="btnSpinWheel" style="padding: 10px 24px; font-size: 13px; width: 100%;">
+            <span>🎯 BẤM QUAY VÒNG</span>
+          </button>
+        </div>
+
+        <!-- CỘT 2: KHUNG CÂU HỎI TRẮC NGHIỆM -->
+        <div>
+          
+          <!-- Hộp Thoại Chờ Quay Vòng -->
+          <div id="waitSpinBox" class="glass-card" style="text-align: center; padding: 30px 20px;">
+            <div style="font-size: 40px; margin-bottom: 8px; animation: bounce 1.5s infinite;">🎡</div>
+            <h4 style="font-size: 16px; font-weight: 900; color: var(--bright-yellow); margin-bottom: 6px;">
+              HÃY BẤM NÚT QUAY BÁNH XE
+            </h4>
+            <p style="font-size: 12px; color: #D1FAE5; font-weight: 600;">
+              Mũi tên dừng ở mức điểm nào, bạn sẽ nhận được câu hỏi thử thách tương ứng với số điểm đó!
+            </p>
+          </div>
+
+          <!-- Hộp Thoại Câu Hỏi Khi Vòng Quay Dừng -->
+          <div id="questionBox" style="display: none;" class="glass-card">
+            
+            <!-- Timer Bar & Header -->
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 800; margin-bottom: 4px; color: var(--bright-yellow);">
+              <span>Điểm Thưởng: <b id="rewardBadge" style="color:#451A03; background:var(--gold-yellow); padding: 2px 8px; border-radius: 8px;">+100 Đ</b></span>
+              <span id="qSubjectTag" style="background:#047857; padding: 2px 8px; border-radius: 8px; border: 1px solid var(--mint-glow);">Toán Học</span>
+              <span>⏱️ <span id="timerSeconds">20</span>s</span>
+            </div>
+
+            <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.15);">
+              <div id="timerBar" style="width: 100%; height: 100%; background: linear-gradient(to right, #10B981, #FBBF24, #EF4444); transition: width 1s linear;"></div>
+            </div>
+
+            <h4 id="questionTitle" style="font-size: 14px; font-weight: 800; color: #FFFFFF; line-height: 1.5; margin-bottom: 10px;">
+              Nội dung câu hỏi...
+            </h4>
+
+            <div class="choice-grid" id="choiceGrid">
+              <!-- Choices injected by JS -->
+            </div>
+
+            <!-- Power-ups 3 Trợ Giúp -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.15);">
+              <div style="display: flex; gap: 6px;">
+                <button class="powerup-btn" id="btn5050" style="padding: 6px 10px; font-size: 11px;">
+                  <span>🌓</span> 50:50 (<span id="count5050">1</span>)
+                </button>
+                <button class="powerup-btn" id="btnExtraTime" style="padding: 6px 10px; font-size: 11px;">
+                  <span>⏱️</span> +10s (<span id="countTime">1</span>)
+                </button>
+                <button class="powerup-btn" id="btnHint" style="padding: 6px 10px; font-size: 11px;">
+                  <span>💡</span> Gợi Ý (<span id="countHint">1</span>)
+                </button>
+              </div>
+
+              <div id="hintBox" style="display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--gold-yellow); color: var(--bright-yellow); font-size: 10px; padding: 4px 8px; border-radius: 8px; font-weight: bold;">
+                Gợi ý: ...
+              </div>
+            </div>
+          </div>
+
+          <!-- Feedback Explanation Modal -->
+          <div id="feedbackModal" style="display: none; margin-top: 12px;" class="glass-card">
+            <div id="feedbackTitle" style="font-weight: 900; font-size: 14px; margin-bottom: 4px;"></div>
+            <p id="feedbackExplanation" style="font-size: 12px; color: #D1FAE5; line-height: 1.5; margin-bottom: 10px;"></p>
+            <button class="btn-gold" id="btnNextRound" style="padding: 8px 20px; font-size: 12px;">
+              <span>QUAY VÒNG TIẾP THEO →</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 3: KẾT THÚC & VINH DANH (RESULT SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="endScreen" style="display: none; text-align: center;" class="space-y-5">
+      <div style="margin-bottom: 16px;">
+        <span id="starRating" style="font-size: 38px; display: block; margin-bottom: 6px;">⭐⭐⭐</span>
+        <h2 class="font-orbitron title-gradient" id="resultTitle" style="font-size: 24px; font-weight: 900;">
+          HOÀN THÀNH XUẤT SẮC!
+        </h2>
+        <p id="resultSubtitle" style="font-size: 13px; color: #D1FAE5; font-weight: 700; margin-top: 4px;">
+          Bạn sở hữu vận may tuyệt vời và trí tuệ đỉnh cao!
+        </p>
+      </div>
+
+      <!-- Certificate Summary Card -->
+      <div class="glass-card" style="text-align: left; max-width: 480px; margin: 0 auto 16px; background: rgba(0,0,0,0.35);">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Học sinh trúng giải:</span>
+          <span id="resPlayerName" style="font-weight: 900; color: #FFFFFF;">Lê Bảo Ngọc</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Khối Lớp:</span>
+          <span id="resPlayerClass" style="font-weight: 900; color: #FFFFFF;">Lớp 7A1</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Tổng Điểm Thưởng May Mắn:</span>
+          <span id="resFinalScore" style="font-weight: 900; color: var(--gold-yellow); font-size: 16px;">650 Đ</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Số Câu Trả Lời Đúng:</span>
+          <span id="resCorrectCount" style="font-weight: 900; color: #34D399;">6 / 6 Câu</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Chuỗi Combo May Mắn:</span>
+          <span id="resMaxCombo" style="font-weight: 900; color: #EC4899;">🔥 Combo x6</span>
+        </div>
+      </div>
+
+      <!-- Bảng Xếp Hạng LocalStorage Top 5 -->
+      <div class="glass-card" style="text-align: left; max-width: 480px; margin: 0 auto 20px;">
+        <div style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <span>🎡 BẢNG VÀNG VÒNG QUAY MAY MẮN (TOP ĐIỂM CAO):</span>
+          <span style="font-size: 10px; color: #A7F3D0;">(Lưu trên máy)</span>
+        </div>
+        <div id="leaderboardList" style="font-size: 12px; space-y: 6px;">
+          <!-- Top scores injected by JS -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
+        <button class="btn-gold" id="btnDownloadReport">
+          <span>📜 TẢI BÁO CÁO KẾT QUẢ (ẢNH)</span>
+        </button>
+        <button class="btn-secondary" id="btnPlayAgain">
+          <span>🔄 CHƠI LẠI VÁN MỚI</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================================== -->
+  <!-- JAVASCRIPT: LOGIC VÒNG QUAY CANVAS, WEB AUDIO API & CÂU HỎI -->
+  <!-- ==================================================================== -->
+  <script>
+    /* =======================================================================
+       BỘ DỮ LIỆU CÂU HỎI & NAN QUẠT VÒNG QUAY (DỄ DÀNG THAY ĐỔI Ở ĐÂY)
+       ======================================================================= */
+    const QUIZ_DATA = [
+      {
+        rewardText: "+100 Đ",
+        points: 100,
+        subject: "Toán Học 7",
+        question: "Trong tam giác vuông có hai cạnh góc vuông lần lượt là 6cm và 8cm, độ dài cạnh huyền bằng bao nhiêu?",
+        options: ["10 cm (Pytago)", "14 cm", "12 cm", "9 cm"],
+        correctIndex: 0,
+        hint: "Áp dụng định lý Pytago: c² = 6² + 8² = 36 + 64 = 100.",
+        explanation: "Theo định lý Pytago: c² = a² + b² = 6² + 8² = 100 ⇒ c = √100 = 10 cm."
+      },
+      {
+        rewardText: "+150 Đ",
+        points: 150,
+        subject: "Khoa Học Tự Nhiên 7",
+        question: "Cấu tạo của một nguyên tử trung hòa về điện gồm những loại hạt cơ bản nào?",
+        options: [
+          "Proton (+) ở hạt nhân và Electron (-) ở lớp vỏ",
+          "Chỉ có hạt Proton",
+          "Chỉ có hạt Neutron",
+          "Hạt Electron và hạt Phôtôn"
+        ],
+        correctIndex: 0,
+        hint: "Nguyên tử gồm hạt nhân (proton, neutron) và lớp vỏ electron.",
+        explanation: "Nguyên tử gồm hạt nhân ở giữa (chứa proton mang điện dương + neutron không mang điện) và các electron mang điện âm quay xung quanh."
+      },
+      {
+        rewardText: "+200 Đ",
+        points: 200,
+        subject: "Lịch Sử & Địa Lý 7",
+        question: "Chiến thắng Bạch Đằng lịch sử năm 938 do vị anh hùng dân tộc nào lãnh đạo đập tan quân Nam Hán?",
+        options: ["Ngô Quyền", "Trần Hưng Đạo", "Lê Lợi", "Quang Trung"],
+        correctIndex: 0,
+        hint: "Kế sách cắm cọc nhọn trên sông Bạch Đằng năm 938 chấm dứt hơn 1000 năm Bắc thuộc.",
+        explanation: "Năm 938, Ngô Quyền đã dùng trận địa cọc ngầm trên sông Bạch Đằng đánh tan quân xâm lược Nam Hán, mở ra thời kỳ độc lập tự chủ lâu dài."
+      },
+      {
+        rewardText: "+100 Đ",
+        points: 100,
+        subject: "Tiếng Anh THCS",
+        question: "Chọn dạng đúng của động từ: 'Look! The students ________ basketball in the schoolyard.'",
+        options: ["are playing (Hiện tại tiếp diễn)", "plays", "played", "will play"],
+        correctIndex: 0,
+        hint: "Dấu hiệu 'Look!' báo hiệu hành động đang diễn ra tại thời điểm nói.",
+        explanation: "Dấu hiệu 'Look!' + dấu chấm than là dấu hiệu của thì Hiện tại tiếp diễn: S + is/am/are + V-ing."
+      },
+      {
+        rewardText: "+150 Đ",
+        points: 150,
+        subject: "Tin Học 7",
+        question: "Thuật toán tìm kiếm nhị phân (Binary Search) chỉ được áp dụng trên danh sách dữ liệu như thế nào?",
+        options: [
+          "Danh sách đã được sắp xếp thứ tự",
+          "Danh sách ngẫu nhiên bất kỳ",
+          "Danh sách chỉ có số âm",
+          "Danh sách không có số chẵn"
+        ],
+        correctIndex: 0,
+        hint: "Cần chia đôi phạm vi tìm kiếm nên danh sách bắt buộc phải được sắp xếp tăng dần hoặc giảm dần.",
+        explanation: "Thuật toán tìm kiếm nhị phân chia đôi phạm vi sau mỗi lần so sánh nên chỉ áp dụng được trên dãy đã sắp xếp."
+      },
+      {
+        rewardText: "+200 Đ",
+        points: 200,
+        subject: "GDCD 7",
+        question: "Hành vi nào sau đây thể hiện đúng tinh thần tự giác, trung thực trong học tập?",
+        options: [
+          "Tự lực làm bài tập và không quay cóp trong giờ kiểm tra",
+          "Chép bài của bạn để đạt điểm cao",
+          "Nhờ người khác làm bài hộ",
+          "Giấu bài tập khi chưa hoàn thành"
+        ],
+        correctIndex: 0,
+        hint: "Trung thực là tôn trọng sự thật, không gian dối trong thi cử.",
+        explanation: "Tự giác học tập và làm bài trung thực giúp học sinh tiếp thu kiến thức vững chắc và rèn luyện nhân cách cao đẹp."
+      }
+    ];
+
+    const SLICE_COLORS = [
+      '#059669', '#D97706', '#2563EB', '#DC2626', 
+      '#7C3AED', '#0D9488', '#EA580C', '#4F46E5'
+    ];
+
+    /* =======================================================================
+       HỆ THỐNG ÂM THANH WEB AUDIO API
+       ======================================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
+        if (!this.ctx) this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) { console.warn(e); }
+      }
+      click() {
+        this.playTone(600, 'triangle', 0.08, 0.1);
+      }
+      wheelTick() {
+        this.playTone(700 + Math.random() * 200, 'triangle', 0.04, 0.08);
+      }
+      correct() {
+        this.playTone(523.25, 'sine', 0.15, 0.15);
+        setTimeout(() => this.playTone(659.25, 'sine', 0.18, 0.15), 100);
+        setTimeout(() => this.playTone(783.99, 'sine', 0.35, 0.2), 200);
+      }
+      wrong() {
+        this.playTone(220, 'sawtooth', 0.25, 0.2);
+        setTimeout(() => this.playTone(180, 'sawtooth', 0.35, 0.2), 120);
+      }
+      victory() {
+        [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, i) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.35, 0.2), i * 140);
+        });
+      }
+    }
+    const audio = new SoundEngine();
+
+    /* =======================================================================
+       STATE TIẾN TRÌNH GAME
+       ======================================================================= */
+    let currentRoundIdx = 0;
+    let score = 0;
+    let lives = 3;
+    let combo = 0;
+    let maxCombo = 0;
+    let correctCount = 0;
+    let timerInterval = null;
+    let remainingTime = 20;
+    let spinning = false;
+    let currentRotation = 0;
+
+    let selectedPlayerName = "Lê Bảo Ngọc";
+    let selectedPlayerClass = "Lớp 7A1";
+    let selectedAvatar = "🧙‍♂️";
+    let selectedRole = "Chiến Binh Tri Thức";
+
+    let powerups = { fiftyFifty: 1, extraTime: 1, hint: 1 };
+
+    const startScreen = document.getElementById('startScreen');
+    const gameplayScreen = document.getElementById('gameplayScreen');
+    const endScreen = document.getElementById('endScreen');
+    const gameContainer = document.getElementById('gameContainer');
+
+    /* CHỌN AVATAR */
+    document.querySelectorAll('.avatar-option').forEach(el => {
+      el.addEventListener('click', () => {
+        audio.click();
+        document.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedAvatar = el.dataset.avatar;
+        selectedRole = el.dataset.role;
+      });
+    });
+
+    /* BẮT ĐẦU GAME */
+    document.getElementById('btnStartGame').addEventListener('click', () => {
+      audio.init();
+      audio.click();
+      const nameInp = document.getElementById('playerNameInput').value.trim();
+      if (nameInp) selectedPlayerName = nameInp;
+      selectedPlayerClass = document.getElementById('playerClassSelect').value;
+
+      document.getElementById('playerBadge').innerHTML = `${selectedAvatar} ${selectedPlayerName} (${selectedPlayerClass})`;
+      
+      startScreen.style.display = 'none';
+      gameplayScreen.style.display = 'block';
+      endScreen.style.display = 'none';
+
+      // Reset
+      currentRoundIdx = 0;
+      score = 0;
+      lives = 3;
+      combo = 0;
+      maxCombo = 0;
+      correctCount = 0;
+      currentRotation = 0;
+      powerups = { fiftyFifty: 1, extraTime: 1, hint: 1 };
+
+      updateStatsDisplay();
+      drawWheelCanvas();
+      showWaitSpinPhase();
+    });
+
+    function updateStatsDisplay() {
+      document.getElementById('scoreDisplay').innerText = score;
+      document.getElementById('livesContainer').innerText = '❤️'.repeat(Math.max(0, lives)) || '💔';
+      
+      const comboCont = document.getElementById('comboContainer');
+      if (combo >= 2) {
+        comboCont.style.display = 'block';
+        document.getElementById('comboText').innerText = `🔥 Combo x${combo}`;
+      } else {
+        comboCont.style.display = 'none';
+      }
+
+      document.getElementById('wheelRoundCounter').innerText = `${currentRoundIdx + 1} / ${QUIZ_DATA.length}`;
+      document.getElementById('count5050').innerText = powerups.fiftyFifty;
+      document.getElementById('countTime').innerText = powerups.extraTime;
+      document.getElementById('countHint').innerText = powerups.hint;
+      document.getElementById('btn5050').disabled = powerups.fiftyFifty <= 0;
+      document.getElementById('btnExtraTime').disabled = powerups.extraTime <= 0;
+      document.getElementById('btnHint').disabled = powerups.hint <= 0;
+    }
+
+    /* VẼ BÁNH XE VÒNG QUAY LÊN CANVAS */
+    function drawWheelCanvas() {
+      const canvas = document.getElementById('wheelCanvas');
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      const center = size / 2;
+      const radius = center - 12;
+      const numSlices = QUIZ_DATA.length;
+      const sliceAngle = (2 * Math.PI) / numSlices;
+
+      ctx.clearRect(0, 0, size, size);
+
+      for (let i = 0; i < numSlices; i++) {
+        const startAngle = i * sliceAngle;
+        const endAngle = startAngle + sliceAngle;
+        const color = SLICE_COLORS[i % SLICE_COLORS.length];
+
+        ctx.beginPath();
+        ctx.moveTo(center, center);
+        ctx.arc(center, center, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.stroke();
+
+        // Chữ điểm thưởng trên nan quạt
+        ctx.save();
+        ctx.translate(center, center);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#FEF08A';
+        ctx.font = 'bold 15px Orbitron, sans-serif';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+        ctx.shadowBlur = 4;
+        ctx.fillText(QUIZ_DATA[i].rewardText, radius - 18, 5);
+        ctx.restore();
+      }
+
+      // Viền vàng ngoài cùng
+      ctx.beginPath();
+      ctx.arc(center, center, radius, 0, 2 * Math.PI);
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = '#FDE047';
+      ctx.stroke();
+
+      // Tâm vòng quay
+      ctx.beginPath();
+      ctx.arc(center, center, 22, 0, 2 * Math.PI);
+      ctx.fillStyle = '#FEF08A';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#065F46';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(center, center, 8, 0, 2 * Math.PI);
+      ctx.fillStyle = '#065F46';
+      ctx.fill();
+    }
+
+    function showWaitSpinPhase() {
+      document.getElementById('waitSpinBox').style.display = 'block';
+      document.getElementById('questionBox').style.display = 'none';
+      document.getElementById('feedbackModal').style.display = 'none';
+      document.getElementById('btnSpinWheel').disabled = false;
+    }
+
+    /* QUAY BÁNH XE */
+    document.getElementById('btnSpinWheel').addEventListener('click', spinWheel);
+    document.getElementById('wheelCanvas').addEventListener('click', spinWheel);
+
+    function spinWheel() {
+      if (spinning || currentRoundIdx >= QUIZ_DATA.length || lives <= 0) return;
+
+      audio.click();
+      spinning = true;
+      document.getElementById('btnSpinWheel').disabled = true;
+
+      const numSlices = QUIZ_DATA.length;
+      const sliceDeg = 360 / numSlices;
+      const targetIdx = currentRoundIdx; // Quay dừng đúng câu hỏi vòng hiện tại
+      const randomExtraRounds = 5 + Math.floor(Math.random() * 3);
+
+      // Điểm kim chỉ nằm ở đỉnh trên cùng (270 độ / -90 độ)
+      const targetSliceCenter = targetIdx * sliceDeg + sliceDeg / 2;
+      const stopAngle = 360 * randomExtraRounds + (270 - targetSliceCenter);
+      const targetRotation = currentRotation + (stopAngle - (currentRotation % 360)) + 360 * randomExtraRounds;
+
+      currentRotation = targetRotation;
+      const canvas = document.getElementById('wheelCanvas');
+      canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+      // Âm thanh kim lách cách khi quay
+      const tickInterval = setInterval(() => {
+        audio.wheelTick();
+      }, 120);
+
+      setTimeout(() => {
+        clearInterval(tickInterval);
+        spinning = false;
+        audio.correct();
+        
+        const q = QUIZ_DATA[targetIdx];
+        startQuestionPhase(q);
+      }, 3800);
+    }
+
+    /* BẮT ĐẦU TRẢ LỜI CÂU HỎI TRẮC NGHIỆM */
+    function startQuestionPhase(q) {
+      document.getElementById('waitSpinBox').style.display = 'none';
+      document.getElementById('questionBox').style.display = 'block';
+      document.getElementById('feedbackModal').style.display = 'none';
+      document.getElementById('hintBox').style.display = 'none';
+
+      document.getElementById('rewardBadge').innerText = q.rewardText;
+      document.getElementById('qSubjectTag').innerText = q.subject;
+      document.getElementById('questionTitle').innerText = q.question;
+
+      // Timer 20s
+      remainingTime = 20;
+      document.getElementById('timerSeconds').innerText = remainingTime;
+      document.getElementById('timerBar').style.width = '100%';
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        remainingTime--;
+        document.getElementById('timerSeconds').innerText = remainingTime;
+        const pct = (remainingTime / 20) * 100;
+        document.getElementById('timerBar').style.width = `${pct}%`;
+
+        if (remainingTime <= 5) audio.click();
+
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval);
+          handleTimeOut();
+        }
+      }, 1000);
+
+      // Render Choices
+      const choiceGrid = document.getElementById('choiceGrid');
+      choiceGrid.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-card';
+        btn.innerHTML = `<span style="width:22px; height:22px; border-radius:6px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-weight:900;">${String.fromCharCode(65 + idx)}</span> <span>${opt}</span>`;
+        btn.onclick = () => {
+          clearInterval(timerInterval);
+          const isCorrect = idx === q.correctIndex;
+          btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+          if (!isCorrect) {
+            const cards = choiceGrid.querySelectorAll('.choice-card');
+            if (cards[q.correctIndex]) cards[q.correctIndex].classList.add('correct');
+          }
+
+          processAnswerResult(isCorrect, q);
+        };
+        choiceGrid.appendChild(btn);
+      });
+    }
+
+    /* XỬ LÝ KẾT QUẢ CÂU TRẢ LỜI */
+    function processAnswerResult(isCorrect, q) {
+      const feedbackModal = document.getElementById('feedbackModal');
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      const feedbackExplanation = document.getElementById('feedbackExplanation');
+
+      if (isCorrect) {
+        audio.correct();
+        triggerConfetti();
+        combo++;
+        if (combo > maxCombo) maxCombo = combo;
+        correctCount++;
+        const earned = q.points + (combo > 1 ? (combo - 1) * 50 : 0);
+        score += earned;
+
+        feedbackTitle.innerHTML = `🎉 <span style="color:#34D399;">CHÍNH XÁC! NHẬN ĐƯỢC ${earned} ĐIỂM THƯỞNG</span>`;
+      } else {
+        audio.wrong();
+        lives--;
+        combo = 0;
+        gameContainer.classList.add('shake-animation');
+        setTimeout(() => gameContainer.classList.remove('shake-animation'), 500);
+
+        feedbackTitle.innerHTML = `❌ <span style="color:#EF4444;">CHƯA CHÍNH XÁC! (Mất 1 Tim)</span>`;
+      }
+
+      feedbackExplanation.innerHTML = `<b>Lời giải chi tiết:</b> ${q.explanation}`;
+      feedbackModal.style.display = 'block';
+      updateStatsDisplay();
+    }
+
+    function handleTimeOut() {
+      audio.wrong();
+      lives--;
+      combo = 0;
+      gameContainer.classList.add('shake-animation');
+      setTimeout(() => gameContainer.classList.remove('shake-animation'), 500);
+
+      const q = QUIZ_DATA[currentRoundIdx];
+      const feedbackModal = document.getElementById('feedbackModal');
+      document.getElementById('feedbackTitle').innerHTML = `⏱️ <span style="color:#EF4444;">HẾT THỜI GIAN! (Mất 1 Tim)</span>`;
+      document.getElementById('feedbackExplanation').innerHTML = `<b>Lời giải chi tiết:</b> ${q.explanation}`;
+      feedbackModal.style.display = 'block';
+      updateStatsDisplay();
+    }
+
+    document.getElementById('btnNextRound').onclick = () => {
+      audio.click();
+      currentRoundIdx++;
+      if (currentRoundIdx >= QUIZ_DATA.length || lives <= 0) {
+        finishGame();
+      } else {
+        updateStatsDisplay();
+        showWaitSpinPhase();
+      }
+    };
+
+    /* 3 TRỢ GIÚP */
+    document.getElementById('btn5050').onclick = () => {
+      if (powerups.fiftyFifty <= 0 || currentRoundIdx >= QUIZ_DATA.length) return;
+      audio.click();
+      powerups.fiftyFifty--;
+      updateStatsDisplay();
+
+      const q = QUIZ_DATA[currentRoundIdx];
+      const cards = document.querySelectorAll('.choice-card');
+      let removed = 0;
+      cards.forEach((card, idx) => {
+        if (idx !== q.correctIndex && removed < 2) {
+          card.style.opacity = '0.2';
+          card.style.pointerEvents = 'none';
+          removed++;
+        }
+      });
+    };
+
+    document.getElementById('btnExtraTime').onclick = () => {
+      if (powerups.extraTime <= 0) return;
+      audio.click();
+      powerups.extraTime--;
+      remainingTime += 10;
+      updateStatsDisplay();
+    };
+
+    document.getElementById('btnHint').onclick = () => {
+      if (powerups.hint <= 0 || currentRoundIdx >= QUIZ_DATA.length) return;
+      audio.click();
+      powerups.hint--;
+      updateStatsDisplay();
+      const q = QUIZ_DATA[currentRoundIdx];
+      const hintBox = document.getElementById('hintBox');
+      hintBox.innerText = "💡 " + q.hint;
+      hintBox.style.display = 'block';
+    };
+
+    /* =======================================================================
+       MÀN HÌNH KẾT THÚC & VINH DANH (FINISH & LEADERBOARD)
+       ======================================================================= */
+    function finishGame() {
+      clearInterval(timerInterval);
+      audio.victory();
+      triggerConfetti();
+
+      gameplayScreen.style.display = 'none';
+      endScreen.style.display = 'block';
+
+      document.getElementById('resPlayerName').innerText = selectedPlayerName;
+      document.getElementById('resPlayerClass').innerText = selectedPlayerClass;
+      document.getElementById('resFinalScore').innerText = `${score} Đ`;
+      document.getElementById('resCorrectCount').innerText = `${correctCount} / ${QUIZ_DATA.length} Câu`;
+      document.getElementById('resMaxCombo').innerText = `🔥 Combo x${maxCombo}`;
+
+      const starRating = document.getElementById('starRating');
+      const resultTitle = document.getElementById('resultTitle');
+      if (correctCount === QUIZ_DATA.length && lives > 0) {
+        starRating.innerText = '⭐⭐⭐';
+        resultTitle.innerText = 'QUÁN QUÂN VÒNG QUAY MAY MẮN!';
+      } else if (score >= 400) {
+        starRating.innerText = '⭐⭐';
+        resultTitle.innerText = 'VẬN MAY & TRÍ TUỆ TUYỆT VỜI!';
+      } else {
+        starRating.innerText = '⭐';
+        resultTitle.innerText = 'CẦN CỐ GẮNG HƠN NHÉ!';
+      }
+
+      saveToLeaderboard(selectedPlayerName, selectedPlayerClass, score);
+      renderLeaderboard();
+    }
+
+    function saveToLeaderboard(name, className, scoreVal) {
+      try {
+        let board = JSON.parse(localStorage.getItem('hocvui_game23_leaderboard') || '[]');
+        board.push({ name, className, score: scoreVal, date: new Date().toLocaleDateString('vi-VN') });
+        board.sort((a, b) => b.score - a.score);
+        board = board.slice(0, 5);
+        localStorage.setItem('hocvui_game23_leaderboard', JSON.stringify(board));
+      } catch (e) { console.warn(e); }
+    }
+
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = '';
+      try {
+        const board = JSON.parse(localStorage.getItem('hocvui_game23_leaderboard') || '[]');
+        if (board.length === 0) {
+          list.innerHTML = '<p style="color:#A7F3D0; text-align:center;">Chưa có dữ liệu người chơi.</p>';
+          return;
+        }
+        board.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.padding = '4px 0';
+          row.style.borderBottom = '1px dashed rgba(255,255,255,0.1)';
+          row.innerHTML = `
+            <span><b>#${idx + 1}</b> ${item.name} <span style="font-size:10px; color:#A7F3D0;">(${item.className})</span></span>
+            <span style="color:var(--gold-yellow); font-weight:900;">${item.score} Đ</span>
+          `;
+          list.appendChild(row);
+        });
+      } catch (e) { console.warn(e); }
+    }
+
+    document.getElementById('btnPlayAgain').onclick = () => {
+      audio.click();
+      endScreen.style.display = 'none';
+      startScreen.style.display = 'block';
+    };
+
+    // Xuất báo cáo chứng nhận dạng Ảnh Canvas
+    document.getElementById('btnDownloadReport').onclick = () => {
+      audio.click();
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 500;
+      const ctx = canvas.getContext('2d');
+
+      // Background Gradient
+      const grad = ctx.createLinearGradient(0, 0, 800, 500);
+      grad.addColorStop(0, '#064E3B');
+      grad.addColorStop(0.5, '#065F46');
+      grad.addColorStop(1, '#022C22');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 800, 500);
+
+      // Gold Border
+      ctx.strokeStyle = '#FBBF24';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(20, 20, 760, 460);
+
+      // Content
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FEF08A';
+      ctx.font = 'bold 18px Nunito, sans-serif';
+      ctx.fillText('HỆ THỐNG TRÒ CHƠI HỌC VUI CẤP 2 - THCS GDPT 2018', 400, 70);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 30px Orbitron, sans-serif';
+      ctx.fillText('CHỨNG NHẬN VÒNG QUAY MAY MẮN', 400, 120);
+
+      ctx.fillStyle = '#34D399';
+      ctx.font = 'bold 18px Nunito, sans-serif';
+      ctx.fillText('Vinh danh học sinh xuất sắc hoàn thành Game #23: Vòng Quay May Mắn', 400, 160);
+
+      ctx.fillStyle = '#FEF08A';
+      ctx.font = 'bold 26px Nunito, sans-serif';
+      ctx.fillText(selectedPlayerName, 400, 225);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 16px Nunito, sans-serif';
+      ctx.fillText(`Khối Lớp: ${selectedPlayerClass}   |   Danh hiệu: ${selectedRole}`, 400, 260);
+
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = 'bold 28px Orbitron, sans-serif';
+      ctx.fillText(`ĐIỂM SỐ: ${score} ĐIỂM   (Đúng: ${correctCount}/${QUIZ_DATA.length})`, 400, 320);
+
+      ctx.fillStyle = '#A7F3D0';
+      ctx.font = 'italic 14px Nunito, sans-serif';
+      ctx.fillText(`Ngày cấp: ${new Date().toLocaleDateString('vi-VN')} - Xác thực hệ thống Học Vui Cấp 2`, 400, 420);
+
+      const link = document.createElement('a');
+      link.download = `ChungNhan_VongQuayMayMan_${selectedPlayerName.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+
+    /* PHÁO HOA CONFETTI */
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      const colors = ['#FEF08A', '#FBBF24', '#34D399', '#60A5FA', '#F472B6', '#FFFFFF'];
+      for (let i = 0; i < 80; i++) {
+        pieces.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          r: Math.random() * 6 + 4,
+          dx: (Math.random() - 0.5) * 14,
+          dy: (Math.random() - 0.5) * 14 - 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10,
+          alpha: 1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        pieces.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.25;
+          p.alpha -= 0.015;
+          if (p.alpha > 0) {
+            active = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+  </script>
+</body>
+</html>
