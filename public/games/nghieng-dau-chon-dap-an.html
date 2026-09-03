@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Game: Nghiêng Đầu Chọn Đáp Án Đúng - Tương Tác Webcam AI</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  
+  <!-- MediaPipe Face Mesh & Camera Utils -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --primary-green: #065F46;
+      --emerald-accent: #059669;
+      --mint-glow: #34D399;
+      --gold-yellow: #FBBF24;
+      --bright-yellow: #FEF08A;
+      --dark-amber: #451A03;
+      --deep-bg: #022C22;
+      --card-bg: rgba(6, 78, 59, 0.88);
+      --glass-border: rgba(52, 211, 153, 0.45);
+      --left-blue: #3B82F6;
+      --left-glow: #60A5FA;
+      --right-purple: #EC4899;
+      --right-glow: #F472B6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at top center, #047857 0%, #064E3B 40%, var(--deep-bg) 100%);
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Nền Lưới Công Nghệ Phát Sáng */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(52, 211, 153, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(52, 211, 153, 0.08) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 980px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid var(--mint-glow);
+      border-radius: 28px;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 35px rgba(5, 150, 105, 0.4);
+      padding: 20px 24px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .shake-animation {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-3px, 0, 0); }
+      20%, 80% { transform: translate3d(5px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-7px, 0, 0); }
+      40%, 60% { transform: translate3d(7px, 0, 0); }
+    }
+
+    .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+    .title-gradient {
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--bright-yellow) 40%, var(--gold-yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
+    }
+
+    .glass-card {
+      background: rgba(0, 0, 0, 0.32);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--gold-yellow) 50%, #F59E0B 100%);
+      color: var(--dark-amber);
+      border: 2px solid #FDE047;
+      font-weight: 900;
+      border-radius: 16px;
+      padding: 14px 28px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px -4px rgba(245, 158, 11, 0.5);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 28px -4px rgba(245, 158, 11, 0.65);
+    }
+
+    .btn-gold:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      font-weight: 800;
+      border-radius: 14px;
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #FFFFFF;
+    }
+
+    /* Avatar Grid */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .avatar-option {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .avatar-option .emoji {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 4px;
+      transition: transform 0.2s;
+    }
+
+    .avatar-option .name {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--bright-yellow);
+    }
+
+    .avatar-option.selected {
+      background: rgba(5, 150, 105, 0.45);
+      border-color: var(--gold-yellow);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+      transform: scale(1.05);
+    }
+
+    .avatar-option.selected .emoji {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    /* KHUNG CAMERA PIP & GÓC NGHIÊNG */
+    .webcam-pip-container {
+      position: relative;
+      width: 170px;
+      height: 128px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--mint-glow);
+      background: #000000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+
+    #webcamVideo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* Gương lật để người chơi tự quan sát tự nhiên */
+    }
+
+    #webcamCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+    }
+
+    .camera-status-tag {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.65);
+      color: #34D399;
+      font-size: 9px;
+      font-weight: 900;
+      padding: 2px 6px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 10;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+      animation: pulseDot 1s infinite alternate;
+    }
+
+    @keyframes pulseDot {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* THANH BÁO HƯỚNG NGHIÊNG ĐẦU TRỰC QUAN */
+    .tilt-indicator-bar {
+      height: 14px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 8px 0;
+      display: flex;
+    }
+
+    .tilt-indicator-pointer {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 16px;
+      background: var(--gold-yellow);
+      border: 2px solid #FFFFFF;
+      border-radius: 10px;
+      transform: translateX(-50%);
+      transition: left 0.08s ease-out;
+      box-shadow: 0 0 10px var(--gold-yellow);
+      z-index: 5;
+    }
+
+    /* 2 KHUNG ĐÁP ÁN TRÁI - PHẢI SIÊU TO */
+    .answers-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 600px) {
+      .answers-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .answer-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 24px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+    }
+
+    .answer-box.left-box {
+      border: 3px solid var(--left-blue);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .answer-box.right-box {
+      border: 3px solid var(--right-purple);
+      box-shadow: 0 8px 20px rgba(236, 72, 153, 0.2);
+    }
+
+    /* Hiệu ứng Đang Nghiêng và Nạp Năng Lượng Chọn */
+    .answer-box.tilting-active {
+      transform: scale(1.05);
+    }
+
+    .answer-box.left-box.tilting-active {
+      background: rgba(59, 130, 246, 0.35);
+      border-color: #93C5FD;
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+    }
+
+    .answer-box.right-box.tilting-active {
+      background: rgba(236, 72, 153, 0.35);
+      border-color: #F9A8D4;
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.6);
+    }
+
+    .answer-box.correct {
+      background: rgba(16, 185, 129, 0.9) !important;
+      border-color: #A7F3D0 !important;
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.8) !important;
+      transform: scale(1.03);
+    }
+
+    .answer-box.wrong {
+      background: rgba(239, 68, 68, 0.9) !important;
+      border-color: #FECACA !important;
+      box-shadow: 0 0 35px rgba(239, 68, 68, 0.8) !important;
+    }
+
+    /* Thanh Nạp Xác Nhận (Hold Charge Bar) */
+    .charge-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 8px;
+      width: 0%;
+      background: linear-gradient(to right, #FEF08A, #FBBF24);
+      transition: width 0.05s linear;
+      z-index: 10;
+    }
+
+    .box-badge {
+      font-size: 13px;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .box-badge.left {
+      background: #1D4ED8;
+      color: #DBEAFE;
+    }
+
+    .box-badge.right {
+      background: #BE185D;
+      color: #FCE7F3;
+    }
+
+    .answer-text {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.4;
+      color: #FFFFFF;
+    }
+
+    /* Hướng dẫn nghiêng đầu */
+    .tilt-guide-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--bright-yellow);
+      background: rgba(0,0,0,0.35);
+      padding: 4px 10px;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="game-container" id="gameContainer">
+    
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 1: BẮT ĐẦU & CẤP QUYỀN CAMERA (START SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="startScreen" class="space-y-5">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px 14px; border-radius: 20px; border: 1px solid var(--mint-glow); margin-bottom: 8px;">
+          <span style="font-size: 16px;">🤖</span>
+          <span style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); text-transform: uppercase;">Tương Tác Webcam AI • GDPT 2018 THCS</span>
+          <span style="font-size: 16px;">📷</span>
+        </div>
+        <h1 class="font-orbitron title-gradient" style="font-size: 27px; font-weight: 900; letter-spacing: 1px; margin-bottom: 6px;">
+          NGHIÊNG ĐẦU CHỌN ĐÁP ÁN ĐÚNG
+        </h1>
+        <p style="font-size: 13px; color: #D1FAE5; font-weight: 600;">
+          Đứng trước Camera, nghiêng đầu sang <b style="color:#60A5FA;">TRÁI ⬅️</b> hoặc <b style="color:#F472B6;">PHẢI ➡️</b> để chọn đáp án mà không cần chạm chuột!
+        </p>
+      </div>
+
+      <!-- Form Nhập Thông Tin -->
+      <div class="glass-card" style="margin-bottom: 14px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">TÊN HỌC SINH:</label>
+            <input type="text" id="playerNameInput" placeholder="Ví dụ: Nguyễn Gia Huy" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--mint-glow); background: #FFFFFF; color: #0F172A; font-weight: 800; font-size: 13px; outline: none;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">KHỐI LỚP:</label>
+            <select id="playerClassSelect" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid var(--mint-glow); background: #FFFFFF; color: #0F172A; font-weight: 800; font-size: 13px; outline: none;">
+              <option value="Lớp 6A1">Lớp 6A1 (Khối 6)</option>
+              <option value="Lớp 7A1" selected>Lớp 7A1 (Khối 7)</option>
+              <option value="Lớp 8A2">Lớp 8A2 (Khối 8)</option>
+              <option value="Lớp 9A1">Lớp 9A1 (Khối 9)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Chọn Nhân Vật Đại Diện -->
+        <label style="display: block; font-size: 11px; font-weight: 800; color: var(--bright-yellow); margin-bottom: 4px;">CHỌN DANH HIỆU THỬ THÁCH:</label>
+        <div class="avatar-grid" id="avatarGrid">
+          <div class="avatar-option selected" data-avatar="⚡" data-role="Chiến Thần Phản Xạ">
+            <span class="emoji">⚡</span>
+            <span class="name">Phản Xạ</span>
+          </div>
+          <div class="avatar-option" data-avatar="🧙‍♂️" data-role="Bác Học AI">
+            <span class="emoji">🧙‍♂️</span>
+            <span class="name">Bác Học</span>
+          </div>
+          <div class="avatar-option" data-avatar="🚀" data-role="Phi Công Tri Thức">
+            <span class="emoji">🚀</span>
+            <span class="name">Phi Công</span>
+          </div>
+          <div class="avatar-option" data-avatar="👑" data-role="Quán Quân Đấu Trí">
+            <span class="emoji">👑</span>
+            <span class="name">Quán Quân</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hướng Dẫn Cấp Quyền & Cách Chơi -->
+      <div class="glass-card" style="font-size: 12px; line-height: 1.6; color: #ECFDF5; margin-bottom: 18px;">
+        <div style="font-weight: 900; color: var(--gold-yellow); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>📷</span> HƯỚNG DẪN KẾT NỐI WEBCAM:
+        </div>
+        <p>1. 👤 <b>Tư thế:</b> Ngồi hoặc đứng thẳng cách màn hình khoảng 0.5m - 1.2m ở nơi đủ ánh sáng.</p>
+        <p>2. 🔄 <b>Hành động nghiêng:</b> Nghiêng đầu sang <b style="color:#60A5FA;">TRÁI</b> để chọn Đáp Án A, nghiêng sang <b style="color:#F472B6;">PHẢI</b> để chọn Đáp Án B (giữ nghiêng 0.6s để nạp xác nhận).</p>
+        <p>3. ⌨️ <i>(Dự phòng: Bạn cũng có thể dùng phím mũi tên ⬅️ và ➡️ hoặc nhấp chuột nếu không dùng camera)</i>.</p>
+      </div>
+
+      <div style="text-align: center;">
+        <button class="btn-gold" id="btnStartGame" style="width: 100%; max-width: 360px;">
+          <span>🚀 BẬT CAMERA & BẮT ĐẦU</span>
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 2: CHƠI GAMEPLAY TƯƠNG TÁC WEBCAM (GAMEPLAY SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="gameplayScreen" style="display: none;">
+      
+      <!-- Top Status Header Bar -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1.5px solid var(--glass-border);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div id="playerBadge" style="background: rgba(0,0,0,0.35); border: 1.5px solid var(--mint-glow); padding: 4px 10px; border-radius: 14px; font-size: 12px; font-weight: 800; color: var(--bright-yellow);">
+            ⚡ Nguyễn Gia Huy (Lớp 7A1)
+          </div>
+          <button id="btnToggleSound" class="btn-secondary" style="padding: 4px 10px; font-size: 11px;">
+            <span id="soundIcon">🔊</span> Âm Thanh: BẬT
+          </button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <!-- Question Counter -->
+          <div style="font-size: 12px; font-weight: 800; color: var(--bright-yellow);">
+            Câu: <span id="currentQNumText">1</span> / 10
+          </div>
+
+          <!-- Score -->
+          <div style="background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--gold-yellow) 100%); color: #451A03; padding: 4px 12px; border-radius: 12px; font-weight: 900; font-size: 13px; border: 1.5px solid #FFFFFF;">
+            🏆 <span id="scoreDisplay">0</span> Đ
+          </div>
+        </div>
+      </div>
+
+      <!-- Thanh Tiến Trình (Progress Bar) -->
+      <div style="width: 100%; height: 6px; background: rgba(0,0,0,0.4); border-radius: 10px; overflow: hidden; margin-bottom: 14px; border: 1px solid rgba(255,255,255,0.15);">
+        <div id="progressBar" style="width: 10%; height: 100%; background: linear-gradient(to right, #34D399, #FBBF24); transition: width 0.3s ease;"></div>
+      </div>
+
+      <!-- Khu Vực Trung Tâm: Câu Hỏi & Cửa Sổ Webcam PIP -->
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: stretch; margin-bottom: 14px;">
+        
+        <!-- Cửa Sổ Camera Nhỏ Giám Sát Góc Nghiêng -->
+        <div class="webcam-pip-container">
+          <div class="camera-status-tag">
+            <div class="status-dot"></div>
+            <span id="camStatusText">AI Sẵn Sàng</span>
+          </div>
+          <video id="webcamVideo" autoplay playsinline muted></video>
+          <canvas id="webcamCanvas"></canvas>
+        </div>
+
+        <!-- Khung Câu Hỏi Chính Ở Giữa -->
+        <div class="glass-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 260px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 800; margin-bottom: 4px;">
+            <span id="qSubjectTag" style="background:#047857; color:#A7F3D0; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--mint-glow);">Khoa Học Tự Nhiên</span>
+            <span id="tiltAngleDisplay" style="color:var(--gold-yellow);">Góc Nghiêng: 0°</span>
+          </div>
+
+          <h3 id="questionTitle" style="font-size: 16px; font-weight: 800; color: #FFFFFF; line-height: 1.5;">
+            Đang tải nội dung câu hỏi...
+          </h3>
+
+          <!-- Thanh Đo Góc Nghiêng Đầu Trực Quan -->
+          <div class="tilt-indicator-bar">
+            <div style="flex:1; background: rgba(59,130,246,0.3); border-right: 1px dashed rgba(255,255,255,0.4);"></div>
+            <div style="flex:1; background: rgba(236,72,153,0.3);"></div>
+            <div id="tiltPointer" class="tilt-indicator-pointer" style="left: 50%;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HAI KHUNG ĐÁP ÁN TRÁI - PHẢI SIÊU LỚN -->
+      <div class="answers-container">
+        
+        <!-- ĐÁP ÁN A (BÊN TRÁI ⬅️) -->
+        <div class="answer-box left-box" id="answerBoxLeft">
+          <div class="charge-progress-bar" id="chargeLeft"></div>
+          <div class="box-badge left">
+            <span>⬅️</span> ĐÁP ÁN A (NGHIÊNG TRÁI)
+          </div>
+          <div class="answer-text" id="answerTextLeft">
+            Lựa chọn A
+          </div>
+          <div class="tilt-guide-hint">
+            <span>👈 Nghiêng đầu sang trái để chọn</span>
+          </div>
+        </div>
+
+        <!-- ĐÁP ÁN B (BÊN PHẢI ➡️) -->
+        <div class="answer-box right-box" id="answerBoxRight">
+          <div class="charge-progress-bar" id="chargeRight"></div>
+          <div class="box-badge right">
+            <span>➡️</span> ĐÁP ÁN B (NGHIÊNG PHẢI)
+          </div>
+          <div class="answer-text" id="answerTextRight">
+            Lựa chọn B
+          </div>
+          <div class="tilt-guide-hint">
+            <span>👉 Nghiêng đầu sang phải để chọn</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Khung Thông Báo Phản Hồi Kết Quả (Đúng / Sai) -->
+      <div id="feedbackBanner" class="glass-card" style="display: none; text-align: center; padding: 12px; margin-top: 10px;">
+        <div id="feedbackTitle" style="font-weight: 900; font-size: 16px; margin-bottom: 4px;"></div>
+        <p id="feedbackExplanation" style="font-size: 12px; color: #D1FAE5; line-height: 1.4;"></p>
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- MÀN HÌNH 3: KẾT THÚC & TỔNG KẾT (RESULT SCREEN) -->
+    <!-- ==================================================================== -->
+    <div id="endScreen" style="display: none; text-align: center;" class="space-y-5">
+      <div style="margin-bottom: 16px;">
+        <span id="starRating" style="font-size: 40px; display: block; margin-bottom: 6px;">⭐⭐⭐</span>
+        <h2 class="font-orbitron title-gradient" id="resultTitle" style="font-size: 25px; font-weight: 900;">
+          CHÚC MỪNG! BẠN ĐÃ HOÀN THÀNH THỬ THÁCH!
+        </h2>
+        <p id="resultSubtitle" style="font-size: 13px; color: #D1FAE5; font-weight: 700; margin-top: 4px;">
+          Khả năng phản xạ và kiến thức của bạn thật tuyệt vời!
+        </p>
+      </div>
+
+      <!-- Bảng Tổng Kết Điểm -->
+      <div class="glass-card" style="text-align: left; max-width: 480px; margin: 0 auto 16px; background: rgba(0,0,0,0.35);">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Học sinh:</span>
+          <span id="resPlayerName" style="font-weight: 900; color: #FFFFFF;">Nguyễn Gia Huy</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Khối Lớp:</span>
+          <span id="resPlayerClass" style="font-weight: 900; color: #FFFFFF;">Lớp 7A1</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 8px; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Tổng Điểm Đạt Được:</span>
+          <span id="resFinalScore" style="font-weight: 900; color: var(--gold-yellow); font-size: 17px;">100 Đ</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+          <span style="color: var(--bright-yellow); font-weight: 800;">Số Câu Trả Lời Đúng:</span>
+          <span id="resCorrectCount" style="font-weight: 900; color: #34D399;">10 / 10 Câu</span>
+        </div>
+      </div>
+
+      <!-- Bảng Xếp Hạng LocalStorage Top 5 -->
+      <div class="glass-card" style="text-align: left; max-width: 480px; margin: 0 auto 20px;">
+        <div style="font-size: 12px; font-weight: 900; color: var(--bright-yellow); margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+          <span>🏆 BẢNG VÀNG NGHIÊNG ĐẦU TRI THỨC (TOP ĐIỂM CAO):</span>
+          <span style="font-size: 10px; color: #A7F3D0;">(Lưu trên máy)</span>
+        </div>
+        <div id="leaderboardList" style="font-size: 12px; space-y: 6px;">
+          <!-- Top scores injected by JS -->
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
+        <button class="btn-gold" id="btnDownloadReport">
+          <span>📜 TẢI BÁO CÁO KẾT QUẢ (ẢNH)</span>
+        </button>
+        <button class="btn-secondary" id="btnPlayAgain">
+          <span>🔄 CHƠI LẠI VÁN MỚI</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ==================================================================== -->
+  <!-- JAVASCRIPT: MEDIAPIPE FACE MESH, AI TILT DETECTION & GAME LOGIC -->
+  <!-- ==================================================================== -->
+  <script>
+    /* =======================================================================
+       10 CÂU HỎI THIẾT KẾ DÀNH CHO GAME NGHIÊNG ĐẦU (DỄ DÀNG CHỈNH SỬA Ở ĐÂY)
+       ======================================================================= */
+    const QUIZ_DATA = [
+      {
+        id: 1,
+        subject: "Khoa Học Tự Nhiên (Vật Lý)",
+        question: "Mặt Trời mọc ở hướng nào vào mỗi buổi sáng?",
+        optionA: "Hướng Đông 🌅",
+        optionB: "Hướng Tây 🌇",
+        correct: "A", // 'A' là bên Trái, 'B' là bên Phải
+        explanation: "Mặt Trời luôn mọc ở hướng Đông và lặn ở hướng Tây do chiều tự quay của Trái Đất."
+      },
+      {
+        id: 2,
+        subject: "Toán Học",
+        question: "Kết quả của phép tính: 25 × 4 bằng bao nhiêu?",
+        optionA: "80",
+        optionB: "100 💯",
+        correct: "B",
+        explanation: "25 × 4 = 100."
+      },
+      {
+        id: 3,
+        subject: "Khoa Học Tự Nhiên (Hóa Học)",
+        question: "Khí nào sau đây chiếm thể tích lớn nhất (khoảng 78%) trong không khí?",
+        optionA: "Khí Nitrogen (N₂) 💨",
+        optionB: "Khí Oxygen (O₂)",
+        correct: "A",
+        explanation: "Không khí gồm khoảng 78% khí Nitrogen (N₂), 21% khí Oxygen (O₂) và 1% các khí khác."
+      },
+      {
+        id: 4,
+        subject: "Lịch Sử & Địa Lý",
+        question: "Quần đảo Hoàng Sa và Trường Sa thuộc chủ quyền thiêng liêng của quốc gia nào?",
+        optionA: "Thái Lan",
+        optionB: "Việt Nam 🇻🇳",
+        correct: "B",
+        explanation: "Hoàng Sa và Trường Sa là hai quần đảo thuộc chủ quyền bất khả xâm phạm của Việt Nam."
+      },
+      {
+        id: 5,
+        subject: "Sinh Học",
+        question: "Cơ quan nào trong cơ thể người có nhiệm vụ co bóp bơm máu đi khắp cơ thể?",
+        optionA: "Trái Tim ❤️",
+        optionB: "Dạ Dày",
+        correct: "A",
+        explanation: "Trái tim là cơ quan bơm máu liên tục qua hệ tuần hoàn để nuôi dưỡng cơ thể."
+      },
+      {
+        id: 6,
+        subject: "Tiếng Anh",
+        question: "Từ tiếng Anh nào có nghĩa là 'Học sinh'?",
+        optionA: "Teacher",
+        optionB: "Student 🎒",
+        correct: "B",
+        explanation: "'Student' có nghĩa là học sinh/sinh viên. 'Teacher' là giáo viên."
+      },
+      {
+        id: 7,
+        subject: "Tin Học",
+        question: "Phím tắt thông dụng để 'Lưu văn bản' (Save) trên máy tính là gì?",
+        optionA: "Ctrl + S 💾",
+        optionB: "Ctrl + C",
+        correct: "A",
+        explanation: "Ctrl + S dùng để Lưu (Save), còn Ctrl + C dùng để Sao chép (Copy)."
+      },
+      {
+        id: 8,
+        subject: "Toán Học",
+        question: "Tam giác có 3 cạnh bằng nhau được gọi là tam giác gì?",
+        optionA: "Tam giác vuông",
+        optionB: "Tam giác đều 📐",
+        correct: "B",
+        explanation: "Tam giác có 3 cạnh bằng nhau (và 3 góc bằng 60°) là tam giác đều."
+      },
+      {
+        id: 9,
+        subject: "Khoa Học Tự Nhiên",
+        question: "Nhiệt độ sôi của nước tinh khiết ở điều kiện áp suất tiêu chuẩn là bao nhiêu?",
+        optionA: "100°C 🌡️",
+        optionB: "0°C",
+        correct: "A",
+        explanation: "Nước sôi ở 100°C và đóng băng ở 0°C (dưới áp suất khí quyển tiêu chuẩn)."
+      },
+      {
+        id: 10,
+        subject: "Kỹ Năng Sống & GDCD",
+        question: "Khi tham gia giao thông trên xe máy, hành động nào là bắt buộc để bảo vệ an toàn?",
+        optionA: "Đội mũ bảo hiểm 🪖",
+        optionB: "Dùng điện thoại",
+        correct: "A",
+        explanation: "Đội mũ bảo hiểm đúng quy cách giúp bảo vệ an toàn tính mạng khi tham gia giao thông."
+      }
+    ];
+
+    /* =======================================================================
+       HỆ THỐNG ÂM THANH TỔNG HỢP WEB AUDIO API
+       ======================================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
+        if (this.isMuted) return;
+        if (!this.ctx) this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) { console.warn(e); }
+      }
+      click() {
+        this.playTone(600, 'triangle', 0.08, 0.1);
+      }
+      charging() {
+        this.playTone(450, 'sine', 0.05, 0.05);
+      }
+      correct() {
+        // Hợp âm Ting-ting 3 nốt ngân vang
+        this.playTone(523.25, 'sine', 0.15, 0.15);
+        setTimeout(() => this.playTone(659.25, 'sine', 0.18, 0.15), 100);
+        setTimeout(() => this.playTone(783.99, 'sine', 0.35, 0.2), 200);
+      }
+      wrong() {
+        // Âm trầm báo sai nhẹ nhàng
+        this.playTone(220, 'sawtooth', 0.2, 0.15);
+        setTimeout(() => this.playTone(180, 'sawtooth', 0.3, 0.15), 100);
+      }
+      victory() {
+        [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, i) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.35, 0.2), i * 140);
+        });
+      }
+    }
+    const audio = new SoundEngine();
+
+    /* =======================================================================
+       STATE TIẾN TRÌNH GAME
+       ======================================================================= */
+    let currentQIndex = 0;
+    let score = 0;
+    let correctCount = 0;
+    let isQuestionLocked = false;
+    let currentTiltAngle = 0;
+
+    let selectedPlayerName = "Nguyễn Gia Huy";
+    let selectedPlayerClass = "Lớp 7A1";
+    let selectedAvatar = "⚡";
+    let selectedRole = "Chiến Thần Phản Xạ";
+
+    // Threshold & Holding Settings
+    const TILT_THRESHOLD = 14; // Ngưỡng độ nghiêng (độ) để kích hoạt
+    const HOLD_REQUIRED_MS = 600; // Thời gian giữ nghiêng (0.6 giây) để xác nhận chọn
+    let currentHoldSide = null; // 'LEFT' | 'RIGHT' | null
+    let holdStartTime = 0;
+
+    // Elements
+    const startScreen = document.getElementById('startScreen');
+    const gameplayScreen = document.getElementById('gameplayScreen');
+    const endScreen = document.getElementById('endScreen');
+    const gameContainer = document.getElementById('gameContainer');
+
+    const videoEl = document.getElementById('webcamVideo');
+    const canvasEl = document.getElementById('webcamCanvas');
+    const canvasCtx = canvasEl.getContext('2d');
+
+    const boxLeft = document.getElementById('answerBoxLeft');
+    const boxRight = document.getElementById('answerBoxRight');
+    const chargeLeft = document.getElementById('chargeLeft');
+    const chargeRight = document.getElementById('chargeRight');
+    const tiltPointer = document.getElementById('tiltPointer');
+    const tiltAngleDisplay = document.getElementById('tiltAngleDisplay');
+
+    /* BẬT / TẮT ÂM THANH */
+    document.getElementById('btnToggleSound').onclick = () => {
+      audio.isMuted = !audio.isMuted;
+      document.getElementById('soundIcon').innerText = audio.isMuted ? '🔇' : '🔊';
+      document.getElementById('btnToggleSound').innerHTML = `${audio.isMuted ? '🔇' : '🔊'} Âm Thanh: ${audio.isMuted ? 'TẮT' : 'BẬT'}`;
+    };
+
+    /* CHỌN AVATAR */
+    document.querySelectorAll('.avatar-option').forEach(el => {
+      el.addEventListener('click', () => {
+        audio.click();
+        document.querySelectorAll('.avatar-option').forEach(a => a.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedAvatar = el.dataset.avatar;
+        selectedRole = el.dataset.role;
+      });
+    });
+
+    /* BẮT ĐẦU GAME & KHỞI CHẠY WEBCAM */
+    document.getElementById('btnStartGame').addEventListener('click', async () => {
+      audio.init();
+      audio.click();
+      const nameInp = document.getElementById('playerNameInput').value.trim();
+      if (nameInp) selectedPlayerName = nameInp;
+      selectedPlayerClass = document.getElementById('playerClassSelect').value;
+
+      document.getElementById('playerBadge').innerHTML = `${selectedAvatar} ${selectedPlayerName} (${selectedPlayerClass})`;
+      
+      startScreen.style.display = 'none';
+      gameplayScreen.style.display = 'block';
+      endScreen.style.display = 'none';
+
+      // Reset
+      currentQIndex = 0;
+      score = 0;
+      correctCount = 0;
+      isQuestionLocked = false;
+
+      updateStatsDisplay();
+      loadQuestion(currentQIndex);
+
+      // Khởi động Camera và MediaPipe FaceMesh
+      await startCameraAndAI();
+    });
+
+    function updateStatsDisplay() {
+      document.getElementById('scoreDisplay').innerText = score;
+      document.getElementById('currentQNumText').innerText = currentQIndex + 1;
+      const progressPct = ((currentQIndex + 1) / QUIZ_DATA.length) * 100;
+      document.getElementById('progressBar').style.width = `${progressPct}%`;
+    }
+
+    /* LOAD CÂU HỎI */
+    function loadQuestion(index) {
+      if (index >= QUIZ_DATA.length) {
+        finishGame();
+        return;
+      }
+
+      isQuestionLocked = false;
+      resetHoldProgress();
+      boxLeft.className = 'answer-box left-box';
+      boxRight.className = 'answer-box right-box';
+      document.getElementById('feedbackBanner').style.display = 'none';
+
+      const q = QUIZ_DATA[index];
+      document.getElementById('qSubjectTag').innerText = q.subject;
+      document.getElementById('questionTitle').innerText = q.question;
+      document.getElementById('answerTextLeft').innerText = q.optionA;
+      document.getElementById('answerTextRight').innerText = q.optionB;
+
+      updateStatsDisplay();
+    }
+
+    /* =======================================================================
+       KHỞI TẠO CAMERA & MEDIAPIPE FACE MESH AI NHẬN DIỆN ĐỘ NGHIÊNG ĐẦU
+       ======================================================================= */
+    let faceMesh = null;
+    let cameraInstance = null;
+
+    async function startCameraAndAI() {
+      const statusText = document.getElementById('camStatusText');
+      statusText.innerText = "Đang kết nối...";
+
+      try {
+        if (window.FaceMesh) {
+          faceMesh = new FaceMesh({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
+          });
+
+          faceMesh.setOptions({
+            maxNumFaces: 1,
+            refineLandmarks: false,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+          });
+
+          faceMesh.onResults(onFaceMeshResults);
+
+          if (window.Camera) {
+            cameraInstance = new Camera(videoEl, {
+              onFrame: async () => {
+                await faceMesh.send({ image: videoEl });
+              },
+              width: 320,
+              height: 240
+            });
+            await cameraInstance.start();
+            statusText.innerText = "AI Đang Theo Dõi";
+          }
+        } else {
+          // Fallback Camera thông thường nếu chưa tải xong thư viện
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 320, height: 240 } });
+          videoEl.srcObject = stream;
+          statusText.innerText = "Camera Sẵn Sàng";
+        }
+      } catch (err) {
+        console.warn("Lỗi truy cập camera:", err);
+        statusText.innerText = "Phím ⬅️ ➡️ Sẵn Sàng";
+        alert("Không thể mở Webcam hoặc quyền bị từ chối. Bạn vẫn có thể dùng phím mũi tên ⬅️ và ➡️ hoặc nhấp chuột để chơi nhé!");
+      }
+    }
+
+    /* XỬ LÝ TOẠ ĐỘ LANDMARKS & TÍNH GÓC NGHIÊNG ĐẦU */
+    function onFaceMeshResults(results) {
+      canvasCtx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+      if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
+        updateTiltVisual(0);
+        return;
+      }
+
+      const landmarks = results.multiFaceLandmarks[0];
+
+      // Lấy toạ độ 2 mắt: Mắt Phải (landmark 33) & Mắt Trái (landmark 263)
+      // Lưu ý: Video lật gương (mirrored), nên mắt người chơi bên trái tương ứng màn hình bên trái
+      const leftEye = landmarks[33];  // Tương ứng màn hình bên trái
+      const rightEye = landmarks[263]; // Tương ứng màn hình bên phải
+
+      // Tính góc nghiêng giữa 2 mắt (độ)
+      const dx = rightEye.x - leftEye.x;
+      const dy = rightEye.y - leftEye.y;
+      let angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+
+      // Điều chỉnh góc: Khi đầu thẳng angle ~ 0
+      // Nghiêng đầu sang TRÁI (màn hình) -> angleDeg < -TILT_THRESHOLD
+      // Nghiêng đầu sang PHẢI (màn hình) -> angleDeg > TILT_THRESHOLD
+      currentTiltAngle = Math.round(angleDeg);
+      updateTiltVisual(currentTiltAngle);
+
+      // Vẽ trục mắt hỗ trợ quan sát trên canvas camera
+      drawFaceAxis(leftEye, rightEye);
+
+      // Xử lý lựa chọn đáp án bằng góc nghiêng
+      processTiltAction(currentTiltAngle);
+    }
+
+    function drawFaceAxis(p1, p2) {
+      canvasCtx.save();
+      canvasCtx.lineWidth = 3;
+      canvasCtx.strokeStyle = '#FBBF24';
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(p1.x * canvasEl.width, p1.y * canvasEl.height);
+      canvasCtx.lineTo(p2.x * canvasEl.width, p2.y * canvasEl.height);
+      canvasCtx.stroke();
+      canvasCtx.restore();
+    }
+
+    function updateTiltVisual(angle) {
+      tiltAngleDisplay.innerText = `Góc Nghiêng: ${angle > 0 ? '+' : ''}${angle}°`;
+      
+      // Giới hạn hiển thị con trỏ trên thanh đo (-30 đến +30 độ tương ứng 0% đến 100%)
+      const clamped = Math.max(-30, Math.min(30, angle));
+      const pct = ((clamped + 30) / 60) * 100;
+      tiltPointer.style.left = `${pct}%`;
+    }
+
+    /* XỬ LÝ LỰA CHỌN DỰA TRÊN ĐỘ NGHIÊNG & NẠP XÁC NHẬN (HOLD TO CONFIRM) */
+    function processTiltAction(angle) {
+      if (isQuestionLocked) return;
+
+      const now = Date.now();
+
+      // Kiểm tra nghiêng TRÁI (Đáp án A)
+      if (angle <= -TILT_THRESHOLD) {
+        if (currentHoldSide !== 'LEFT') {
+          currentHoldSide = 'LEFT';
+          holdStartTime = now;
+          boxLeft.classList.add('tilting-active');
+          boxRight.classList.remove('tilting-active');
+          chargeRight.style.width = '0%';
+        } else {
+          const elapsed = now - holdStartTime;
+          const chargePct = Math.min(100, (elapsed / HOLD_REQUIRED_MS) * 100);
+          chargeLeft.style.width = `${chargePct}%`;
+
+          if (elapsed >= HOLD_REQUIRED_MS) {
+            confirmSelection('A');
+          }
+        }
+      } 
+      // Kiểm tra nghiêng PHẢI (Đáp án B)
+      else if (angle >= TILT_THRESHOLD) {
+        if (currentHoldSide !== 'RIGHT') {
+          currentHoldSide = 'RIGHT';
+          holdStartTime = now;
+          boxRight.classList.add('tilting-active');
+          boxLeft.classList.remove('tilting-active');
+          chargeLeft.style.width = '0%';
+        } else {
+          const elapsed = now - holdStartTime;
+          const chargePct = Math.min(100, (elapsed / HOLD_REQUIRED_MS) * 100);
+          chargeRight.style.width = `${chargePct}%`;
+
+          if (elapsed >= HOLD_REQUIRED_MS) {
+            confirmSelection('B');
+          }
+        }
+      } 
+      // Đầu ở vị trí thẳng cân bằng
+      else {
+        resetHoldProgress();
+      }
+    }
+
+    function resetHoldProgress() {
+      currentHoldSide = null;
+      holdStartTime = 0;
+      chargeLeft.style.width = '0%';
+      chargeRight.style.width = '0%';
+      boxLeft.classList.remove('tilting-active');
+      boxRight.classList.remove('tilting-active');
+    }
+
+    /* XÁC NHẬN CHỌN ĐÁP ÁN (A HOẶC B) */
+    function confirmSelection(selectedChoice) {
+      if (isQuestionLocked) return;
+      isQuestionLocked = true;
+      resetHoldProgress();
+
+      const q = QUIZ_DATA[currentQIndex];
+      const isCorrect = selectedChoice === q.correct;
+
+      const feedbackBanner = document.getElementById('feedbackBanner');
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      const feedbackExplanation = document.getElementById('feedbackExplanation');
+
+      if (selectedChoice === 'A') {
+        boxLeft.classList.add(isCorrect ? 'correct' : 'wrong');
+      } else {
+        boxRight.classList.add(isCorrect ? 'correct' : 'wrong');
+      }
+
+      if (isCorrect) {
+        audio.correct();
+        triggerConfetti();
+        score += 10;
+        correctCount++;
+        updateStatsDisplay();
+
+        feedbackTitle.innerHTML = `🎉 <span style="color:#34D399;">CHÍNH XÁC! BẠN GIỎI QUÁ! (+10 Điểm)</span>`;
+        feedbackExplanation.innerHTML = `<b>Giải thích:</b> ${q.explanation}`;
+        feedbackBanner.style.display = 'block';
+
+        // Tự động chuyển câu tiếp theo sau 1.6 giây
+        setTimeout(() => {
+          currentQIndex++;
+          loadQuestion(currentQIndex);
+        }, 1600);
+      } else {
+        audio.wrong();
+        gameContainer.classList.add('shake-animation');
+        setTimeout(() => gameContainer.classList.remove('shake-animation'), 500);
+
+        feedbackTitle.innerHTML = `❌ <span style="color:#EF4444;">CHƯA ĐÚNG RỒI! THỬ LẠI NHÉ!</span>`;
+        feedbackExplanation.innerHTML = `Hãy quan sát kỹ và nghiêng đầu để chọn lại đáp án đúng!`;
+        feedbackBanner.style.display = 'block';
+
+        // Mở khoá sau 1.2s để người chơi chọn lại
+        setTimeout(() => {
+          isQuestionLocked = false;
+          boxLeft.className = 'answer-box left-box';
+          boxRight.className = 'answer-box right-box';
+        }, 1200);
+      }
+    }
+
+    /* HỖ TRỢ PHÍM MŨI TÊN BÀN PHÍM & CLICK CHUỘT DỰ PHÒNG */
+    window.addEventListener('keydown', (e) => {
+      if (gameplayScreen.style.display === 'block') {
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+          confirmSelection('A');
+        } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+          confirmSelection('B');
+        }
+      }
+    });
+
+    boxLeft.addEventListener('click', () => confirmSelection('A'));
+    boxRight.addEventListener('click', () => confirmSelection('B'));
+
+    /* =======================================================================
+       MÀN HÌNH KẾT THÚC & VINH DANH (FINISH & LEADERBOARD)
+       ======================================================================= */
+    function finishGame() {
+      audio.victory();
+      triggerConfetti();
+
+      gameplayScreen.style.display = 'none';
+      endScreen.style.display = 'block';
+
+      document.getElementById('resPlayerName').innerText = selectedPlayerName;
+      document.getElementById('resPlayerClass').innerText = selectedPlayerClass;
+      document.getElementById('resFinalScore').innerText = `${score} Đ`;
+      document.getElementById('resCorrectCount').innerText = `${correctCount} / ${QUIZ_DATA.length} Câu`;
+
+      const starRating = document.getElementById('starRating');
+      const resultTitle = document.getElementById('resultTitle');
+      if (score >= 90) {
+        starRating.innerText = '⭐⭐⭐';
+        resultTitle.innerText = 'CHÚC MỪNG! BẠN ĐÃ HOÀN THÀNH THỬ THÁCH!';
+      } else if (score >= 60) {
+        starRating.innerText = '⭐⭐';
+        resultTitle.innerText = 'PHẢN XẠ RẤT TỐT!';
+      } else {
+        starRating.innerText = '⭐';
+        resultTitle.innerText = 'CỐ GẮNG HƠN Ở LẦN TIẾP THEO NHÉ!';
+      }
+
+      saveToLeaderboard(selectedPlayerName, selectedPlayerClass, score);
+      renderLeaderboard();
+    }
+
+    function saveToLeaderboard(name, className, scoreVal) {
+      try {
+        let board = JSON.parse(localStorage.getItem('hocvui_nghiengdau_leaderboard') || '[]');
+        board.push({ name, className, score: scoreVal, date: new Date().toLocaleDateString('vi-VN') });
+        board.sort((a, b) => b.score - a.score);
+        board = board.slice(0, 5);
+        localStorage.setItem('hocvui_nghiengdau_leaderboard', JSON.stringify(board));
+      } catch (e) { console.warn(e); }
+    }
+
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = '';
+      try {
+        const board = JSON.parse(localStorage.getItem('hocvui_nghiengdau_leaderboard') || '[]');
+        if (board.length === 0) {
+          list.innerHTML = '<p style="color:#A7F3D0; text-align:center;">Chưa có dữ liệu người chơi.</p>';
+          return;
+        }
+        board.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.padding = '4px 0';
+          row.style.borderBottom = '1px dashed rgba(255,255,255,0.1)';
+          row.innerHTML = `
+            <span><b>#${idx + 1}</b> ${item.name} <span style="font-size:10px; color:#A7F3D0;">(${item.className})</span></span>
+            <span style="color:var(--gold-yellow); font-weight:900;">${item.score} Đ</span>
+          `;
+          list.appendChild(row);
+        });
+      } catch (e) { console.warn(e); }
+    }
+
+    document.getElementById('btnPlayAgain').onclick = () => {
+      audio.click();
+      endScreen.style.display = 'none';
+      startScreen.style.display = 'block';
+    };
+
+    // Xuất báo cáo chứng nhận dạng Ảnh Canvas
+    document.getElementById('btnDownloadReport').onclick = () => {
+      audio.click();
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 500;
+      const ctx = canvas.getContext('2d');
+
+      // Background Gradient
+      const grad = ctx.createLinearGradient(0, 0, 800, 500);
+      grad.addColorStop(0, '#064E3B');
+      grad.addColorStop(0.5, '#065F46');
+      grad.addColorStop(1, '#022C22');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 800, 500);
+
+      // Gold Border
+      ctx.strokeStyle = '#FBBF24';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(20, 20, 760, 460);
+
+      // Content
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#FEF08A';
+      ctx.font = 'bold 18px Nunito, sans-serif';
+      ctx.fillText('HỆ THỐNG TRÒ CHƠI HỌC VUI CẤP 2 - THCS GDPT 2018', 400, 70);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 28px Orbitron, sans-serif';
+      ctx.fillText('CHỨNG NHẬN SIÊU PHẢN XẠ WEBCAM AI', 400, 120);
+
+      ctx.fillStyle = '#34D399';
+      ctx.font = 'bold 18px Nunito, sans-serif';
+      ctx.fillText('Vinh danh học sinh xuất sắc hoàn thành: NGHIÊNG ĐẦU CHỌN ĐÁP ÁN ĐÚNG', 400, 160);
+
+      ctx.fillStyle = '#FEF08A';
+      ctx.font = 'bold 26px Nunito, sans-serif';
+      ctx.fillText(selectedPlayerName, 400, 225);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 16px Nunito, sans-serif';
+      ctx.fillText(`Khối Lớp: ${selectedPlayerClass}   |   Danh hiệu: ${selectedRole}`, 400, 260);
+
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = 'bold 28px Orbitron, sans-serif';
+      ctx.fillText(`TỔNG ĐIỂM: ${score} / 100 ĐIỂM   (Đúng: ${correctCount}/${QUIZ_DATA.length} Câu)`, 400, 320);
+
+      ctx.fillStyle = '#A7F3D0';
+      ctx.font = 'italic 14px Nunito, sans-serif';
+      ctx.fillText(`Ngày cấp: ${new Date().toLocaleDateString('vi-VN')} - Xác thực hệ thống Học Vui Cấp 2`, 400, 420);
+
+      const link = document.createElement('a');
+      link.download = `ChungNhan_NghiengDauChonDapAn_${selectedPlayerName.replace(/\s+/g, '_')}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+
+    /* PHÁO HOA CONFETTI */
+    function triggerConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      const colors = ['#FEF08A', '#FBBF24', '#34D399', '#60A5FA', '#F472B6', '#FFFFFF'];
+      for (let i = 0; i < 85; i++) {
+        pieces.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          r: Math.random() * 6 + 4,
+          dx: (Math.random() - 0.5) * 14,
+          dy: (Math.random() - 0.5) * 14 - 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.random() * 10,
+          alpha: 1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        pieces.forEach(p => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.dy += 0.25;
+          p.alpha -= 0.015;
+          if (p.alpha > 0) {
+            active = true;
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        if (active) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+  </script>
+</body>
+</html>
